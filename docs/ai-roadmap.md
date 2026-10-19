@@ -1,6 +1,7 @@
 # AI implementation roadmap
 
-Status: planning foundation. No AI service has been implemented or deployed.
+Status: initial transcription service deployed with short GPU/API checks passing.
+Representative recordings and long-duration quality validation are pending.
 Complete milestones in order; update `ai-status.md` with evidence.
 
 ## 0. Establish project context
@@ -52,6 +53,19 @@ Acceptance evidence:
 
 Real recordings have not yet been provided. Use synthetic/public fixtures for
 development if needed; do not claim real-sermon accuracy without evaluation.
+
+Initial deployment evidence (2026-10-19):
+
+- [x] Private asynchronous upload/status/result API with durable SQLite jobs.
+- [x] Bounded uploads/queue, exclusive single worker, and restart recovery.
+- [x] Pinned container/model/dependencies and external model/runtime storage.
+- [x] Ten tests, including actual audio-decoder compatibility.
+- [x] Real GPU/API smoke tests: English, synthetic Portuguese, silence, corrupt media.
+- [x] Actual restart preserved existing results; no host ports are published.
+- [ ] Representative real Portuguese/English recordings reviewed for accuracy.
+- [ ] Roughly two-hour recording validated for completeness and resource use.
+
+See `ai-status.md` for measurements and `../ai/transcription/README.md` for use.
 
 ## 2. Shared generation and extraction
 
