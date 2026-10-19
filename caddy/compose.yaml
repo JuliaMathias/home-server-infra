@@ -1,0 +1,27 @@
+name: lara-caddy
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+
+    ports:
+      - "100.89.181.91:443:443"
+
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./certs:/certs:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: lara-proxy
+
+volumes:
+  caddy_data:
+  caddy_config:

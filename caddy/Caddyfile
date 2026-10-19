@@ -1,0 +1,5 @@
+lara.taila21247.ts.net {
+    tls /certs/lara.crt /certs/lara.key
+
+    respond "Hello from Lara! HTTPS is working."
+}

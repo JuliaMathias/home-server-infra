@@ -1,0 +1,25 @@
+# TLS certificates and private keys
+**/certs/
+*.key
+*.pem
+*.crt
+*.p12
+*.pfx
+
+# Secrets and environment variables
+**/.env
+**/.env.*
+!**/.env.example
+**/secrets/
+
+# Runtime data
+**/data/
+**/models/
+**/backups/
+
+# Temporary files
+*.log
+*.tmp
+*.bak
+*~
+.DS_Store
