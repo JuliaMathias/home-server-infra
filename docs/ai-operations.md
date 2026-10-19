@@ -74,3 +74,36 @@ Keep source configuration in Git and model/input/output data outside it. An
 image rebuild must not erase uploads or job records. Document interrupted-job
 recovery and data retention when persistence is implemented. Existing backups
 and unrelated containers must not be pruned as part of AI setup.
+
+## What belongs in Git
+
+| Version-controlled recipe | Runtime material outside Git |
+| --- | --- |
+| Dockerfile and dependency lock | Built image, Docker cache and container state |
+| Compose mounts and model path | Actual model weights under `/srv/lara/ai/models` |
+| Pinned model revision and verified downloader | Downloaded assets and their runtime manifest |
+| Service source and synthetic test fixtures | Uploaded audio, PDFs, transcripts and correction history |
+| Evaluation runner and nonprivate findings | Job databases, private evaluation outputs and telemetry |
+
+The canonical checkout is `/srv/lara/infrastructure`. The Mac staging folder
+contains planning documents only; it is not expected to contain the service
+Dockerfiles. GitHub shows only pushed commits, so committing on Lara does not
+make a file appear on GitHub until those commits are pushed.
+
+The transcription Dockerfile builds the software environment. Compose connects
+that environment to model files using this host-to-container mapping:
+
+```text
+/srv/lara/ai/models/large-v3  ->  /models/large-v3  (read-only)
+/srv/lara/ai/data/transcription  ->  /data          (writable)
+```
+
+`MODEL_PATH=/models/large-v3` tells the service where to load the model within
+its container. Normal startup is offline; it does not fetch missing weights.
+The service README documents the explicit pinned download/verification step.
+
+Bootstrap creates directories and shared networks. Model download and service
+startup remain explicit service deployment steps. A fresh machine also needs
+the Docker/NVIDIA prerequisites documented in `server-setup.md`; bootstrap does
+not install them. Rebuilding from Git recovers software/configuration, while
+runtime data needs a separate backup and restoration procedure.

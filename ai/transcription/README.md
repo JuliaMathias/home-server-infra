@@ -7,6 +7,14 @@ runs locally and does not upload recordings to external services.
 
 ## Deployment
 
+First run the repository's `scripts/bootstrap.sh` as the regular deployment
+user on a newly prepared host. It creates the shared model directory and the
+transcription data directory before Docker mounts them. On Lara the deployment
+user and this container use UID/GID 1000. Check ownership if restoring to a
+different host; do not let Docker implicitly create a root-owned data directory.
+Bootstrap prepares folders/networks; the following commands build software,
+download the pinned weights, and start the service explicitly.
+
 Run from `/srv/lara/infrastructure/ai/transcription` on Lara:
 
 ```sh

@@ -28,6 +28,7 @@ directories=(
     "$SERVER_ROOT/infrastructure/postgres"
     "$SERVER_ROOT/ai/models"
     "$SERVER_ROOT/ai/data"
+    "$SERVER_ROOT/ai/data/transcription"
     "$SERVER_ROOT/apps"
     "$SERVER_ROOT/backups"
 )
