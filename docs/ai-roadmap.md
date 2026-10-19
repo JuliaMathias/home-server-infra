@@ -1,7 +1,8 @@
 # AI implementation roadmap
 
 Status: initial transcription service deployed with short GPU/API checks passing.
-Representative recordings and long-duration quality validation are pending.
+A 68.5-minute real recording passed processing and timestamp-integrity checks.
+Reference-based accuracy, thermal mitigation, and two-hour validation are pending.
 Complete milestones in order; update `ai-status.md` with evidence.
 
 ## 0. Establish project context
@@ -62,7 +63,9 @@ Initial deployment evidence (2026-10-19):
 - [x] Ten tests, including actual audio-decoder compatibility.
 - [x] Real GPU/API smoke tests: English, synthetic Portuguese, silence, corrupt media.
 - [x] Actual restart preserved existing results; no host ports are published.
-- [ ] Representative real Portuguese/English recordings reviewed for accuracy.
+- [x] Complete 68.5-minute Portuguese recording processed; timestamp bounds checked.
+- [ ] Representative real Portuguese/English recordings reviewed against audio for accuracy.
+- [ ] Investigate CPU throttling and GPU software thermal capping with controlled tests.
 - [ ] Roughly two-hour recording validated for completeness and resource use.
 
 See `ai-status.md` for measurements and `../ai/transcription/README.md` for use.

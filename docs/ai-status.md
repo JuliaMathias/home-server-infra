@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 15:28 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 16:11 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -68,11 +68,44 @@ Last inspection: 2026-10-19 15:28 BRT (America/Sao_Paulo).
   `/srv/lara/ai/data/transcription-fixtures/` and `transcription-gpu.csv`.
 - Development command/output log: `/srv/lara/ai/data/transcription-development.log`.
 
+## Real recording evaluation (2026-10-19)
+
+- A complete 68m30.51s Portuguese recording processed successfully in 7m39.17s
+  with the existing warm Large V3 GPU configuration (about 8.95x real time).
+- Upload-to-result client time was 7m40.53s. Full baseline/run/cooldown took
+  8m25.92s. No second transcription was launched during the scheduled check.
+- Output: 1,469 segments, about 9,151 whitespace-delimited words, and 9,171
+  word-timestamp entries. All timestamp bounds passed; segment ordering checks
+  found no backwards overlap beyond the 0.1-second tolerance.
+- This establishes successful full-recording processing, not verified recognition
+  accuracy. Draft passages and names need audio review; no reference WER exists.
+  Portuguese was specified explicitly, so language probability is not an accuracy
+  score or evidence of automatic language detection.
+- Two-second host telemetry: GPU peak 2379 MiB (2.32 GiB), GPU mean/peak
+  temperatures 65.4/69 C, CPU package mean/peak 79.3/91 C. Baseline CPU/GPU means
+  were 49.9/46.9 C. CPU package throttle count increased by 8665; duplicated
+  logical-thread counters were not summed. Counts are not throttled seconds.
+- GPU software thermal flag was active in 220/227 transcription-phase samples;
+  no hardware thermal flag was active. The cause of software capping at these
+  temperatures is unresolved. Do not label the deployment thermally unconstrained.
+- Host available RAM never fell below about 15.4 GiB; this is not a measurement
+  of peak per-service RAM. GPU utilization averaged 92.4%; power averaged 26.2 W.
+- All 250 telemetry samples were collected without reported monitoring errors.
+  Brief thermal spikes, fan speed, ambient conditions, clocks, and attribution
+  of other host activity were not measured.
+- Original recording and Lara copy have matching SHA-256. Private originals,
+  transcripts, results, telemetry, and a detailed educational report remain
+  outside Git under `/srv/lara/ai/data/evaluations/`.
+- Reading copies were exported to the user's private mirrored project-files
+  folder. The scheduled completion check is being stopped after reporting.
+
 ## Next action and remaining limits
 
-Evaluate a representative sermon and a roughly two-hour recording for accuracy,
-completeness, word-timestamp quality, peak memory, and throughput. The first
-transcription deployment works, but the full milestone is not yet validated.
+Compare selected passages against a human-checked audio reference to measure
+recognition accuracy, including names, verse numbers, and negation. Investigate
+thermal capping with a controlled comparison before increasing sustained load.
+A roughly two-hour recording and repeated jobs remain unvalidated; the complete
+transcription milestone is still open.
 
 There is no review UI, diarization, preacher identification, sermon segmentation,
 note generation, or automatic retention cleanup yet. The service intentionally
