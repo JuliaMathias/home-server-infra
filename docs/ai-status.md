@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 19:50 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 20:21 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -120,6 +120,23 @@ Last inspection: 2026-10-19 19:50 BRT (America/Sao_Paulo).
 - Paired listening suggestions total 4m30s across both recordings. Source files
   and earlier exports were preserved. The scheduled checker was deleted at the
   user's request after the immediate completion review.
+
+## Targeted human review (2026-10-19)
+
+- The user supplied 72 timestamped corrections/annotations from selected parts
+  of the original recording. These form a private partial reference, not a
+  reviewed transcript of the full sermon.
+- Four explicitly uncertain annotations remain flagged. One zero-duration
+  timestamp is retained as a point annotation; human timing is approximate.
+- Listening corrections confirm specific improvements in the second recording's
+  draft and also identify errors shared by both drafts, especially proper names.
+  No overall WER or recognition-accuracy percentage has been assigned.
+- Raw transcripts and earlier comparison artifacts were preserved. Corrections,
+  structured provenance/uncertainty, and review findings are outside Git, with
+  verified reading copies in the private mirrored project-files folder.
+- Future note generation must prioritize reviewed wording where available,
+  retain uncertain speech explicitly, and keep edits separate from raw ASR.
+  No model settings, prompts, or automatic global replacements were changed.
 
 ## Next action and remaining limits
 
