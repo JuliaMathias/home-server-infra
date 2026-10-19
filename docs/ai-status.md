@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 20:21 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 20:28 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -129,7 +129,9 @@ Last inspection: 2026-10-19 20:21 BRT (America/Sao_Paulo).
 - Four explicitly uncertain annotations remain flagged. One zero-duration
   timestamp is retained as a point annotation; human timing is approximate.
 - Listening corrections confirm specific improvements in the second recording's
-  draft and also identify errors shared by both drafts, especially proper names.
+  draft and also identify remaining wording errors. The user subsequently
+  accepted equivalent biblical-name spellings in the second transcript; the
+  private review findings now reflect that clarification.
   No overall WER or recognition-accuracy percentage has been assigned.
 - Raw transcripts and earlier comparison artifacts were preserved. Corrections,
   structured provenance/uncertainty, and review findings are outside Git, with
@@ -140,11 +142,25 @@ Last inspection: 2026-10-19 20:21 BRT (America/Sao_Paulo).
 
 ## Next action and remaining limits
 
-Compare selected passages against a human-checked audio reference to measure
-recognition accuracy, including names, verse numbers, and negation. Investigate
-thermal capping with a controlled comparison before increasing sustained load.
-A roughly two-hour recording and repeated jobs remain unvalidated; the complete
-transcription milestone is still open.
+On 2026-10-19 the user chose to retain the current transcription baseline,
+collect findings and defer optimization, and proceed to shared generation.
+See `ai-transcription-follow-ups.md`; remaining checks are not marked passed.
+
+Generation evaluation preparation is under `ai/generation/`: two synthetic
+source-grounded cases, a sequential request runner, model metadata, and a human
+review rubric. No generation model has been downloaded, deployed, or benchmarked
+yet. Qwen3-14B Q5_K_M is the first candidate, not a final selection. Fixture
+validation and Python syntax checks passed. Local synthetic HTTP checks verified
+response persistence and nonzero failure for truncated output. These test the
+evaluation runner only, not a real generation model.
+
+Fresh resource inspection: GPU 1995/4096 MiB used at 46 C, about 17 GiB host
+RAM available and 238 GiB disk free. These are idle snapshots, not generation
+measurements. Full GPU residency is not feasible for the 10.51 GB candidate
+weight file; RAM and context overhead must be measured. Start with an isolated
+CPU feasibility run, then coordinate exclusive GPU use before partial offload.
+Do not run competing heavy jobs or stop the transcription service incidentally.
+A roughly two-hour transcription and repeated sustained jobs remain unvalidated.
 
 There is no review UI, diarization, preacher identification, sermon segmentation,
 note generation, or automatic retention cleanup yet. The service intentionally

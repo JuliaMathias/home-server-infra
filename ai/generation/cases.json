@@ -1,0 +1,43 @@
+[
+  {
+    "id": "portuguese_source_notes",
+    "source_kind": "synthetic_public_fixture",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Produza notas fiéis à fonte, em português. Use apenas os dados fornecidos; preserve negações, números e incertezas. Cite os identificadores das fontes. Não complete detalhes desconhecidos."
+      },
+      {
+        "role": "user",
+        "content": "[S1] A aula propõe três encontros de estudo por semana, com vinte minutos cada.\n[S2] O professor não recomenda estudar durante a madrugada. A constância é mais importante que estudar muitas horas uma única vez.\n[S3] O exemplo foi uma aluna que passou a revisar suas anotações depois de cada encontro. Não foi informado o resultado nas provas.\n[S4] A data da próxima aula está incerta.\nTransforme isto em notas organizadas e completas."
+      }
+    ],
+    "review_requirements": [
+      "Preserve three weekly meetings of twenty minutes",
+      "Preserve the warning against overnight study",
+      "Retain the example without inventing exam improvement",
+      "Keep the next date uncertain",
+      "Cite source identifiers; do not add unsupported advice"
+    ]
+  },
+  {
+    "id": "exercise_week_report",
+    "source_kind": "synthetic_public_fixture",
+    "messages": [
+      {
+        "role": "system",
+        "content": "Write an evidence-based weekly exercise report using only the supplied entries. Separate facts from missing information. Do not give medical advice or infer calories, weight loss, or progress without evidence."
+      },
+      {
+        "role": "user",
+        "content": "Monday: walking, 30 minutes, felt comfortable. Wednesday: cycling, 25 minutes, effort not recorded. Saturday: walking, 45 minutes, felt tired. No heart rate, distance, prior week, or weight measurements are available. Summarize the week, total the minutes, and identify what cannot be concluded."
+      }
+    ],
+    "review_requirements": [
+      "Three sessions, 100 total minutes",
+      "Walking 75 minutes; cycling 25 minutes",
+      "Preserve reported feelings without diagnosing",
+      "Do not invent calories, distances, heart rate or change versus prior week"
+    ]
+  }
+]

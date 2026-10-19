@@ -2,8 +2,10 @@
 
 Status: initial transcription service deployed with short GPU/API checks passing.
 A 68.5-minute real recording passed processing and timestamp-integrity checks.
-Reference-based accuracy, thermal mitigation, and two-hour validation are pending.
-Complete milestones in order; update `ai-status.md` with evidence.
+The user accepted this as a working baseline on 2026-10-19 and deferred further
+transcription optimization. Broader accuracy and two-hour checks remain unverified,
+but do not block beginning shared generation evaluation. Update `ai-status.md`
+with evidence.
 
 ## 0. Establish project context
 
@@ -52,8 +54,8 @@ Acceptance evidence:
 - Tests cover the job lifecycle and error paths. Real inference evidence is
   recorded separately from tests using fake models.
 
-Real recordings have not yet been provided. Use synthetic/public fixtures for
-development if needed; do not claim real-sermon accuracy without evaluation.
+Two recordings of the same sermon have been processed and targeted excerpts
+reviewed. Broader recognition accuracy remains unmeasured.
 
 Initial deployment evidence (2026-10-19):
 
@@ -72,7 +74,13 @@ Initial deployment evidence (2026-10-19):
 
 See `ai-status.md` for measurements and `../ai/transcription/README.md` for use.
 
+See `ai-transcription-follow-ups.md` for findings and deferred experiments.
+
 ## 2. Shared generation and extraction
+
+Current next step: prepare a repeatable Qwen3-14B/llama.cpp evaluation using
+source-grounded Portuguese notes and a separate exercise-report task. See
+`../ai/generation/README.md`. Preparation is not a model-quality result.
 
 - Benchmark larger LLM candidates using representative transcript sections and
   a distinct exercise-report task to check reuse and quality.

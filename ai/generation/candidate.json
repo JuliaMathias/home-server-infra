@@ -1,0 +1,11 @@
+{
+  "status": "candidate_not_downloaded_or_tested",
+  "repository": "Qwen/Qwen3-14B-GGUF",
+  "revision": "530227a7d994db8eca5ab5ced2fb692b614357fd",
+  "filename": "Qwen3-14B-Q5_K_M.gguf",
+  "bytes": 10514569568,
+  "sha256": "e7c9aba1129ca2936be9eca01419d9f86af40e08caa01230d5574b34d08e3e31",
+  "runtime_candidate": "llama.cpp",
+  "metadata_checked": "2026-10-19",
+  "note": "Weight size alone does not establish runtime RAM fit. Pin runtime before actual evaluation."
+}
