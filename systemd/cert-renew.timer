@@ -1,0 +1,10 @@
+[Unit]
+Description=Daily check for Lara's HTTPS certificate renewal
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+RandomizedDelaySec=30m
+
+[Install]
+WantedBy=timers.target
