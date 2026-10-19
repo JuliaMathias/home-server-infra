@@ -1,0 +1,57 @@
+name: shared-generation-trial
+services:
+  generation:
+    image: ${GENERATION_IMAGE:?Set an immutable official llama.cpp server image digest}
+    init: true
+    restart: "no"
+    user: "1000:1000"
+    command:
+      - --model
+      - /models/qwen3-14b/Qwen3-14B-Q5_K_M.gguf
+      - --alias
+      - qwen3-14b-trial
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8080"
+      - --ctx-size
+      - "4096"
+      - --parallel
+      - "1"
+      - --threads
+      - "4"
+      - --threads-batch
+      - "4"
+      - --n-gpu-layers
+      - "0"
+      - --jinja
+      - --chat-template-kwargs
+      - '{"enable_thinking":false}'
+      - --no-context-shift
+      - --n-predict
+      - "768"
+    volumes:
+      - /srv/lara/ai/models:/models:ro
+    networks:
+      lara-backend:
+        aliases:
+          - generation-trial
+    cpus: 4
+    mem_limit: 16g
+    memswap_limit: 16g
+    pids_limit: 128
+    read_only: true
+    tmpfs:
+      - /tmp:size=128m,mode=1777
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "2"
+networks:
+  lara-backend:
+    external: true

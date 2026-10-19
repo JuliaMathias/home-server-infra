@@ -78,9 +78,11 @@ See `ai-transcription-follow-ups.md` for findings and deferred experiments.
 
 ## 2. Shared generation and extraction
 
-Current next step: prepare a repeatable Qwen3-14B/llama.cpp evaluation using
-source-grounded Portuguese notes and a separate exercise-report task. See
-`../ai/generation/README.md`. Preparation is not a model-quality result.
+Current next step: review the background Qwen3-14B/llama.cpp CPU trial using
+source-grounded Portuguese notes, an independent exercise-report task, and a
+private user-reviewed sermon excerpt. Its verified download is in progress;
+inference results and quality review are pending. See
+`../ai/generation/README.md`. This is not yet a full-sermon notes pipeline.
 
 - Benchmark larger LLM candidates using representative transcript sections and
   a distinct exercise-report task to check reuse and quality.

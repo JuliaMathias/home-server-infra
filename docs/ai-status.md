@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 20:28 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 20:44 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -146,20 +146,35 @@ On 2026-10-19 the user chose to retain the current transcription baseline,
 collect findings and defer optimization, and proceed to shared generation.
 See `ai-transcription-follow-ups.md`; remaining checks are not marked passed.
 
-Generation evaluation preparation is under `ai/generation/`: two synthetic
-source-grounded cases, a sequential request runner, model metadata, and a human
-review rubric. No generation model has been downloaded, deployed, or benchmarked
-yet. Qwen3-14B Q5_K_M is the first candidate, not a final selection. Fixture
-validation and Python syntax checks passed. Local synthetic HTTP checks verified
-response persistence and nonzero failure for truncated output. These test the
-evaluation runner only, not a real generation model.
+Generation trial started on 2026-10-19 at 20:44 BRT under
+`/srv/lara/ai/data/evaluations/generation-20261019T2340Z`. It is waiting for
+verified model weights; no real generation result or quality claim exists yet.
 
-Fresh resource inspection: GPU 1995/4096 MiB used at 46 C, about 17 GiB host
-RAM available and 238 GiB disk free. These are idle snapshots, not generation
-measurements. Full GPU residency is not feasible for the 10.51 GB candidate
-weight file; RAM and context overhead must be measured. Start with an isolated
-CPU feasibility run, then coordinate exclusive GPU use before partial offload.
-Do not run competing heavy jobs or stop the transcription service incidentally.
+- Qwen3-14B Q5_K_M is the first candidate, not a final selection. Its official
+  revision, 10.51 GB file size and SHA-256 are pinned. Download is separate from
+  runtime; originals and private outputs remain outside Git.
+- The official llama.cpp CPU server image is pinned by digest, build b11723,
+  source commit `31288c9c66e59377f7788d920678a565bb89dd37`.
+- Compose exposes no host ports and requests no GPU. One slot, four CPU cores,
+  16 GiB RAM/no additional swap, and 4096 context tokens bound this trial.
+  Whisper remains deployed; no GPU co-residency is assumed or tested.
+- The background workflow waits for the verified model and runtime, checks
+  installed options, runs the two synthetic tasks, and produces a preliminary
+  private draft from one user-reviewed sermon excerpt. All results need review;
+  a successful HTTP request does not establish factual fidelity.
+- It records request times, load/warmup time, temperatures, host available RAM,
+  container RAM and GPU observations; duplicated CPU counters must not be summed.
+  GPU readings reflect other activity in this CPU-only trial. TTFT is unmeasured.
+- The temporary generation service is stopped after success/failure. There is no
+  complete note-generation application, PDF/Bible integration, or full-sermon
+  notes pipeline yet. No final model choice has been made.
+- Script syntax, fixture validation and Compose configuration passed. Earlier
+  synthetic HTTP checks verified the runner's persistence/truncation handling;
+  the new real trial is pending. No inference-quality test is being called passed.
+
+Initial resource snapshot before download: GPU 1995/4096 MiB at 46 C, about
+17 GiB host RAM available and 238 GiB disk free. Model weights exceed VRAM;
+CPU feasibility and eventual coordinated partial offload must be measured.
 A roughly two-hour transcription and repeated sustained jobs remain unvalidated.
 
 There is no review UI, diarization, preacher identification, sermon segmentation,

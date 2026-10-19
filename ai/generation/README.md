@@ -1,7 +1,7 @@
 # Shared generation evaluation preparation
 
-This is an evaluation harness, not a deployed inference service or a selected
-production model. The first candidate is Qwen3-14B Q5_K_M through llama.cpp.
+This directory contains evaluation tooling and a private CPU-only trial runtime,
+not a selected production model or a complete note-generation application. The first candidate is Qwen3-14B Q5_K_M through llama.cpp.
 Its official immutable revision, file size and SHA-256 are in `candidate.json`.
 Model weights and all run outputs belong under `/srv/lara/ai/`, outside Git.
 
@@ -52,3 +52,38 @@ GGUF source, quantization and memory budget still need verification. A metadata
 lookup of a presumed official GGUF repository returned HTTP 401, which does not
 establish that the model itself is unavailable. Do not substitute silently.
 No candidate quality, generation speed, or sustained thermal result is claimed.
+
+## CPU-only trial workflow
+
+`compose.yaml` uses the official prebuilt llama.cpp server image; no custom
+Dockerfile is required because we are not modifying that runtime image. Its
+immutable reference is in `runtime-image.txt` (build b11723, source commit
+`31288c9c66e59377f7788d920678a565bb89dd37`). Before manual Compose commands, set
+`GENERATION_IMAGE` to the contents of that file. The model directory is
+mounted read-only, no host ports or GPUs are exposed, concurrency is one, and
+memory/CPU limits are explicit. The trial is stopped after evaluation.
+
+Run `python3 download-model.py` to fetch the pinned 10.51 GB candidate with
+size/SHA-256 verification. An exclusive download lock prevents duplicate work;
+an existing mismatched model is preserved and reported rather than overwritten.
+Download failures retain the partial file for diagnosis; retry currently restarts
+the transfer rather than resuming it.
+
+`python3 run-trial.py --run-dir /srv/lara/ai/data/evaluations/NEW_RUN_ID
+--private-cases /srv/lara/ai/data/PRIVATE_CASES.json` waits for that download to
+finish, loads the CPU model, runs the two public cases sequentially, and optionally
+produces a preliminary private excerpt draft. It does not wait for quality
+acceptance of the synthetic outputs before creating that draft. All outputs
+require review. Run directories cannot be reused and a file lock blocks duplicate
+trial processes for the same directory. There are no automatic retries.
+
+The workflow captures non-streaming request wall time, runtime logs and sampled
+host temperatures/available memory, GPU memory/temperature/utilization and
+container RAM. The GPU readings reflect Whisper/background activity because the
+trial has no GPU access. CPU package throttle counters are recorded by path and
+must not be summed across duplicated logical threads. Sampling may miss spikes.
+Model load/warmup is timed separately. Time to first token is not measured.
+
+A reviewed excerpt trial does not generate notes for the entire sermon. Full
+notes still require staged processing, correction precedence, source tracing,
+completeness checks and integration of the user's existing notes and Bible PDFs.
