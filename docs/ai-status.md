@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 16:11 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 19:50 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -98,6 +98,28 @@ Last inspection: 2026-10-19 16:11 BRT (America/Sao_Paulo).
   outside Git under `/srv/lara/ai/data/evaluations/`.
 - Reading copies were exported to the user's private mirrored project-files
   folder. The scheduled completion check is being stopped after reporting.
+
+## Same-sermon recording comparison (2026-10-19)
+
+- A second, better-microphone recording completed with the same model revision
+  and inference settings. Duration 59m44.05s; processing 6m49.84s (8.74x real time).
+- Peak GPU memory was 2379 MiB; sampled CPU/GPU peaks were 93/68 C.
+  Telemetry remained enabled; no optimization or power-setting changes were made.
+- Normalized transcript alignment found 197 matching runs of at least 12 words.
+  Median original-minus-second-recording offset was 199.17 seconds. Quarter
+  medians were 199.17, 199.14, 199.12, and 199.20 seconds: no clear cumulative
+  drift in these text anchors. This is not sample-accurate audio synchronization.
+- Comparison covers the common interval only. Different file durations and word
+  counts must not be treated as an omission/accuracy measurement.
+- Several previously suspicious phrases have more plausible alternatives in the
+  new draft, but both drafts still contain wording requiring listening review.
+  Neither is an independently checked reference; no WER/accuracy claim is made.
+- New segment bounds/ordering checks passed. Private full side-by-side text,
+  a focused disagreement report, and new transcript exports are outside Git,
+  with verified reading copies in the user's mirrored project-files folder.
+- Paired listening suggestions total 4m30s across both recordings. Source files
+  and earlier exports were preserved. The scheduled checker was deleted at the
+  user's request after the immediate completion review.
 
 ## Next action and remaining limits
 

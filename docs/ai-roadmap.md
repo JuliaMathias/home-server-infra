@@ -64,6 +64,7 @@ Initial deployment evidence (2026-10-19):
 - [x] Real GPU/API smoke tests: English, synthetic Portuguese, silence, corrupt media.
 - [x] Actual restart preserved existing results; no host ports are published.
 - [x] Complete 68.5-minute Portuguese recording processed; timestamp bounds checked.
+- [x] Same-model comparison with a second microphone recording; alignment and review exports.
 - [ ] Representative real Portuguese/English recordings reviewed against audio for accuracy.
 - [ ] Investigate CPU throttling and GPU software thermal capping with controlled tests.
 - [ ] Roughly two-hour recording validated for completeness and resource use.
