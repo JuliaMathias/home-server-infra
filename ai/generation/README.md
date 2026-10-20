@@ -127,5 +127,22 @@ remain 4096 and 768. Batches explicitly set the larger bounds and use `--reasoni
 off` with the pinned runtime. Template application and tokenization check input
 plus output against context before inference; oversized inputs fail explicitly.
 Domain-specific prompts, source text and document rendering remain outside the
-shared runtime. The first complete-recording batch is in progress; no longer-input
-quality or full document completion is claimed yet.
+shared runtime. The first complete-recording batch failed on output truncation
+after four of eight tasks; targeted source-fidelity review also failed. No full
+document completion is claimed.
+
+## Bounded workflow comparison (issue #7)
+
+Compare developed prose and compact evidence extraction on identical short
+private sources before another long run. Use the existing runner/model with
+4096 context, 768 output tokens per task and unchanged sampling/resource limits.
+Two fixtures and two styles produce four requests; private cases, provenance and
+a predeclared proposition rubric stay outside Git.
+
+Review complete JSON and allowed source IDs separately from semantic coverage,
+agency, negation and unsupported additions. Compare time and token count only
+alongside quality. Reverse style order across fixtures but acknowledge prompt
+cache/warm-state effects and one sample per condition. This experiment changes
+prompt/output style together and excludes later composition cost; it establishes
+neither an isolated causal speedup nor whole-sermon performance. Keep full
+application orchestration and production prompts in the consuming project.
