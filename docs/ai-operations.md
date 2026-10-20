@@ -40,6 +40,7 @@ docs/ai-operations.md
 docs/ai-status.md
 docs/ai-transcription-follow-ups.md
 docs/ai-scope-and-model-review.md
+docs/ai-generation-iterations.md
 ```
 
 Before first copy, confirm each destination is absent; on subsequent copies,

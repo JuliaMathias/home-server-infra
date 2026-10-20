@@ -86,7 +86,10 @@ fixtures. All four outputs completed but failed semantic acceptance. Compact
 outputs were faster yet omitted required facts; prose added unsupported material.
 Issue #9 records review evidence and the six-entry schema coverage confound.
 Before any full-recording rerun, propose a required-proposition/coverage gate on
-short fixtures and hand off result pointers to Notey.
+short fixtures and hand off result pointers to Notey. The user now requires
+continued iteration, a new holdout and full-workflow quality/time evidence around
+30 minutes per hour-long recording before PR #10 is finalized. See
+`ai-generation-iterations.md`; all unmet gates remain pending.
 Application note composition and document rendering are outside this roadmap.
 See `ai-status.md`, `ai-scope-and-model-review.md` and the generation README.
 No final generation model is selected.

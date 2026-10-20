@@ -283,7 +283,13 @@ and all outputs have now been reviewed manually by the assistant. User authorize
 reading the selected private text in tool history, excluding Git/shared display.
 No new inference or model switch was launched during review.
 
-Next proposed AI gate: short evidence extraction with required proposition slots,
+Current authorized work: iterate toward good enhanced notes in around 30 minutes
+after transcription for an hour-long sermon. PR #10 remains draft until actual
+quality/time evidence supports finalization. Iteration 2 is running on two short
+regressions with an expanded entry ceiling and stronger source-coverage guidance;
+no answer rubric is supplied to the model. See `ai-generation-iterations.md`.
+
+Previously proposed AI gate: short evidence extraction with required proposition slots,
 full-source coverage checks and explicit ambiguity handling before any composition
 or longer run. This is a proposed experiment, not an accepted production workflow
 or an automatic rerun. Notey retains production correction precedence, retrieval,
