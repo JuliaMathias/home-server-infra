@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 21:17 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 21:59 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -178,15 +178,57 @@ loaded successfully. Raw evidence is private under
   reviewed-source reading copy and detailed report were exported to the user's
   private Drive mirror and byte-verified. Personal examples are outside Git.
 
-Next: improve note organization, quotation fidelity and ambiguity handling on
-this short reference before processing the entire sermon. No further run or
-optimization sweep has been started. Full-sermon staged processing, completeness
-checks, PDF-note integration and Bible retrieval remain application work. The
-first candidate is feasible for short local requests but is not a final selection.
+The first review identified note organization, quotation fidelity and ambiguity
+handling as the next work. The full-document preparation below follows the
+user's subsequent request to proceed with the complete sermon and supplied notes.
+The candidate is not a final model selection.
+
+## Full-sermon notes preparation (2026-10-19)
+
+- The user supplied a searchable NAA PDF, handwritten sermon notes in PDF/.note,
+  and a more complete conference notebook with related transcripts/expanded notes
+  as a style reference. Eight explicitly selected source files were copied to
+  private Lara storage and size/SHA-256 verified. Original files remain intact.
+- Both handwritten sermon pages were read visually. Four substantive original
+  notes were transcribed with source-page provenance. Grids are writing guides
+  and must be absent from the cleaned export, per the user's clarification.
+- Seventeen selected Bible ranges (54 verses) were extracted using this PDF's
+  typography, including small-cap text. Every verse exactly matches normalized
+  text on its source PDF page(s). All were imported into private SQLite with
+  translation/book/chapter/verse keys, source hash and page mapping. Retrieval
+  matches the checked extraction. This is a validated subset, not a complete
+  Bible import or a generic PDF parser proven on other editions.
+- Full-recording source preparation uses the second microphone in the overlap,
+  the first microphone for its opening and later material, and the user's human
+  corrections with explicit uncertainty. Offset mapping is approximate. The
+  later appeal/prayer remains a separate relevant section with unconfirmed voice
+  identity; it is not silently attributed to the sermon speaker or discarded.
+- Eight section tasks assign 137 source blocks exactly once and preserve all four
+  original-note integration assignments. Interval assignment does not establish
+  semantic completeness. Raw recordings/transcripts/corrections remain unchanged.
+- A single CPU batch was started at 21:58 BRT under
+  `/srv/lara/ai/data/evaluations/full-sermon-notes-20261020T0052Z`. It uses an
+  8192-token context, up to 2048 output tokens per section, one slot/four cores,
+  the existing 16 GiB memory cap, structured output, source IDs and context
+  preflight. These longer settings are a new measured workload, not a prior fit
+  or quality claim. Outputs and thermal/resource evidence remain private.
+- Domain prompts, handwriting and Bible text are private evaluation inputs;
+  shared infrastructure adds only a domain-neutral sequential batch runner.
+  Syntax, Compose and task-assignment checks passed. Full draft generation,
+  source-fidelity/completeness review and PDF layout/link validation are pending.
+- Native `.note` export is unproven. A linked PDF is the first deliverable;
+  using PDF templates on Supernote is a documented possible device-side route,
+  but preservation of all link/native-note behavior still needs device testing.
+
+Next: finish the batch, review and repair section content against the source,
+merge handwritten points into one coherent document, insert exact SQLite Bible
+passages, create and visually check a grid-free linked PDF, and export privately.
+Do not substitute another short sample for the requested full-sermon document.
+
 A roughly two-hour transcription and repeated sustained jobs remain unvalidated.
 
-There is no review UI, diarization, preacher identification, sermon segmentation,
-note generation, or automatic retention cleanup yet. The service intentionally
+There is no review UI, diarization, verified preacher identification, automatic
+sermon segmentation, complete production notes application, or retention cleanup yet. The service intentionally
 provides general transcription only. Final LLM/OCR selection remains open.
 
 Uploads are limited to 512 MiB, multipart parsing is serialized, and four

@@ -37,6 +37,11 @@ reusable local transcription, followed by study-note processing.
   accurate attribution, complete scripture ranges, and unsupported claims.
 - The application owns review and manual corrections, editing, and eventual
   Markdown/PDF exports. Original source material remains available.
+- Handwriting grids are writing guides, not the desired cleaned-document style.
+  Clean exports should omit grids. Use the supplied complete conference notes
+  as an organization/style reference, not as sermon content.
+- A Supernote-friendly linked PDF is an accepted first export. Native `.note`
+  generation is exploratory; do not claim editable ink or tested device behavior.
 
 ## Architecture decision
 

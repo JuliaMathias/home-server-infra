@@ -15,7 +15,7 @@ services:
       - --port
       - "8080"
       - --ctx-size
-      - "4096"
+      - "${GENERATION_CONTEXT_SIZE:-4096}"
       - --parallel
       - "1"
       - --threads
@@ -25,11 +25,11 @@ services:
       - --n-gpu-layers
       - "0"
       - --jinja
-      - --chat-template-kwargs
-      - '{"enable_thinking":false}'
+      - --reasoning
+      - "off"
       - --no-context-shift
       - --n-predict
-      - "768"
+      - "${GENERATION_OUTPUT_LIMIT:-768}"
     volumes:
       - /srv/lara/ai/models:/models:ro
     networks:

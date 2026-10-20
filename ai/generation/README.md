@@ -110,3 +110,22 @@ step is source-grounded prompt/workflow improvement on the same excerpt.
 The pinned runtime warns that `enable_thinking` via template kwargs is deprecated
 in favor of `--reasoning off`. The run still completed; record and validate that
 explicit flag when deliberately updating trial configuration.
+
+## Longer structured batches
+
+`run-batch.py --run-dir PRIVATE_RUN --cases PRIVATE_TASKS.json --context 8192`
+runs one to 32 private tasks sequentially, retaining requests, responses and
+telemetry. Each task supplies messages, an output schema and a 128–2048 output
+limit. Source-ID validation is supported when source metadata is supplied.
+These checks validate structure/traceability, not factual entailment or coverage.
+A global batch lock and an existing-container check prevent replacing an active
+model run. Run directories cannot be reused automatically. The private model
+container is stopped after completion/failure. There are no automatic retries.
+
+Compose accepts `GENERATION_CONTEXT_SIZE` and `GENERATION_OUTPUT_LIMIT`; defaults
+remain 4096 and 768. Batches explicitly set the larger bounds and use `--reasoning
+off` with the pinned runtime. Template application and tokenization check input
+plus output against context before inference; oversized inputs fail explicitly.
+Domain-specific prompts, source text and document rendering remain outside the
+shared runtime. The first complete-recording batch is in progress; no longer-input
+quality or full document completion is claimed yet.
