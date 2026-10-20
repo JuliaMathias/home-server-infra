@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 21:59 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 22:23 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -220,10 +220,24 @@ The candidate is not a final model selection.
   using PDF templates on Supernote is a documented possible device-side route,
   but preservation of all link/native-note behavior still needs device testing.
 
-Next: finish the batch, review and repair section content against the source,
-merge handwritten points into one coherent document, insert exact SQLite Bible
-passages, create and visually check a grid-free linked PDF, and export privately.
-Do not substitute another short sample for the requested full-sermon document.
+## Current ownership and next action (2026-10-19 22:22 BRT)
+
+The user moved Bible/application work to the separate Notey project/chat.
+The eight-task batch remains an AI evaluation only; at the latest scope check,
+one task had completed and section_02 was running. No duplicate job was started.
+The existing 30-minute monitor was re-scoped to model/output/resource review and
+handoff pointers. It must not resume application composition, imports or exports.
+
+Next: finish and assess the model evaluation, preserve its private evidence and
+provide Notey with interface/result pointers. Database import/migration, domain
+workflow and full document acceptance now belong to Notey. Existing private
+fixtures and the prototype SQLite subset have not been moved or deleted.
+See `ai-scope-and-model-review.md` for locations and limitations.
+
+A monthly model research heartbeat is active for the first day of each month at
+09:00 America/Sao_Paulo. It compares credible improvements with actual baselines,
+uses primary sources, and recommends tests without automatically downloading,
+benchmarking or deploying models. The generation model remains a trial candidate.
 
 A roughly two-hour transcription and repeated sustained jobs remain unvalidated.
 

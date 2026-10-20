@@ -69,3 +69,11 @@ service-specific deployment instructions separately to build the image, fetch
 weights and start transcription. Bootstrap does not automatically download models
 or start expensive workloads. The current transcription container expects UID/GID
 1000; Lara's directory ownership must match that deployment configuration.
+
+## AI ownership and model reviews
+
+Shared AI work is limited to inference, generic extraction, technical job state,
+resource management and evaluation. Applications own their domain data and flows.
+Notey's application project is `/Users/thejuliamathias/Projects/Personal/notey`.
+See [scope, evaluation handoff and model-review policy](docs/ai-scope-and-model-review.md)
+for the current boundary, monthly review and private test-data pointers.

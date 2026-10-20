@@ -79,10 +79,12 @@ See `ai-transcription-follow-ups.md` for findings and deferred experiments.
 ## 2. Shared generation and extraction
 
 First Qwen3-14B/llama.cpp CPU trial completed. Runtime feasibility for short
-requests is established; source-fidelity review found the sermon excerpt draft
-not ready for use. Next: improve note synthesis, ambiguous-language handling and
-quotation fidelity against that same short source before full-sermon processing.
-See `ai-status.md` and `../ai/generation/README.md`. No final model is selected.
+requests is established; source-fidelity weaknesses remain. An eight-task batch
+is running as a private model evaluation. Review source fidelity, structured
+output and resource/timing evidence; hand off raw result pointers to Notey.
+Application note composition and document rendering are outside this roadmap.
+See `ai-status.md`, `ai-scope-and-model-review.md` and the generation README.
+No final generation model is selected.
 
 - Benchmark larger LLM candidates using representative transcript sections and
   a distinct exercise-report task to check reuse and quality.
@@ -91,15 +93,21 @@ See `ai-status.md` and `../ai/generation/README.md`. No final model is selected.
 - Preserve page/layout evidence and expose uncertain extraction for correction.
 - Add resource coordination when a second expensive runtime is introduced.
 
-## 3. Independent study-notes application
+## 3. Consumer integration boundary
 
-- Create the application in its own repository, with sermon and lecture modes.
-- Analyze boundaries, relevant post-sermon material, and preacher evidence.
-- Add review and overrides for identity, ranges, OCR, and translation settings.
-- Import user-supplied NAA/NIV PDFs with verse-range validation and provenance.
-- Generate unified comprehensive notes with deterministic passage insertion.
-- Add source-aware quality checks, revision, and Markdown/PDF export.
+Notey owns the independent study-notes application, including Bible import,
+retrieval, domain records, prompts, orchestration, review and document exports.
+Its project is `/Users/thejuliamathias/Projects/Personal/notey`; use that project's
+tracked tasks for application sequencing and acceptance. Do not maintain a second
+application backlog here.
 
-Acceptance: original note content remains represented; important transcript
-content is covered; each reference has its complete verified passage or a
-visible unresolved issue; manual corrections survive regeneration.
+AI-layer work supplies documented capability contracts, technical failures,
+model/revision provenance and evaluation evidence. See `ai-scope-and-model-review.md`
+for pointers to existing private fixtures and the limitations Notey must handle.
+
+## 4. Model lifecycle review
+
+The monthly research task checks meaningful quality/efficiency improvements on
+actual hardware. A recommendation precedes any separately authorized benchmark
+or deployment change. Keep existing baselines until comparative evidence supports
+a change; model novelty alone is not an acceptance criterion.
