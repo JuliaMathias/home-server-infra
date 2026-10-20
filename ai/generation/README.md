@@ -146,3 +146,19 @@ cache/warm-state effects and one sample per condition. This experiment changes
 prompt/output style together and excludes later composition cost; it establishes
 neither an isolated causal speedup nor whole-sermon performance. Keep full
 application orchestration and production prompts in the consuming project.
+
+
+### Reviewed comparison result (2026-10-20, issue #9)
+
+All four requests completed without truncation, but all failed semantic
+acceptance. Compact output took 135/149 seconds versus prose 277/353 seconds
+on the paired fixtures, with fewer output tokens. It omitted required facts;
+prose retained more but introduced unsupported interpretation. Complete JSON and
+recognized source IDs did not establish supporting evidence or coverage.
+
+The schema's maximum of six entries may bias selection toward early facts.
+Before another test, consider required proposition slots, full-source coverage
+and ambiguity checks. Do not automatically rerun, accept either prompt or
+extrapolate to full-sermon speed. One sample per condition, prompt cache/order
+and missing second-stage composition cost limit the comparison. Private
+comparison-review.json and comparison-measurements.json retain the audit.

@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 16:01 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 16:45 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -237,7 +237,7 @@ package count, duplicated across logical threads, not seconds. Docker CLI peak
 4.763 GiB excludes inactive file cache; host available minimum was 14.566 GiB.
 GPU 47-62 C reflects background activity, not CPU generation acceleration.
 
-## Compact comparison in progress (2026-10-20 16:01 BRT)
+## Compact comparison reviewed (2026-10-20 16:45 BRT)
 
 User authorized a small source-fidelity/speed comparison before another long run.
 Issue #7 tracks four requests on two short private fixtures: developed prose and
@@ -250,16 +250,44 @@ latency. This is one sample per condition, not a statistical benchmark.
 
 Run: `/srv/lara/ai/data/evaluations/compact-comparison-20261020T1900Z`.
 `cases.json`, `rubric.json`, and `fixture-manifest.json` retain private setup;
-status, task outputs and telemetry retain evidence. Model readiness took 5.42s;
-first task was running at inspection. Quality and timing comparison are pending.
-No new model, full-sermon retry, GPU reassignment or application feature was added.
-A finite 30-minute monitor will review completion/failure without frequent polls.
+status, task outputs and telemetry retain evidence. All four requests completed
+in 919.94s including 5.42s readiness. Complete JSON and allowed source lists passed;
+paired source hashes match. All four outputs failed semantic acceptance after
+assistant comparison with the supplied text and predeclared proposition rubric.
+This is not a human audio review or a statistical accuracy estimate.
 
-Next: review all four results and compare time/tokens only alongside coverage and
-fidelity. Compact extraction excludes subsequent composition cost and cannot
-establish full application speed. A smaller-model trial remains a later decision.
-Notey owns production correction precedence, retrieval, orchestration and exports.
-Existing private sources and prototype SQLite subset remain unchanged.
+| Fixture | Prose wall time / output tokens | Compact wall time / output tokens |
+| --- | --- | --- |
+| Attribution | 277.13s / 623 | 135.42s / 277 |
+| Negation/coverage | 353.30s / 730 | 148.52s / 235 |
+
+Compact outputs omit required propositions and later source material. Prose
+retains more but adds unsupported interpretation; both styles misread ambiguous
+figurative language in one fixture. The negation fixture's critical judging
+proposition was omitted by both styles. Removing a contradiction by omitting
+the claim is not a coverage pass. The six-entry schema ceiling may encourage
+selecting early facts; this confounds the test and must be revisited. Faster
+output is not accepted as a fidelity or application-workflow improvement.
+
+One sample per condition and different cached prompt counts limit timing claims.
+The test excludes later composition cost; no full-sermon speed estimate is made.
+Private `comparison-review.json` and `comparison-measurements.json` retain details.
+151 telemetry samples: CPU package mean/peak 68.65/73 C, zero recorded package
+throttle delta (duplicated counters not summed), Docker CLI peak 3.782 GiB
+excluding inactive file cache, host available minimum 17.703 GiB. GPU 45-63 C is
+background activity. Sampled peaks may miss spikes; no ambient comparison was made.
+Container cleanup/Whisper health are checked separately from content acceptance.
+
+The finite monitor was removed after a connectivity failure; access recovered
+and all outputs have now been reviewed manually by the assistant. User authorized
+reading the selected private text in tool history, excluding Git/shared display.
+No new inference or model switch was launched during review.
+
+Next proposed AI gate: short evidence extraction with required proposition slots,
+full-source coverage checks and explicit ambiguity handling before any composition
+or longer run. This is a proposed experiment, not an accepted production workflow
+or an automatic rerun. Notey retains production correction precedence, retrieval,
+orchestration and exports. Private source/database fixtures remain unchanged.
 
 A monthly model research heartbeat is active for the first day of each month at
 09:00 America/Sao_Paulo. It compares credible improvements with actual baselines,
