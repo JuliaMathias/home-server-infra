@@ -7,6 +7,7 @@ services:
 
     ports:
       - "100.89.181.91:443:443"
+      - "100.89.181.91:8443:8443"
 
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
