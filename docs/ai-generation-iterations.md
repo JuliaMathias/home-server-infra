@@ -81,8 +81,9 @@ its architecture; this does not prove deployment fit. No GPU/Whisper changes.
 The download is separate from inference; only one generation run is allowed.
 
 Generic candidate selection is explicit in downloader and batch runner, with
-seven offline behavioral tests. No production model switch occurred. Compare
-identical private fixtures after iteration3 stops; do not discard negative results.
+nine offline behavioral tests (including manifest collision protection and
+verified recovery after an interrupted manifest write). No production model
+switch occurred. Compare identical private fixtures after iteration3 stops; do not discard negative results.
 
 ## Delivery plan
 

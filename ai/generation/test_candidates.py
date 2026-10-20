@@ -108,6 +108,29 @@ class CandidateTests(unittest.TestCase):
              patch.object(downloader.urllib.request,'urlopen') as network:
             downloader.main();network.assert_not_called()
 
+    def test_foreign_manifest_is_preserved(self):
+        """Selecting another model cannot overwrite a directory's provenance."""
+        folder = self.root/'weights';folder.mkdir()
+        manifest = dict(self.candidate, repository='other/model')
+        (folder/'source-manifest.json').write_text(json.dumps(manifest))
+        with patch('sys.argv',['download-model.py','--candidate',str(self.path)]), \
+             patch.dict(os.environ, {'MODEL_DEST':str(folder)}), \
+             patch.object(downloader.urllib.request,'urlopen') as network:
+            with self.assertRaises(RuntimeError): downloader.main()
+            network.assert_not_called()
+        self.assertEqual(json.loads((folder/'source-manifest.json').read_text()),manifest)
+        self.assertFalse((folder/'model.gguf').exists())
+
+    def test_valid_existing_file_repairs_missing_manifest(self):
+        """A verified asset can recover provenance after an interrupted final write."""
+        folder = self.root/'weights';folder.mkdir()
+        (folder/'model.gguf').write_bytes(self.payload)
+        with patch('sys.argv',['download-model.py','--candidate',str(self.path)]), \
+             patch.dict(os.environ, {'MODEL_DEST':str(folder)}), \
+             patch.object(downloader.urllib.request,'urlopen') as network:
+            downloader.main();network.assert_not_called()
+        self.assertEqual(json.loads((folder/'source-manifest.json').read_text()),self.candidate)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -180,11 +180,12 @@ locking, active-container refusal, resource limits and cleanup still apply.
 Do not start a comparison until the previous generation container has stopped.
 Text-only CPU evaluation uses the existing image and no vision projector/GPU.
 
-`python3 -m unittest -v test_candidates` runs seven offline tests with synthetic
+`python3 -m unittest -v test_candidates` runs nine offline tests with synthetic
 bytes: original/alternative path isolation, pinned metadata/path validation,
 atomic valid/corrupt downloads, existing mismatch preservation and no duplicate
-network work for valid weights. These establish tooling behavior, not model fit
-or fidelity. Compile checks and both default/alternative Compose config checks
+network work for valid weights, foreign-manifest preservation and recovery of
+a missing manifest only after checking complete existing bytes. These establish
+tooling behavior, not model fit or fidelity. Compile checks and both default/alternative Compose config checks
 are separate from actual inference.
 
 Sources checked 2026-10-20:

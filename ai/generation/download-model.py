@@ -29,9 +29,16 @@ def main():
     directory.mkdir(parents=True, exist_ok=True)
     with (directory / '.download.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        manifest_path = directory / 'source-manifest.json'
+        if manifest_path.exists():
+            existing = json.loads(manifest_path.read_text())
+            if any(existing.get(k) != candidate[k] for k in ('repository','revision','filename','bytes','sha256')):
+                raise RuntimeError('Model directory belongs to another candidate; preserve its manifest')
         destination = directory / candidate['filename']
         if destination.exists():
             if destination.stat().st_size == candidate['bytes'] and checksum(destination) == candidate['sha256']:
+                if not manifest_path.exists():
+                    manifest_path.write_text(json.dumps(candidate, indent=2) + '\n')
                 print('Verified existing model', flush=True)
                 return
             raise RuntimeError('Existing model differs; preserve it and investigate before replacement')
