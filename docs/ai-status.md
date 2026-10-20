@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 20:44 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-19 21:17 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -146,35 +146,43 @@ On 2026-10-19 the user chose to retain the current transcription baseline,
 collect findings and defer optimization, and proceed to shared generation.
 See `ai-transcription-follow-ups.md`; remaining checks are not marked passed.
 
-Generation trial started on 2026-10-19 at 20:44 BRT under
-`/srv/lara/ai/data/evaluations/generation-20261019T2340Z`. It is waiting for
-verified model weights; no real generation result or quality claim exists yet.
+The first Qwen3-14B Q5_K_M CPU trial completed on 2026-10-19 at 20:56 BRT.
+Weights passed size/SHA-256 verification and the pinned llama.cpp b11723 runtime
+loaded successfully. Raw evidence is private under
+`/srv/lara/ai/data/evaluations/generation-20261019T2340Z`.
 
-- Qwen3-14B Q5_K_M is the first candidate, not a final selection. Its official
-  revision, 10.51 GB file size and SHA-256 are pinned. Download is separate from
-  runtime; originals and private outputs remain outside Git.
-- The official llama.cpp CPU server image is pinned by digest, build b11723,
-  source commit `31288c9c66e59377f7788d920678a565bb89dd37`.
-- Compose exposes no host ports and requests no GPU. One slot, four CPU cores,
-  16 GiB RAM/no additional swap, and 4096 context tokens bound this trial.
-  Whisper remains deployed; no GPU co-residency is assumed or tested.
-- The background workflow waits for the verified model and runtime, checks
-  installed options, runs the two synthetic tasks, and produces a preliminary
-  private draft from one user-reviewed sermon excerpt. All results need review;
-  a successful HTTP request does not establish factual fidelity.
-- It records request times, load/warmup time, temperatures, host available RAM,
-  container RAM and GPU observations; duplicated CPU counters must not be summed.
-  GPU readings reflect other activity in this CPU-only trial. TTFT is unmeasured.
-- The temporary generation service is stopped after success/failure. There is no
-  complete note-generation application, PDF/Bible integration, or full-sermon
-  notes pipeline yet. No final model choice has been made.
-- Script syntax, fixture validation and Compose configuration passed. Earlier
-  synthetic HTTP checks verified the runner's persistence/truncation handling;
-  the new real trial is pending. No inference-quality test is being called passed.
+- One slot, four CPU cores, 16 GiB memory cap, 4096 context tokens; no GPU access
+  or published host ports. The temporary container stopped with exit code 0,
+  OOMKilled=false. Whisper remains healthy. No duplicate inference was started.
+- Model load/readiness took 15.61 seconds. Requests took 43.98 seconds for the
+  synthetic Portuguese case, 77.93 seconds for the exercise report, and 220.75
+  seconds for a private 55-second reviewed sermon excerpt. Decoding was about
+  3.20–3.51 tokens/second. TTFT and whole-sermon throughput remain unmeasured.
+- CPU package sampled mean/peak: 79.53/84 C. Recorded package throttle counters
+  had zero delta in every logical-thread copy; duplicates were not summed.
+- GPU sampled temperature range 48–60 C, memory 1995 MiB, utilization zero.
+  These are background/Whisper readings, not GPU generation measurements.
+- Docker CLI reported peak 3.084 GiB, excluding Linux file cache; this is not
+  total resident model memory or full cgroup peak. Host MemAvailable minimum
+  was 17.82 GiB, which includes reclaimable memory. Sixty samples included one
+  pre-creation Docker-stats error and a final stopped-container zero reading.
+- Source-fidelity review: synthetic Portuguese facts/uncertainty survived, but
+  the output mostly restated source lines. The exercise total was correct;
+  explicit per-activity subtotals from its rubric were omitted.
+- The private sermon draft is not accepted as ready-to-use notes. It is overly
+  mechanical, introduces an unsupported interpretation and alters wording inside
+  a quotation. Source IDs alone do not establish factual fidelity. This is an
+  assistant comparison against supplied text, not another audio review or a
+  representative quality score. No user-edition Bible text was loaded/verified.
+- Raw requests, responses and source annotations remain intact. A labeled draft,
+  reviewed-source reading copy and detailed report were exported to the user's
+  private Drive mirror and byte-verified. Personal examples are outside Git.
 
-Initial resource snapshot before download: GPU 1995/4096 MiB at 46 C, about
-17 GiB host RAM available and 238 GiB disk free. Model weights exceed VRAM;
-CPU feasibility and eventual coordinated partial offload must be measured.
+Next: improve note organization, quotation fidelity and ambiguity handling on
+this short reference before processing the entire sermon. No further run or
+optimization sweep has been started. Full-sermon staged processing, completeness
+checks, PDF-note integration and Bible retrieval remain application work. The
+first candidate is feasible for short local requests but is not a final selection.
 A roughly two-hour transcription and repeated sustained jobs remain unvalidated.
 
 There is no review UI, diarization, preacher identification, sermon segmentation,

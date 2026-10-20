@@ -85,7 +85,8 @@ def main():
                     pass
             time.sleep(10)
         manifest = json.loads((model_dir / 'source-manifest.json').read_text())
-        if manifest != candidate or (model_dir / candidate['filename']).stat().st_size != candidate['bytes']:
+        identity_fields = ('repository', 'revision', 'filename', 'bytes', 'sha256')
+        if any(manifest.get(key) != candidate.get(key) for key in identity_fields) or (model_dir / candidate['filename']).stat().st_size != candidate['bytes']:
             raise ValueError('Verified model manifest or file size differs from candidate')
         (run / 'candidate.json').write_text(json.dumps(candidate, indent=2) + '\n')
         (run / 'runtime-image.txt').write_text(env['GENERATION_IMAGE'] + '\n')

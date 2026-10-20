@@ -49,8 +49,9 @@ The repository stores the recipes needed to rebuild services: source code,
 Dockerfiles, Compose configuration, pinned dependencies/model revisions, download
 and verification scripts, and synthetic evaluation fixtures. Start with
 [`ai/transcription/README.md`](ai/transcription/README.md) for the deployed service.
-[`ai/generation/README.md`](ai/generation/README.md) is evaluation preparation only;
-there is no generation model container deployed yet.
+[`ai/generation/README.md`](ai/generation/README.md) documents an evaluated
+CPU-only trial runtime. Its temporary container stops after evaluation; a
+complete note-generation application is not deployed yet.
 
 Large model weights are downloaded separately into `/srv/lara/ai/models`.
 Original recordings, transcripts, job databases, corrections and measurements

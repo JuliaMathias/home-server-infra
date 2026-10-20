@@ -1,7 +1,8 @@
 # Shared generation evaluation preparation
 
 This directory contains evaluation tooling and a private CPU-only trial runtime,
-not a selected production model or a complete note-generation application. The first candidate is Qwen3-14B Q5_K_M through llama.cpp.
+not a selected production model or a complete note-generation application.
+The first candidate is Qwen3-14B Q5_K_M through llama.cpp.
 Its official immutable revision, file size and SHA-256 are in `candidate.json`.
 Model weights and all run outputs belong under `/srv/lara/ai/`, outside Git.
 
@@ -51,7 +52,8 @@ Qwen3-30B-A3B-Instruct-2507 remains a comparison candidate; its exact available
 GGUF source, quantization and memory budget still need verification. A metadata
 lookup of a presumed official GGUF repository returned HTTP 401, which does not
 establish that the model itself is unavailable. Do not substitute silently.
-No candidate quality, generation speed, or sustained thermal result is claimed.
+See the first-trial evidence below. Long inputs and repeated sustained workloads
+remain unvalidated.
 
 ## CPU-only trial workflow
 
@@ -87,3 +89,24 @@ Model load/warmup is timed separately. Time to first token is not measured.
 A reviewed excerpt trial does not generate notes for the entire sermon. Full
 notes still require staged processing, correction precedence, source tracing,
 completeness checks and integration of the user's existing notes and Bible PDFs.
+
+## First measured CPU trial (2026-10-19)
+
+Verified weights loaded in 15.61 seconds. Three non-streaming requests completed
+in 43.98, 77.93 and 220.75 seconds, with about 3.20–3.51 output tokens/second.
+The third covered only a 55-second reviewed private excerpt. CPU package mean/
+peak was 79.53/84 C with zero observed throttle-counter increments. Docker CLI
+reported peak 3.084 GiB (Linux file cache excluded, not full resident model RAM).
+Sixty telemetry samples include one initial Docker-stats error before creation.
+The container stopped successfully and Whisper remained healthy.
+
+The short synthetic tasks preserved most facts; the private excerpt draft had
+weak synthesis, unsupported interpretation and altered quotation wording. It is
+not accepted as ready-to-use study notes. Private source/output comparisons and
+measurements remain outside Git, with a reading report in the user's Drive mirror.
+No overall accuracy percentage or full-sermon quality claim is made. The next
+step is source-grounded prompt/workflow improvement on the same excerpt.
+
+The pinned runtime warns that `enable_thinking` via template kwargs is deprecated
+in favor of `--reasoning off`. The run still completed; record and validate that
+explicit flag when deliberately updating trial configuration.

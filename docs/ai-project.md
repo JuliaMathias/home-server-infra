@@ -60,12 +60,15 @@ application interfaces; AI APIs are private by default.
 
 ## Candidate technologies, not validated commitments
 
-- First transcription candidate: Faster Whisper with Whisper Large V3,
-  quantized GPU inference if measured to fit. CPU execution remains an explicit
-  alternative to benchmark; fitting in 4 GB VRAM is not yet proven.
+- Current transcription baseline: Faster Whisper with Whisper Large V3,
+  measured to fit the 4 GB GPU using int8_float16. See `ai-status.md` for exact
+  evidence and remaining accuracy/long-input limits.
 - LLM evaluation candidates from the conversation: Qwen3-14B and
-  Qwen3-30B-A3B-Instruct-2507 through llama.cpp. No model has been selected or
-  downloaded. Smaller models are not the assumed quality baseline.
+  Qwen3-30B-A3B-Instruct-2507 through llama.cpp. Qwen3-14B Q5_K_M has now been
+  downloaded and trialed on CPU; short-request feasibility passed, but the
+  excerpt-note draft needs quality improvements. No final model is selected.
+  The 30B candidate has not been downloaded. Smaller models are not the assumed
+  quality baseline.
 - Typed PDF extraction candidate: PyMuPDF. Handwriting candidate: Surya OCR,
   evaluated against actual samples before selection.
 - Future interfaces: Phoenix LiveView in independent application repositories.
