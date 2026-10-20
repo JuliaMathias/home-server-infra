@@ -72,3 +72,19 @@
 - Before commits, review the exact staged diff and run `git diff --cached
   --check`. Stage only intended files and retain signed commits.
 - Keep status and roadmap evidence current as milestones are completed.
+
+## AI-only ownership and review workflow
+
+- This project/chat owns shared AI capabilities, runtimes, resource management
+  and model evaluation. Notey at `/Users/thejuliamathias/Projects/Personal/notey`
+  owns Bible imports/storage, domain prompts/workflows, note integration and
+  PDF/Supernote exports. Provide interface/data pointers rather than implementing
+  application features here. See `docs/ai-scope-and-model-review.md`.
+- Existing Bible/sermon material under AI runtime storage is private evaluation
+  data, not the application's production database. Preserve it for handoff;
+  do not move/delete it or treat its location/schema as an approved app design.
+- Use an issue and dedicated `codex/issue-N-description` branch for changes;
+  never implement on the default branch. Stage explicit paths, retain signed
+  commits with complete bodies, prepare a linked PR, and leave merging to the user.
+- Monthly reviews recommend meaningful model comparisons within measured
+  hardware limits. They do not authorize downloads, heavy benchmarks or switches.

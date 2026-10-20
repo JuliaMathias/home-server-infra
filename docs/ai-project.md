@@ -8,6 +8,15 @@ current request to create instructions and replicate them to Lara over SSH.
 The conversation began with other use cases; the immediate agreed project is
 reusable local transcription, followed by study-note processing.
 
+## Ownership clarification (2026-10-19)
+
+The shared AI project owns inference, generic extraction, technical jobs,
+resource coordination and model evaluations only. Notey owns domain data,
+Bible import/retrieval, application prompts/orchestration, review and exports.
+The historical product requirements below are retained as consumer context,
+not an application implementation backlog for this repository. See
+`ai-scope-and-model-review.md` for the boundary and existing evaluation handoff.
+
 ## Confirmed requirements
 
 - Run AI workloads locally on Lara. Reuse the same models across independently
