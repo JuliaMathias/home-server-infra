@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-19 22:23 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 16:01 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -220,19 +220,46 @@ The candidate is not a final model selection.
   using PDF templates on Supernote is a documented possible device-side route,
   but preservation of all link/native-note behavior still needs device testing.
 
-## Current ownership and next action (2026-10-19 22:22 BRT)
+## Ownership and failed long batch (updated 2026-10-20)
 
 The user moved Bible/application work to the separate Notey project/chat.
-The eight-task batch remains an AI evaluation only; at the latest scope check,
-one task had completed and section_02 was running. No duplicate job was started.
-The existing 30-minute monitor was re-scoped to model/output/resource review and
-handoff pointers. It must not resume application composition, imports or exports.
+The eight-task batch failed after 80m09.90s: four sections completed, section_05
+reached its 2048-token output allowance (finish_reason=length), and sections 06-08
+were not attempted. This was not context overflow or OOM. Targeted review found
+reversed influence/attribution and a negation contradiction despite recognized
+source identifiers. None of these drafts is accepted as final application output.
+The finite monitor was deleted; originals and partial results remain private.
+Review and measurements are in `failure-review.json` and
+`failure-measurements.json` inside the full-recording evaluation directory.
 
-Next: finish and assess the model evaluation, preserve its private evidence and
-provide Notey with interface/result pointers. Database import/migration, domain
-workflow and full document acceptance now belong to Notey. Existing private
-fixtures and the prototype SQLite subset have not been moved or deleted.
-See `ai-scope-and-model-review.md` for locations and limitations.
+Sampled CPU package mean/peak was 79.67/87 C; package throttle delta 11 is one
+package count, duplicated across logical threads, not seconds. Docker CLI peak
+4.763 GiB excludes inactive file cache; host available minimum was 14.566 GiB.
+GPU 47-62 C reflects background activity, not CPU generation acceleration.
+
+## Compact comparison in progress (2026-10-20 16:01 BRT)
+
+User authorized a small source-fidelity/speed comparison before another long run.
+Issue #7 tracks four requests on two short private fixtures: developed prose and
+compact evidence extraction, using identical source text per pair. Existing
+Qwen3-14B Q5_K_M and pinned CPU runtime remain unchanged; one slot/four cores,
+16 GiB cap, 4096 context, 768 output tokens per request, fixed existing sampling.
+A predeclared rubric checks required propositions, agency, negation and additions.
+Task order reverses styles between pairs; prompt caching/order still confound
+latency. This is one sample per condition, not a statistical benchmark.
+
+Run: `/srv/lara/ai/data/evaluations/compact-comparison-20261020T1900Z`.
+`cases.json`, `rubric.json`, and `fixture-manifest.json` retain private setup;
+status, task outputs and telemetry retain evidence. Model readiness took 5.42s;
+first task was running at inspection. Quality and timing comparison are pending.
+No new model, full-sermon retry, GPU reassignment or application feature was added.
+A finite 30-minute monitor will review completion/failure without frequent polls.
+
+Next: review all four results and compare time/tokens only alongside coverage and
+fidelity. Compact extraction excludes subsequent composition cost and cannot
+establish full application speed. A smaller-model trial remains a later decision.
+Notey owns production correction precedence, retrieval, orchestration and exports.
+Existing private sources and prototype SQLite subset remain unchanged.
 
 A monthly model research heartbeat is active for the first day of each month at
 09:00 America/Sao_Paulo. It compares credible improvements with actual baselines,

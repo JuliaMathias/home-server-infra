@@ -79,14 +79,18 @@ See `ai-transcription-follow-ups.md` for findings and deferred experiments.
 ## 2. Shared generation and extraction
 
 First Qwen3-14B/llama.cpp CPU trial completed. Runtime feasibility for short
-requests is established; source-fidelity weaknesses remain. An eight-task batch
-is running as a private model evaluation. Review source fidelity, structured
-output and resource/timing evidence; hand off raw result pointers to Notey.
+requests is established; source-fidelity weaknesses remain. The eight-task batch
+failed on output truncation after four completed tasks, with factual failures in
+targeted review. Issue #7 now compares prose and compact extraction on two short
+fixtures before any full-recording rerun. Review coverage, agency/negation,
+structured output and time/tokens together; hand off result pointers to Notey.
 Application note composition and document rendering are outside this roadmap.
 See `ai-status.md`, `ai-scope-and-model-review.md` and the generation README.
 No final generation model is selected.
 
-- Benchmark larger LLM candidates using representative transcript sections and
+- Compare bounded workflows before model changes; shorter output must preserve
+  required source facts. Full two-stage workflow cost remains unmeasured.
+- Benchmark appropriate LLM candidates using representative transcript sections and
   a distinct exercise-report task to check reuse and quality.
 - Measure model load/unload and CPU/GPU contention before concurrent deployment.
 - Extract embedded PDF text first; benchmark handwriting with actual samples.
