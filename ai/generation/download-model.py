@@ -1,10 +1,13 @@
 """Fetch the pinned candidate atomically and verify its size and SHA-256."""
+import argparse
 import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path
 import urllib.request
+
+from candidate_config import candidate_settings
 
 
 def checksum(path):
@@ -18,8 +21,11 @@ def checksum(path):
 
 def main():
     """Download or verify the immutable model candidate under an exclusive lock."""
-    candidate = json.loads(Path(__file__).with_name('candidate.json').read_text())
-    directory = Path(os.environ.get('MODEL_DEST', '/srv/lara/ai/models/qwen3-14b'))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--candidate', type=Path, default=Path(__file__).with_name('candidate.json'))
+    args = parser.parse_args()
+    candidate, directory, _, _ = candidate_settings(args.candidate)
+    directory = Path(os.environ.get('MODEL_DEST', directory))
     directory.mkdir(parents=True, exist_ok=True)
     with (directory / '.download.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)

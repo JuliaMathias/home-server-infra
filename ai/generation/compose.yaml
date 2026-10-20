@@ -7,9 +7,9 @@ services:
     user: "1000:1000"
     command:
       - --model
-      - /models/qwen3-14b/Qwen3-14B-Q5_K_M.gguf
+      - "${GENERATION_MODEL_PATH:-/models/qwen3-14b/Qwen3-14B-Q5_K_M.gguf}"
       - --alias
-      - qwen3-14b-trial
+      - "${GENERATION_MODEL_ALIAS:-qwen3-14b-trial}"
       - --host
       - 0.0.0.0
       - --port

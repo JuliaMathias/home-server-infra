@@ -10,6 +10,8 @@ import threading
 import time
 import urllib.request
 
+from candidate_config import candidate_settings
+
 ROOT = Path(__file__).resolve().parent
 spec = importlib.util.spec_from_file_location('trial_helpers', ROOT / 'run-trial.py')
 helpers = importlib.util.module_from_spec(spec)
@@ -31,6 +33,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-dir', type=Path, required=True)
     parser.add_argument('--cases', type=Path, required=True)
+    parser.add_argument('--candidate', type=Path, default=ROOT/'candidate.json')
     parser.add_argument('--context', type=int, choices=[4096,8192], default=8192)
     args = parser.parse_args()
     run = args.run_dir.resolve()
@@ -68,8 +71,9 @@ def main():
         old=json.loads(inspected.stdout)[0] if inspected.returncode==0 else None
         if old and old['State']['Running']:
             raise RuntimeError('Generation container already running; do not replace another workload')
-        candidate=json.loads((ROOT/'candidate.json').read_text())
-        model=Path('/srv/lara/ai/models/qwen3-14b')
+        candidate, model, container_model_path, model_alias = candidate_settings(args.candidate)
+        env.update(GENERATION_MODEL_PATH=container_model_path, GENERATION_MODEL_ALIAS=model_alias)
+        (run/'candidate.json').write_text(json.dumps(candidate,indent=2)+'\n')
         manifest=json.loads((model/'source-manifest.json').read_text())
         if any(candidate[k]!=manifest[k] for k in ('repository','revision','filename','bytes','sha256')) or (model/candidate['filename']).stat().st_size!=candidate['bytes']:
             raise ValueError('Verified model identity mismatch')
@@ -98,7 +102,7 @@ def main():
                 record['prompt_token_preflight']=token_count
                 if token_count+case.get('max_tokens',2048)+64>args.context:
                     raise ValueError('Input plus output exceeds context; no automatic truncation')
-                payload={'model':'qwen3-14b-trial','messages':case['messages'],'stream':False,'max_tokens':case.get('max_tokens',2048),'temperature':0.7,'top_p':0.8,'seed':42,'response_format':{'type':'json_object','schema':case['schema']}}
+                payload={'model':model_alias,'messages':case['messages'],'stream':False,'max_tokens':case.get('max_tokens',2048),'temperature':0.7,'top_p':0.8,'seed':42,'response_format':{'type':'json_object','schema':case['schema']}}
                 record['request']=payload
                 response=request(endpoint,'/v1/chat/completions',payload,timeout=1800)
                 record['response']=response

@@ -285,9 +285,11 @@ No new inference or model switch was launched during review.
 
 Current authorized work: iterate toward good enhanced notes in around 30 minutes
 after transcription for an hour-long sermon. PR #10 remains draft until actual
-quality/time evidence supports finalization. Iteration 2 is running on two short
-regressions with an expanded entry ceiling and stronger source-coverage guidance;
-no answer rubric is supplied to the model. See `ai-generation-iterations.md`.
+quality/time evidence supports finalization. Iteration 2 failed on timestamp-
+suffixed source IDs and verbatim copying.
+Iteration 3 is running with schema-enforced IDs and an independent paraphrase
+example on the two regressions and an unseen holdout. No answer rubric is supplied
+to the model. See `ai-generation-iterations.md`.
 
 Previously proposed AI gate: short evidence extraction with required proposition slots,
 full-source coverage checks and explicit ambiguity handling before any composition

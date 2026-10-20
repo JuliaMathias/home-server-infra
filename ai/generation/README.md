@@ -162,3 +162,38 @@ and ambiguity checks. Do not automatically rerun, accept either prompt or
 extrapolate to full-sermon speed. One sample per condition, prompt cache/order
 and missing second-stage composition cost limit the comparison. Private
 comparison-review.json and comparison-measurements.json retain the audit.
+
+
+## Explicit alternative candidates
+
+`download-model.py --candidate candidate-qwen35-4b.json` downloads a separately
+pinned Qwen3.5-4B Q5_K_M evaluation candidate into its own model directory. The
+base model is official Qwen; this GGUF is published by Unsloth. The 3,143,656,608
+bytes and SHA-256 are pinned from publisher metadata. Preserve the original
+14B candidate and weights. Nothing changes the default runtime/model selection.
+
+`run-batch.py --candidate candidate-qwen35-4b.json --run-dir PRIVATE_NEW_RUN
+--cases PRIVATE_CASES --context 4096` explicitly selects that candidate. It checks
+identity against the private verified manifest, records candidate.json in the
+run, and supplies the distinct container path/alias to Compose. Existing global
+locking, active-container refusal, resource limits and cleanup still apply.
+Do not start a comparison until the previous generation container has stopped.
+Text-only CPU evaluation uses the existing image and no vision projector/GPU.
+
+`python3 -m unittest -v test_candidates` runs seven offline tests with synthetic
+bytes: original/alternative path isolation, pinned metadata/path validation,
+atomic valid/corrupt downloads, existing mismatch preservation and no duplicate
+network work for valid weights. These establish tooling behavior, not model fit
+or fidelity. Compile checks and both default/alternative Compose config checks
+are separate from actual inference.
+
+Sources checked 2026-10-20:
+- https://huggingface.co/Qwen/Qwen3.5-4B
+- https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/tree/e87f176479d0855a907a41277aca2f8ee7a09523
+- https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/src/llama-arch.cpp
+- https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/tools/server/README.md
+
+The pinned runtime recognizes qwen35 and supports explicit reasoning off. These
+are compatibility prerequisites, not proof that the quantization loads or that
+it meets this task. Newer/smaller is not automatically better; use the same
+private regression/holdout sources and review full workflow time and quality.
