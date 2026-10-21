@@ -229,3 +229,7 @@ full hash verification precede one noisy-source synthetic control, which must
 pass semantic review before sermon regressions. Hardware fit, quality and speed
 are measured gates, not consequences of a valid manifest. No production switch
 is implied. See the iteration log for actual preparation/control paths and state.
+
+Manual source-fidelity review is required; follow
+[`ai-generation-review.md`](../../docs/ai-generation-review.md) for exact private
+fixtures, read-only steps, pass/fail gates, evidence and cleanup.

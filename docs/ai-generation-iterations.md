@@ -283,9 +283,9 @@ actual 9B loading succeeded. Readiness 11.09s, request 225.75s, decode 5.72token
 The response failed: valid JSON/stop but ends mid-sentence in S2, omits S3-S6 and
 reverses an explicit negation. 1234 completion tokens of 2048, runtime truncated=0;
 this is semantic early completion, not an output-limit failure. Private review.json
-and measurements.json preserve evidence. Package mean/peak75.2/81C, throttle
-delta0 countedonce, DockerCLI peak6.191GiB excludescache, hostavailablemin18.49GiB;
-GPU47-60C is background. A short CPU load is not sustained full-workflow acceptance.
+and measurements.json preserve evidence. Package mean/peak 75.2/81 C, throttle
+delta 0 counted once, Docker CLI peak 6.191 GiB excludes inactive cache, host available minimum 18.49 GiB;
+GPU 47-60 C is background. A short CPU load is not sustained full-workflow acceptance.
 The pinned recipe is tracked as `ai/generation/candidate-qwen35-9b.json`;
 weights stay outside Git. Default model, service deployment and network unchanged.
 
@@ -296,10 +296,24 @@ Only reasoning changes from on1024 to off/effective0; case/messages/schema,
 sampling profile, seed42, context4096 and response2048 remain identical. This
 checks whether the bounded thinking mode contributed to early semantic completion.
 One sample/mode, token-allocation and cache effects limit conclusions. No download
-or model/default switch. State: running; review every proposition before sermon
-regressions. No speculative repair or automatic critic acceptance follows.
+or model/default switch. Result: 108.31s request, all six blocks represented,
+but invents employment/relationships, extends refusal to supervisors and turns
+the wrong-fuel analogy into a reason for refusal. Private review.json rejects it;
+no sermon regressions follow. Faster completion does not meet the quality gate.
 Manual review is required; see `ai-generation-review.md` for exact fixtures,
 read-only actions, gates, evidence and cleanup. Full-workflow gates remain unmet.
+
+## Iteration 16: remove only the runtime JSON constraint
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-no-grammar-20261021T1619Z`.
+Same 9B/off/case/messages/sampling/context/output and seed; remove only
+`response_format` from the actual request. The prompt still asks JSON. A private
+wrapper records the actual unconstrained request and raw response; it does not
+wrap/repair model output. Invalid JSON remains a failed record for separate
+semantic inspection. Offline assertions verify removed grammar, unchanged seed
+and untouched preflight. This tests a runtime interaction hypothesis, not an
+assertion that the runtime has a bug. State: running; one sample/cache effects
+limit conclusions. No new model or deployment. Full-workflow gates remain unmet.
 
 ## Delivery plan
 

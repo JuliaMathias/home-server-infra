@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 13:15 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 13:19 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -316,10 +316,13 @@ the explicit download question. Original proposal and authorization are preserve
 The 9B download verified and loaded. First control failed semantic coverage and
 negation despite a normal stop/valid JSON, after 225.75s request plus 11.09s load.
 Private review and measurements are saved; no sermon regression was run.
+Thinking-off control completed in 108.31s but still failed invented relationships
+and causes. Private review saved; no sermon regression was launched.
 Current single comparison:
-`/srv/lara/ai/data/evaluations/qwen35-9b-off-control-20261021T1615Z`.
-Same noisy control/settings with thinking disabled; inspect actual state before
-further work. Quality and complete 30-minute workflow acceptance are unproven.
+`/srv/lara/ai/data/evaluations/qwen35-9b-no-grammar-20261021T1619Z`.
+Remove only the runtime JSON constraint with identical source/settings; raw
+response and any format failure remain preserved. No new download or deployment.
+Quality and complete 30-minute workflow acceptance remain unproven.
 See `ai-generation-review.md` for the required private manual review procedure.
 Default/deployed services and original weights remain unchanged.
 All full-workflow acceptance gates remain unmet.
