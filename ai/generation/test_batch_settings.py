@@ -32,4 +32,24 @@ class ReasoningSettingsTests(unittest.TestCase):
         with self.assertRaises(ValueError):batch.runtime_reasoning_settings('auto',256)
 
 
+class ResponseLimitTests(unittest.TestCase):
+    """Finite total-response bounds guard expensive inference requests."""
+
+    def test_existing_bounds_remain_valid(self):
+        """Legacy case sizes retain their exact requested response allowance."""
+        for value in [128,768,1536,2048]:
+            with self.subTest(value=value):
+                self.assertEqual(batch.response_token_limit(value),value)
+
+    def test_explicit_larger_bound_is_valid(self):
+        """A bounded 4096-token experiment can reserve thought and visible output."""
+        self.assertEqual(batch.response_token_limit(4096),4096)
+
+    def test_invalid_bounds_fail_before_inference(self):
+        """Unbounded, oversized and noninteger budgets cannot reach model work."""
+        for value in [-1,0,127,4097,True,2048.0,'4096']:
+            with self.subTest(value=value):
+                with self.assertRaises(ValueError):batch.response_token_limit(value)
+
+
 if __name__ == '__main__':unittest.main()

@@ -115,7 +115,7 @@ explicit flag when deliberately updating trial configuration.
 
 `run-batch.py --run-dir PRIVATE_RUN --cases PRIVATE_TASKS.json --context 8192`
 runs one to 32 private tasks sequentially, retaining requests, responses and
-telemetry. Each task supplies messages, an output schema and a 128–2048 output
+telemetry. Each task supplies messages, an output schema and a 128–4096 output
 limit. Source-ID validation is supported when source metadata is supplied.
 These checks validate structure/traceability, not factual entailment or coverage.
 A global batch lock and an existing-container check prevent replacing an active
@@ -211,7 +211,7 @@ Compose stores the effective controls in each run's configuration; status record
 the mode and allowance. Do not infer the exact number of thinking tokens merely
 from the configured cap or the length of returned reasoning text.
 
-`python3 -m unittest discover -v -p 'test_*.py'` from this directory runs thirteen
+`python3 -m unittest discover -v -p 'test_*.py'` from this directory runs sixteen
 offline behavioral tests, including invalid controls and preservation of off-mode
 behavior. These checks establish tooling contracts, not improved factual quality.
 The 256-token experiment and later critic/normalization trials failed semantic
@@ -233,3 +233,15 @@ is implied. See the iteration log for actual preparation/control paths and state
 Manual source-fidelity review is required; follow
 [`ai-generation-review.md`](../../docs/ai-generation-review.md) for exact private
 fixtures, read-only steps, pass/fail gates, evidence and cleanup.
+
+
+### Explicit larger response bounds
+
+Private batch cases may explicitly request 128-4096 total response tokens, with
+2048 retained as the omitted per-case default. Both thinking and visible content
+consume this allowance. Invalid, fractional, Boolean and unbounded values fail
+before container/model work. The temporary runtime uses the maximum validated
+case allowance; context preflight still rejects input+output that will not fit.
+The extended headroom trial uses 8192 context,4096 response and2048 thinking while
+retaining the existing CPU/memory limits. Three response-bound tests bring the
+offline suite to 16 tests; model fidelity and sustained fit remain separate gates.

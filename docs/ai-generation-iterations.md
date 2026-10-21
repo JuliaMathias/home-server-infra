@@ -340,13 +340,33 @@ and avoid discouraging reuse of factual names/words. This profile changes two
 parameters together, not an isolated causal test. Repetition/copying and the
 original factual gates remain checked; lower randomness does not guarantee
 accuracy.
-State: running, one synthetic control only. No new weights/default/deployment;
-full-workflow fidelity,new unseen passage and all-stage time remain unmet.
+Result: 113.10s, failed identity, hiring chronology, not-said versus not-known
+and unsupported supervisor refusal. Private review.json saved. Reduced variation
+did not pass the original gate; no new weights/default/deployment.
+
+## Iteration 19: larger bounded thinking and response allowance
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-headroom-control-20261021T1633Z`.
+Same case/messages/schema/seed/sampling as14; thinking1024->2048, totalresponse
+2048->4096 and context4096->8192. This tests whether more reasoning/answer room
+helps; direct reasoning-budget exhaustion was not established. Three bounds
+change together and one sample/cache effects limit conclusions. CPU4threads,
+16GiB and private/noGPU limits remain unchanged. State: running, one control only.
+
+Generic harness now validates finite integer response bounds 128-4096 before any
+model work, retains per-case default 2048 and sets the temporary runtime ceiling
+to the maximum validated case allowance. Existing 128/768/1536/2048 bounds and
+new 4096 acceptance plus invalid/unbounded/noninteger rejection are covered by
+three added tests. All 16 offline tests, compile, default/extended Compose and
+whitespace checks passed. This is tooling evidence, not a model-quality pass.
+Full-workflow fidelity, unseen passage and actual all-stage time remain unmet.
 
 ## Delivery plan
 
 Adjustments: explicit 9B authorization now received. Download/verification and a
-single synthetic gate precede more sermon requests. Source normalization did not
+single synthetic gate precede more sermon requests. All completed9B controls
+remain rejected; test increased reasoning headroom before further prompt cycles.
+Source normalization did not
 pass, so do not spend a full-run budget on its outputs. Full-recording quality/time
 gates PR finalization; record each
 iteration here, with failures preserved. Smaller-model or resource experiments

@@ -42,6 +42,17 @@ def runtime_reasoning_settings(mode, budget):
             'GENERATION_REASONING_BUDGET':str(budget if mode == 'on' else 0)}
 
 
+def response_token_limit(value):
+    """Validate a finite total-response ceiling before any model/container work.
+
+    Reasoning and visible content share this ceiling. Explicit larger experiments
+    may use 4096 tokens; the existing per-case default remains 2048.
+    """
+    if type(value) is not int or not 128 <= value <= 4096:
+        raise ValueError('Output token bound must be an integer between 128 and 4096')
+    return value
+
+
 def main():
     """Run a bounded private batch once; preserve failures and stop its container."""
     parser = argparse.ArgumentParser(description=__doc__)
@@ -60,13 +71,13 @@ def main():
     if not isinstance(cases,list) or not 1 <= len(cases) <= 32:
         raise ValueError('Expected one to 32 tasks')
     ids = set()
+    output_limits = []
     for case in cases:
         case_id=case['id']
         if not case_id or any(c not in 'abcdefghijklmnopqrstuvwxyz0123456789_-' for c in case_id) or case_id in ids:
             raise ValueError('Invalid or duplicate task ID')
         ids.add(case_id)
-        if not 128 <= case.get('max_tokens',2048) <= 2048:
-            raise ValueError('Invalid output token bound')
+        output_limits.append(response_token_limit(case.get('max_tokens',2048)))
     run.mkdir(parents=True,exist_ok=True)
     lock = Path('/srv/lara/ai/data/generation-batch.lock').open('a')
     fcntl.flock(lock,fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -77,7 +88,7 @@ def main():
     def state(value,**fields):
         status.update(state=value,updated_at=helpers.now(),**fields)
         p=status_path.with_suffix('.tmp');p.write_text(json.dumps(status,indent=2)+'\n');p.replace(status_path)
-    env=dict(os.environ,GENERATION_IMAGE=(ROOT/'runtime-image.txt').read_text().strip(),GENERATION_CONTEXT_SIZE=str(args.context),GENERATION_OUTPUT_LIMIT='2048')
+    env=dict(os.environ,GENERATION_IMAGE=(ROOT/'runtime-image.txt').read_text().strip(),GENERATION_CONTEXT_SIZE=str(args.context),GENERATION_OUTPUT_LIMIT=str(max(output_limits)))
     env.update(reasoning_env)
     compose=['docker','compose','-f',str(ROOT/'compose.yaml')]
     stop=threading.Event();monitor=None;started=False
