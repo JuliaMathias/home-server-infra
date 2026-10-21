@@ -107,6 +107,7 @@ docker build --target test -t home-server-transcription:test .
 docker run --rm --tmpfs /tmp:mode=1777 home-server-transcription:test
 ```
 
+These tests also run in GitHub Actions CI (`.github/workflows/ci.yml`).
 Unit/API tests use a substitute engine and do not establish recognition quality
 or GPU capacity. Record real inference and resource measurements separately.
 A representative two-hour recording and the user's real samples remain required
