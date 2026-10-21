@@ -63,8 +63,11 @@ The holdout answer rubric remains outside the request. No inference answers or
 failed outputs were silently repaired. This changes multiple prompt/schema factors
 and is an acceptance experiment, not an isolated causal benchmark.
 
-State: running. Review actual outputs before another workflow claim. Full-recording
-quality, supplied-note preservation and around-30-minute elapsed time remain pending.
+Result: all three requests completed in 944.80s, but all failed semantic
+acceptance. The two regressions still introduce unsupported attribution or meaning;
+the holdout invents a strategy to gain time/conditions, upgrades conjecture and
+drops the main renunciation connection. Private review.json retains details.
+Full-recording quality, original-note preservation and target time remain pending.
 
 ## Alternative candidate preparation
 
@@ -84,6 +87,69 @@ Generic candidate selection is explicit in downloader and batch runner, with
 nine offline behavioral tests (including manifest collision protection and
 verified recovery after an interrupted manifest write). No production model
 switch occurred. Compare identical private fixtures after iteration3 stops; do not discard negative results.
+
+## Iteration 4: explicit smaller-model comparison
+
+Run: `/srv/lara/ai/data/evaluations/grounded-notes-qwen35-4b-20261020T2019Z`.
+Same cases as iteration3, explicit Qwen3.5-4B Q5_K_M CPU candidate. Downloaded
+3,143,656,608 bytes passed pinned SHA-256; actual loading/inference succeeded.
+All three requests completed in 234.24s, including 5.28s load/readiness. The
+first request decoded about 9.24 tokens/s. All three still failed semantic
+acceptance: actor swaps, omitted major points, future changed to past, and a
+First Kings/Luke reference conflation. The style example contaminated wording.
+Speed is promising but no accepted workflow/model switch follows. Remove that
+example and evaluate a different task decomposition. Private review.json saved.
+
+## Iteration 5: per-block evidence then organization
+
+Extraction run: `/srv/lara/ai/data/evaluations/evidence-workflow-iteration5-20261020T2027Z`.
+Require an entry for each block, nearby source context and literal supporting
+quotes. Organization may only group immutable notes, not rewrite their facts.
+Four private fixtures include a new car analogy. One supplied human correction
+restores a later-time qualifier in T094; raw text and provenance are preserved.
+This is a test fixture edit, not a reusable application correction importer.
+
+Result: rejected and intentionally cancelled after a known fidelity/evidence
+failure (2 requests had completed). Quotes crossed block boundaries,
+and notes still invented attribution. The interrupted HTTP request is operator
+cancellation, not OOM or a spontaneous crash. Grouping followup did not run.
+The private review and cancellation metadata remain intact.
+
+## Iteration 6: bounded thinking on identical evidence tasks
+
+Run: `/srv/lara/ai/data/evaluations/evidence-workflow-iteration6-20261020T2035Z`.
+Same sources/schema and 1536 total-response ceiling; Qwen3.5-4B with reasoning
+on and a 256-token thinking allowance. Reasoning was present in responses;
+completion-token usage includes reasoning, not just visible notes.
+All four requests completed in 574.91s, including readiness, but failed
+fidelity/evidence/style checks: actor swaps, invented meaning from corrupted
+speech, cross-block/modified quotes, and verbatim copying. Required object keys
+were present, which did not establish substantive coverage or support.
+Private review.json lists every case. Prepared followup6 was NOT launched because
+literal and semantic gates failed. Do not restart it automatically.
+
+## Iteration 7: separate source critic
+
+Run: `/srv/lara/ai/data/evaluations/critic-iteration7-20261021T0010Z`.
+Hypothesis: separating source verification from drafting may expose unsupported
+claims without the pressure to generate polished prose. Two known-bad drafts,
+all paragraphs checked against contextual sources; 512-token bounded thinking,
+1536 total-response ceiling. The private expected-error checklist is excluded
+from the request. The critic must flag errors, not receive their answers.
+Result: both finished in 239.37s including readiness. The critic caught one
+unsupported term and flagged a reference problem, but falsely accepted critical
+actor swaps, conjecture as fact and future contacts as completed events. Its
+reference explanation was itself imprecise. Private review.json records misses;
+do not use these verdicts as an automatic acceptance gate.
+
+## Iteration 8: existing larger-model critic
+
+Run: `/srv/lara/ai/data/evaluations/critic-iteration8-14b-20261021T0017Z`.
+One identical agency critic case from iteration7, existing Qwen3-14B weights,
+512-token reasoning allowance and 1536 total-response ceiling. This isolates
+model selection on that case; no answers supplied or new weights downloaded.
+State: running. Check critical attribution and future/uncertainty errors before
+spending time on additional critic requests. Full-workflow gates remain unmet.
 
 ## Delivery plan
 

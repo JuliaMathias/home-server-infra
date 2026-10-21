@@ -198,3 +198,21 @@ The pinned runtime recognizes qwen35 and supports explicit reasoning off. These
 are compatibility prerequisites, not proof that the quantization loads or that
 it meets this task. Newer/smaller is not automatically better; use the same
 private regression/holdout sources and review full workflow time and quality.
+
+
+## Bounded reasoning experiments
+
+`run-batch.py --reasoning on --reasoning-budget 256` explicitly enables a bounded
+thinking comparison. Default is off, with zero effective thinking allowance.
+Allowed budgets are 0-2048; negative/unbounded values fail before model work.
+`max_tokens` still caps the entire response, including reasoning plus visible
+output. Record both settings and inspect actual response reasoning metadata.
+Compose stores the effective controls in each run's configuration; status records
+the mode and allowance. Do not infer the exact number of thinking tokens merely
+from the configured cap or the length of returned reasoning text.
+
+`python3 -m unittest discover -v -p 'test_*.py'` from this directory runs thirteen
+offline behavioral tests, including invalid controls and preservation of off-mode
+behavior. These checks establish tooling contracts, not improved factual quality.
+The 256-token experiment completed but failed fidelity/evidence/style acceptance;
+a separate critic experiment is now in progress. See the iteration log.

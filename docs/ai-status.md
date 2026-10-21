@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 16:45 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 21:18 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -285,17 +285,28 @@ No new inference or model switch was launched during review.
 
 Current authorized work: iterate toward good enhanced notes in around 30 minutes
 after transcription for an hour-long sermon. PR #10 remains draft until actual
-quality/time evidence supports finalization. Iteration 2 failed on timestamp-
-suffixed source IDs and verbatim copying.
-Iteration 3 is running with schema-enforced IDs and an independent paraphrase
-example on the two regressions and an unseen holdout. No answer rubric is supplied
-to the model. See `ai-generation-iterations.md`.
+quality/time evidence supports finalization. See `ai-generation-iterations.md`.
 
-Previously proposed AI gate: short evidence extraction with required proposition slots,
-full-source coverage checks and explicit ambiguity handling before any composition
-or longer run. This is a proposed experiment, not an accepted production workflow
-or an automatic rerun. Notey retains production correction precedence, retrieval,
-orchestration and exports. Private source/database fixtures remain unchanged.
+Iterations 2-6 have failed reviewed fidelity/completeness/style gates. The explicit
+Qwen3.5-4B candidate loads and runs faster than 14B on short samples, but is not
+accepted as a workflow or production switch. Iteration5 was intentionally cancelled
+after a known evidence failure. Iteration6 finished all four requests with bounded
+reasoning256; object coverage did not fix role swaps or unsupported wording.
+
+Iteration7 critic failed: it falsely accepted critical attribution/time/uncertainty
+errors. Private review is saved; no automatic repair or acceptance follows.
+Latest running trial: `/srv/lara/ai/data/evaluations/critic-iteration8-14b-20261021T0017Z`.
+It compares the existing larger model on the identical first critic case, without
+an answer rubric or another download. Review actual verdicts before more requests.
+All full-workflow acceptance gates remain unmet.
+
+Generic tooling now supports explicit pinned candidate selection and optional
+bounded reasoning controls. Defaults retain the original model and reasoning-off.
+Thirteen deterministic offline tests, compile and Compose checks passed; actual
+short model inference is separate evidence. No new application implementation,
+Bible migration, production export, GPU or Whisper deployment change was made.
+Existing private source/database fixtures remain unchanged except the explicitly
+versioned evaluation correction with raw provenance noted in the experiment log.
 
 A monthly model research heartbeat is active for the first day of each month at
 09:00 America/Sao_Paulo. It compares credible improvements with actual baselines,

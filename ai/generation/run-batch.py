@@ -28,14 +28,31 @@ def request(endpoint, path, payload, timeout=30):
     return json.loads(raw)
 
 
+def runtime_reasoning_settings(mode, budget):
+    """Return explicit runtime controls for a bounded thinking experiment.
+
+    Default/off requests retain no-thinking behavior. The budget includes only
+    the reasoning allowance; total response tokens remain separately bounded.
+    """
+    if mode not in ('off', 'on'):
+        raise ValueError('Reasoning mode must be off or on')
+    if type(budget) is not int or not 0 <= budget <= 2048:
+        raise ValueError('Reasoning budget must be between zero and 2048 tokens')
+    return {'GENERATION_REASONING':mode,
+            'GENERATION_REASONING_BUDGET':str(budget if mode == 'on' else 0)}
+
+
 def main():
     """Run a bounded private batch once; preserve failures and stop its container."""
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--run-dir', type=Path, required=True)
     parser.add_argument('--cases', type=Path, required=True)
     parser.add_argument('--candidate', type=Path, default=ROOT/'candidate.json')
+    parser.add_argument('--reasoning', choices=['off','on'], default='off')
+    parser.add_argument('--reasoning-budget', type=int, default=256)
     parser.add_argument('--context', type=int, choices=[4096,8192], default=8192)
     args = parser.parse_args()
+    reasoning_env = runtime_reasoning_settings(args.reasoning, args.reasoning_budget)
     run = args.run_dir.resolve()
     if run == ROOT.parents[1] or ROOT.parents[1] in run.parents:
         parser.error('Outputs must stay outside Git')
@@ -56,11 +73,12 @@ def main():
     status_path=run/'status.json'
     if status_path.exists():
         raise RuntimeError('Existing run must not be restarted automatically')
-    status={'started_at':helpers.now(),'state':'preparing','total_tasks':len(cases),'completed_tasks':0,'quality_review':'pending','device':'cpu','context_tokens':args.context}
+    status={'started_at':helpers.now(),'state':'preparing','total_tasks':len(cases),'completed_tasks':0,'quality_review':'pending','device':'cpu','context_tokens':args.context,'reasoning':args.reasoning,'reasoning_token_budget':int(reasoning_env['GENERATION_REASONING_BUDGET'])}
     def state(value,**fields):
         status.update(state=value,updated_at=helpers.now(),**fields)
         p=status_path.with_suffix('.tmp');p.write_text(json.dumps(status,indent=2)+'\n');p.replace(status_path)
     env=dict(os.environ,GENERATION_IMAGE=(ROOT/'runtime-image.txt').read_text().strip(),GENERATION_CONTEXT_SIZE=str(args.context),GENERATION_OUTPUT_LIMIT='2048')
+    env.update(reasoning_env)
     compose=['docker','compose','-f',str(ROOT/'compose.yaml')]
     stop=threading.Event();monitor=None;started=False
     try:
