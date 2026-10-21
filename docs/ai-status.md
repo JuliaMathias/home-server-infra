@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 22:40 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 23:10 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -302,9 +302,13 @@ with omissions and invented uncertainty. Private review is saved.
 Iteration10 minimal-format notes improved readability but failed attribution,
 future/possibility and unsupported-addition checks; 400.83s for both requests.
 Private review and measurements are saved.
-Latest running trial: `/srv/lara/ai/data/evaluations/source-noise-control-iteration11-20261021T0141Z`.
-Paired fictional clean/noisy accounts test source sensitivity with a private rubric
-excluded from prompts. This is diagnostic, not a sermon acceptance result.
+Iteration11 clean/noisy synthetic controls both failed. Clean preserved most
+facts but added a reversed recipient; noisy had several further meaning errors.
+Source noise alone does not explain all observed failures. Private review saved.
+Latest running trial: `/srv/lara/ai/data/evaluations/sampling-control-iteration12-20261021T0212Z`.
+Same controls with the official general-thinking sampling profile, recorded through
+a private wrapper. Tracked/default settings unchanged; no additional download.
+This is diagnostic, not sermon or full-workflow acceptance.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional

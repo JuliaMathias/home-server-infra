@@ -195,9 +195,32 @@ not the requests. Existing4B, reasoning1024, total2048, minimal notes schema.
 Hypothesis: distinguish basic instruction/runtime limitations from sensitivity to
 noisy source language before another model comparison. Clean goes first: cache,
 order and single-sample limitations prevent a causal performance claim.
-State: running. This diagnostic is not a sermon holdout or complete-workflow
-acceptance. If clean also fails, inspect model/runtime task suitability before
-more similar sermon prompt iterations. Full-workflow quality/time remain unmet.
+Result: both finished in 338.01s including readiness (clean160.61s,
+noisy172.09s). Clean retained most facts but invented the narrator accepting a
+proposal she herself explained; noisy introduced several actor, date, negation
+and meaning errors. Private review.json records each failure. Neither passes.
+Noise sensitivity is plausible but does not fully explain the errors; two samples
+do not establish a causal or statistical model-quality result.
+
+## Iteration 12: publisher-recommended sampling control
+
+Run: `/srv/lara/ai/data/evaluations/sampling-control-iteration12-20261021T0212Z`.
+Inspection found earlier runs explicitly used temperature0.7/top_p0.8; remaining
+samplers inherited runtime defaults. The official model card recommends a
+different general-thinking profile: temperature1.0, top_p0.95, top_k20, min_p0,
+presence_penalty1.5 and repetition penalty1.0. Test that whole profile on the
+identical two synthetic cases with unchanged seed, thinking/context/output bounds.
+A private wrapper mutates and records actual request settings using the canonical
+harness; it leaves tracked/deployed defaults unchanged. Offline wrapper checks
+passed for payload updates, seed retention and unaffected preflight. Resolved slot
+parameters are saved when the runtime exposes them, with failures recorded.
+State: running. This tests a multi-parameter profile, not the isolated cause of
+errors; one sample/order/cache limitations remain. No new weights downloaded.
+Neither a synthetic pass nor runtime success accepts the sermon/full workflow.
+
+Primary sources checked 2026-10-20:
+- https://huggingface.co/Qwen/Qwen3.5-4B#best-practices
+- https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/tools/server/README.md
 
 ## Delivery plan
 
