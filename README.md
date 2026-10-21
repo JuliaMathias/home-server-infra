@@ -83,3 +83,12 @@ for the current boundary, monthly review and private test-data pointers.
 See [private application ingress](docs/application-ingress.md) for independent
 application routes, the Notey companion change, manual rollout and acceptance gates.
 Existing host routing and private AI endpoints must be preserved.
+
+## Application releases and recovery
+
+[Reusable application delivery](docs/app-delivery.md) defines the approved pull
+workflow and onboarding contract, with per-app credentials, backup retention and
+recovery gates. Implementation and runtime acceptance are tracked in issue #17;
+this guide does not install or activate automation. Infrastructure development
+happens on Lara through a named tmux session; application code stays in its Mac
+repository.
