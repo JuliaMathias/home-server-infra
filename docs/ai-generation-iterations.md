@@ -236,14 +236,43 @@ reasoning512, total2048, context4096. First-person narration, all substantive
 content, numbers, modal qualifiers and source boundaries must be preserved.
 Unclear spans remain verbatim with separate uncertainty flags; no external
 knowledge or expected answers. Original sources remain unchanged outside Git.
-State: running. Compare normalized text against raw line by line before creating
-any notes from it. Do not silently repair model errors or promote a clean-looking
-transcript to evidence of fidelity. This is intermediate AI evaluation only,
-not a production correction workflow. Full-workflow gates remain unmet.
+Result: all three completed in 435.28s including readiness (101.37s synthetic,
+146.34s agency, 182.18s kings). Reject automatic composition inputs: kings lost
+all source IDs and introduced a typo in quoted wording; agency lost the explicit
+context/target boundary; synthetic punctuation did not preserve the important
+supervisor/refusal boundary clearly. Uncertainty flags missed hard ambiguities
+and added speculation. Private review.json records details; no composition ran.
+
+## Proposed next model comparison: requires authorization
+
+Prepared metadata and plan:
+`/srv/lara/ai/data/evaluations/qwen35-9b-proposal-20261021T0310Z`.
+Qwen3.5-9B Q5_K_M, publisher Unsloth, 6,577,841,376 bytes; revision
+`3885219b6810b007914f3a7950a8d1b469d598a5`, SHA-256
+`dc2a39aef291f91a9116ad214058da0d86eb648743a124bd8c333787c4b9c91c`.
+Candidate metadata passes the existing safe-path/pin validator. No weights were
+downloaded and no inference or coordinator is queued. User approval requested
+because further model downloads require separate authorization in this evaluation.
+
+Rationale: repeated role/time failures survived representation, thinking, critic,
+sampling and conservative-cleanup experiments. A distinct model comparison is
+more informative than replaying those failed configurations. First gate: only
+the identical noisy synthetic control, then semantic review before two sermon
+regressions. New holdout and full-workflow quality/time still follow only if valid.
+Use a separate model directory, existing CPU/private runtime and 16GiB/four-thread
+limits; no default/deployed switch. About 240 GB disk was free at inspection.
+The 6.58 GB weights are smaller than the existing 10.51 GB 14B; memory fit is plausible,
+not measured. Quality/speed/30-minute suitability remain unknown.
+
+Primary sources checked 2026-10-21:
+- https://huggingface.co/Qwen/Qwen3.5-9B
+- https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/tree/3885219b6810b007914f3a7950a8d1b469d598a5
 
 ## Delivery plan
 
-Adjustments: full-recording quality/time now gates PR finalization; record each
+Adjustments: awaiting explicit download authorization before another candidate;
+no active inference. Source normalization did not pass, so do not spend a full-run
+budget on its outputs. Full-recording quality/time gates PR finalization; record each
 iteration here, with failures preserved. Smaller-model or resource experiments
 remain options only if current workflow cannot meet both gates. Do not lower
 quality or silently shorten the requested output to claim speed. Keep the issue

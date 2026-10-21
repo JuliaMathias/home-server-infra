@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 23:40 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 00:11 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -308,9 +308,14 @@ Source noise alone does not explain all observed failures. Private review saved.
 Iteration12 recommended-sampling profile was confirmed by actual slot settings.
 Clean factual control passes; noisy control fails several core meanings. This is
 one synthetic pair, not sermon acceptance or a causal sampling-quality claim.
-Latest running trial: `/srv/lara/ai/data/evaluations/normalization-iteration13-20261021T0241Z`.
-Conservative punctuation/cleanup on one synthetic and two sermon regressions;
-review meaning preservation before any note composition. Originals untouched.
+Iteration13 normalization failed fidelity/traceability after three requests in
+435.28s; dropped IDs/context boundaries and introduced a quotation typo. No
+composition was run from those outputs. Private review saved; no inference active.
+Prepared proposal: `/srv/lara/ai/data/evaluations/qwen35-9b-proposal-20261021T0310Z`.
+Pinned isolated 9B metadata and first-control evaluation plan validated. Download
+requires explicit user authorization, requested but not yet received. No weights,
+coordinator or workload for this candidate have been started. Quality, runtime fit
+and the 30-minute full-workflow goal are unproven; defaults remain unchanged.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional
