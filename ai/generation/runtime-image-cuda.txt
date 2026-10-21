@@ -1,0 +1,1 @@
+ghcr.io/ggml-org/llama.cpp:server-cuda-b11723@sha256:ffbb0d908f22ca66c0261dc96b260f4a12429eda88bd561c09fd9fa94caa220a

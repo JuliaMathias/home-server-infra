@@ -245,3 +245,49 @@ case allowance; context preflight still rejects input+output that will not fit.
 The extended headroom trial uses 8192 context,4096 response and2048 thinking while
 retaining the existing CPU/memory limits. Three response-bound tests bring the
 offline suite to 16 tests; model fidelity and sustained fit remain separate gates.
+
+## GPU offload (issue #13)
+
+`runtime_session.py` owns one held runtime: Compose invocation, device placement,
+model identity verification, readiness, telemetry, server log and cleanup. The
+batch runner and private multi-step evaluation workflows both use it, so a
+workflow can make dependent requests against one loaded model.
+
+- `--gpu-layers 0` (default) keeps the original CPU-only image and no GPU access.
+- `--gpu-layers auto` (or a layer count) selects `runtime-image-cuda.txt`, the
+  official `server-cuda` image of the same llama.cpp build (b11723, revision
+  31288c9), and adds `compose.gpu.yaml` (`gpus: all`). With `auto`, llama.cpp
+  `--fit` places as many layers as fit, keeping a default 1 GiB VRAM margin, and
+  keeps mixture-of-experts weights in RAM when needed.
+- `--memory-gib` bounds container RAM (default 16, maximum 28). Context sizes
+  4096, 8192, 16384 and 32768 are accepted; preflight still rejects overflow.
+- A GPU run refuses to start while the transcription container is running. The
+  4 GB card cannot hold Whisper (about 2 GiB) and a model, so sequencing is manual
+  and explicit:
+
+  ```sh
+  docker compose -f ai/transcription/compose.yaml stop
+  # GPU evaluation run
+  docker compose -f ai/transcription/compose.yaml start   # then confirm healthy
+  ```
+
+  Nothing in this directory stops shared services by itself. Automatic GPU
+  coordination (draining, idle unload) is a recorded follow-up.
+
+Measured 2026-10-21 (`/srv/lara/ai/data/evaluations/gpu-speed-20261021T2100Z`),
+identical `section_02` request from the failed full-sermon batch, one sample each:
+
+| Model / device | Request | Prompt read | Decode | Peak VRAM |
+| --- | --- | --- | --- | --- |
+| Qwen3-14B Q5_K_M, CPU (2026-10-20) | 1042.1 s | 19.1 tok/s | 1.85 tok/s | none |
+| Qwen3-14B Q5_K_M, GPU auto | 820.6 s | 75.1 tok/s | 1.96 tok/s | 2755 MiB |
+| Qwen3.5-9B Q5_K_M, GPU auto | 339.5 s | 143.1 tok/s | 6.35 tok/s | 2665 MiB |
+
+Partial offload speeds up prompt reading 4-7x but barely changes decoding: the
+layers left on the CPU still bound each output token by memory bandwidth. Output
+length therefore dominates note-generation time for dense models on this card.
+Quality was not reviewed in this speed run. Transcription was restarted and
+healthy afterwards.
+
+`python3 -m unittest discover -v -p 'test_*.py'` now runs 23 offline tests,
+including device selection and the GPU precondition.
