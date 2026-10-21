@@ -3,3 +3,10 @@ lara.taila21247.ts.net {
 
     respond "Hello from Lara! HTTPS is working."
 }
+
+# Independent application ingress; keep the existing host/root response on 443.
+https://lara.taila21247.ts.net:8443 {
+    tls /certs/lara.crt /certs/lara.key
+
+    reverse_proxy notey-web:4000
+}

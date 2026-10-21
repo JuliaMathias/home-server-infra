@@ -77,3 +77,9 @@ resource management and evaluation. Applications own their domain data and flows
 Notey's application project is `/Users/thejuliamathias/Projects/Personal/notey`.
 See [scope, evaluation handoff and model-review policy](docs/ai-scope-and-model-review.md)
 for the current boundary, monthly review and private test-data pointers.
+
+## Application routing
+
+See [private application ingress](docs/application-ingress.md) for independent
+application routes, the Notey companion change, manual rollout and acceptance gates.
+Existing host routing and private AI endpoints must be preserved.

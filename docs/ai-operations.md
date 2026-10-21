@@ -34,6 +34,7 @@ Explicit synchronization set:
 
 ```text
 AGENTS.md
+.github/PULL_REQUEST_TEMPLATE.md
 docs/ai-project.md
 docs/ai-roadmap.md
 docs/ai-operations.md
