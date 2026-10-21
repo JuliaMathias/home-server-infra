@@ -17,10 +17,13 @@ This procedure reviews private evaluation evidence; it does not implement Notey.
 - English diagnostic: `/srv/lara/ai/data/evaluations/qwen35-9b-english-control-20261021T1623Z`.
 - Conservative profile: `/srv/lara/ai/data/evaluations/qwen35-9b-conservative-control-20261021T1627Z`.
 - Extended thinking: `/srv/lara/ai/data/evaluations/qwen35-9b-headroom-control-20261021T1633Z`.
-- Each contains `cases.json`, `rubric.json`, `noisy_control.json`, `status.json`,
+- Clean-source sanity: `/srv/lara/ai/data/evaluations/qwen35-9b-clean-sanity-20261021T1647Z`.
+- Each contains `cases.json`, `rubric.json`, a response file and `status.json`,
   `sampling.json`, runtime configuration, logs and telemetry. An active run may
   not yet have its response. Never restart it or create another job for review.
-- Case ID `noisy_control` uses fictional blocks S1-S6. Expected facts remain in
+- Set `CASE=noisy_control` for earlier runs or `CASE=clean_control` for the clean
+  sanity run; its response is `$CASE.json`. Both use fictional blocks S1-S6.
+  Expected facts remain in
   the private rubric and must never be inserted into model requests.
 
 ## Read-only procedure
@@ -31,7 +34,7 @@ This procedure reviews private evaluation evidence; it does not implement Notey.
 2. Run `less "$RUN/cases.json"`, then `less "$RUN/rubric.json"`. Read every source
    block and its required facts before the output. Distinguish source ambiguity
    from a model's unsupported interpretation. Do not edit source or rubric.
-3. Run `less "$RUN/noisy_control.json"`. Check the actual request/model/settings,
+3. Run `less "$RUN/$CASE.json"`. Check the actual request/model/settings,
    `finish_reason`, token usage and visible notes. Confirm all source blocks and
    substantive propositions are represented. An output that ends mid-sentence,
    omits later blocks or reverses a qualifier fails even with `stop` and valid JSON.
@@ -76,7 +79,9 @@ trial container; never stop Whisper or remove other data as review cleanup.
   unsupported additions. No production translation workflow follows.
 - Conservative profile: assistant reviewed 2026-10-21, failed identity, dates
   and qualifiers. Private review saved; no sermon regression.
-- Extended thinking: running at introduction; inspect actual state. More response
-  allowance is not evidence of accuracy or a full-workflow time result.
+- Extended thinking: assistant reviewed 2026-10-21; failed identity/qualifiers/roles
+  after 487.30s. Review and sampled measurements retained privately.
+- Clean-source sanity: running at introduction; inspect actual state. A pass would
+  not erase noisy-input failures or accept sermon/full-workflow quality.
 - Sermon regressions, new holdout and complete-workflow acceptance: not passed.
   See the maintained iteration log for later evidence and current next action.

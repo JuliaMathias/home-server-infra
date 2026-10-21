@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 13:33 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 13:49 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -319,15 +319,18 @@ Private review and measurements are saved; no sermon regression was run.
 Thinking-off control completed in 108.31s but still failed invented relationships
 and causes. Private review saved; no sermon regression was launched.
 Current single comparison:
-`/srv/lara/ai/data/evaluations/qwen35-9b-headroom-control-20261021T1633Z`.
+`/srv/lara/ai/data/evaluations/qwen35-9b-clean-sanity-20261021T1647Z`.
 The grammar-free control failed format AND factual review in 87.26s, with raw
 response preserved; no automatic repair. English also failed actor/negation
 and unsupported-addition checks in 94.11s. Private reviews are saved.
 Conservative-profile control also failed identities/dates/qualifiers in 113.10s.
-The current one-control test increases bounded thinking to2048, totalresponse4096
-and context8192 on the original9B thinking case/settings. No budget-exhaustion
-cause is established. Generic response-limit validation now allows explicit4096
-while preserving default 2048. 16 offline tests, compile and Compose checks passed.
+Larger-headroom control also failed the same factual gate after 487.30s. Raw
+reviews/measurements retained, with no budget-exhaustion cause established.
+Current clean-source 9B sanity keeps the larger bounds/settings and uses the
+already-prepared clean version of the fictional story. This is diagnostic only;
+it does not remove failed noisy-input robustness or accept a production workflow.
+Generic response validation/defaults and 16 offline/compile/Compose checks remain
+as documented; no new executable change in this increment.
 No new download, deployment or production translation workflow.
 Quality and complete 30-minute workflow acceptance remain unproven.
 See `ai-generation-review.md` for the required private manual review procedure.

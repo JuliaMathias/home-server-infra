@@ -351,7 +351,16 @@ Same case/messages/schema/seed/sampling as14; thinking1024->2048, totalresponse
 2048->4096 and context4096->8192. This tests whether more reasoning/answer room
 helps; direct reasoning-budget exhaustion was not established. Three bounds
 change together and one sample/cache effects limit conclusions. CPU4threads,
-16GiB and private/noGPU limits remain unchanged. State: running, one control only.
+16GiB and private/noGPU limits remain unchanged. Result: 487.30s request, 2601
+completion tokens of 4096, normal stop. It still invents a different person, changes
+unknown organization into unknown routine, changes prior routine familiarity
+into knowing a person and extends refusal to supervisors. Private review.json
+rejects it; larger bounds did not pass the unchanged gate. Whole-trial sampling
+CPU package mean/peak was 78.99/83 C, with zero package-counter increment counted
+once. Docker CLI peak 0.631 GiB excludes inactive file cache and is not full
+resident model memory. Host available RAM minimum 18.32 GiB; background GPU 50-60 C.
+The 82 samples include startup and may miss spikes. Measurements
+and raw outputs remain private; no full-workflow speed estimate follows.
 
 Generic harness now validates finite integer response bounds 128-4096 before any
 model work, retains per-case default 2048 and sets the temporary runtime ceiling
@@ -361,11 +370,24 @@ three added tests. All 16 offline tests, compile, default/extended Compose and
 whitespace checks passed. This is tooling evidence, not a model-quality pass.
 Full-workflow fidelity, unseen passage and actual all-stage time remain unmet.
 
+## Iteration 20: clean-source 9B factual sanity
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-clean-sanity-20261021T1647Z`.
+Use the previously prepared clean_control source version with the same intended
+facts, instead of noisy_control. Instructions, schema, model and sampling match
+iteration19, with seed42, thinking2048, response4096 and context8192. This establishes a clean-source capability
+baseline rather than further tuning one noisy case. Human wording changes
+ambiguity too, not a token-level minimal pair. Private expected rubric is not
+supplied to the model. State: running, one control only. A clean pass would not
+erase failed noisy robustness or accept PT sermon/full-workflow quality; use it
+to select a distinct source-handling or representative-input diagnostic.
+No new model/download/default/deployment; all acceptance gates remain unmet.
+
 ## Delivery plan
 
 Adjustments: explicit 9B authorization now received. Download/verification and a
-single synthetic gate precede more sermon requests. All completed9B controls
-remain rejected; test increased reasoning headroom before further prompt cycles.
+single synthetic gate precede more sermon requests. All completed 9B controls
+remain rejected; establish clean-source capability before more noisy-case tuning.
 Source normalization did not
 pass, so do not spend a full-run budget on its outputs. Full-recording quality/time
 gates PR finalization; record each
