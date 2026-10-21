@@ -335,6 +335,17 @@ pending approval), a fixed evaluation set, and a four-stage plan / write with
 carried context / whole-sermon review / deterministic check workflow. Generation
 stays local on Lara. Details and rationale: `ai-generation-iterations.md`,
 "Pivot: workflow redesign".
+
+2026-10-21 evening: GPU runtime merged into this branch (PR #14, squash
+bdfd56c). The user approved and Lara now holds the verified Qwen3.6-35B-A3B
+UD-IQ4_XS candidate (17.73 GB). Three full-sermon runs of the redesigned
+workflow took 66, 35 and 39 minutes. Boundaries, Bible passages, the user's notes
+and most agency/negation points are correct; multi-person story errors remain,
+one rooted in garbled speech recognition. The quality gate is not met. CPU
+package temperature reached 100 C with heavy throttle-counter increases during
+combined CPU+GPU load (mean about 80 C). Details: `ai-generation-iterations.md`,
+"Redesigned workflow runs". Transcription was restarted and healthy after every
+run.
 Generic response validation/defaults and 16 offline/compile/Compose checks remain
 as documented; no new executable change in this increment.
 No new download, deployment or production translation workflow.

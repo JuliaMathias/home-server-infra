@@ -431,6 +431,73 @@ stopped during generation, then a mixture-of-experts candidate (download needs
 separate user approval). Evaluation uses one fixed case set with private
 checklists and changes one factor at a time. See `ai-status.md` for state.
 
+## Redesigned workflow runs (2026-10-21)
+
+Private prototype, reference checklist (confirmed by the user) and run outputs:
+`/srv/lara/ai/data/evaluations/notes-workflow-20261021`. Reader copies are in
+the user's private Drive folder. All runs: Qwen3.6-35B-A3B UD-IQ4_XS, GPU auto
+(llama.cpp `--fit`, about 2.7 GiB VRAM), 22 GiB RAM cap, 32k context, reasoning
+off, temperature 0.4, seed 42, Whisper stopped and restarted healthy.
+
+GPU speed baseline (identical old section request, one sample each): 14B CPU
+1042 s, 14B GPU 821 s, 9B GPU 340 s. Partial offload speeds prompt reading
+4-7x but not decoding. The 35B mixture-of-experts model decodes about 8-12
+tokens/s and reads about 83 tokens/s in this setup.
+
+A first 9B workflow attempt failed in planning: it labelled the whole opening
+testimony as non-sermon, split sections at almost every block and added Bible
+passages that were never mentioned. Boundaries now ask only for the start block
+and the closing structure; sections are capped per window; code drops references
+whose book is not spoken nearby.
+
+Run 1 (66 min: plan 9, write 45, review 11). Boundaries matched the confirmed
+reference exactly; all four handwritten notes kept the user's wording; the
+agency, negation and judgement errors that defeated iterations 1-20 were
+correct. Failed: two people in one late story merged into one (holdout section),
+roles inverted in an illustration, a figurative phrase read literally, one
+teaching point omitted, two outside-knowledge expansions. The free-form review
+pass added commentary in the wrong sections. Every section was rewritten because
+most check flags were false positives. CPU package mean 80.4 C but peak 100 C
+(TjMax) and a package throttle-counter increase of about 55,800 (counted once),
+far above CPU-only runs; the laptop's shared cooling is the likely cause.
+
+Run 2 (35 min: plan 7.5, write 23, review 4). Changes: sections capped at 12
+blocks; explicit multi-person story rule; checks recalibrated (hard flags only
+for non-literal quotes, invalid sources, and names/numbers absent from the whole
+sermon; negation heuristic reported only); review pass may only name gaps with
+block IDs, code rejects gaps whose blocks are already cited and writes accepted
+ones with the normal rules; prompt order made cache-friendly; each NAA passage
+inserted once. Result: outside-knowledge names gone, omitted point restored,
+4 of 17 sections rewritten. Still failing: the merged-people story (its key
+relationship is garbled in the ASR text itself), an illustration's roles, the
+appeal attributed to the preacher, two handwritten notes paraphrased instead of
+kept. All six review-pass items were rejected as already cited.
+
+Run 3 (39 min: plan 7.5, write 27, review 4.3). Changes: user-confirmed
+boundaries and speaker labels as input (Notey's review step precedes generation
+in the product flow); confirmed spans as their own sections; a per-section cast
+list (who did what) emitted before the prose; handwritten notes inserted
+verbatim when the wording was not kept; NAA passages only for references
+confirmed as spoken. 15 offline tests cover the deterministic parts. Result: the
+appeal is correctly attributed to the other speaker and the closing prayer is
+brief; one note was inserted verbatim by the guarantee; no hard flags remained.
+Regressed: a figurative "another [preacher's name]" (a changed person) became a
+separate person, and the cast list reinforced it. Still failing in all three
+runs: the merged-people ending of the holdout story. That passage comes from the
+better-microphone recording and its key relationship is garbled by speech
+recognition, so the error originates in the transcript. Other moderate errors
+remain (who invited whom in an illustration, a figurative phrase read
+literally, one tense). All six review-pass items were again rejected as already
+cited, so the long-context review currently adds time (about 4 minutes) without
+changing the notes.
+
+Assessment after three runs: the workflow reliably gets boundaries, Bible
+passages, the user's notes and most agency/negation points right in 35-39
+minutes, a large improvement over iterations 1-20. It does not yet meet the
+"no unflagged critical error" gate: errors cluster in multi-person stories,
+especially where the transcript itself is garbled, and run-to-run variation can
+flip a previously correct reading. Next decisions are the user's (see status).
+
 ## Delivery plan
 
 Adjustments (2026-10-21 pivot): micro-tuning stopped; all 9B controls rejected,
