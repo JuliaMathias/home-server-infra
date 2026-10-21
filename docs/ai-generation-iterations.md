@@ -164,8 +164,23 @@ and certainty before prose generation. Two source-only regression tasks use
 existing Qwen3.5-4B, reasoning off, 4096 context and 1536 response ceiling.
 Bad drafts and answer rubrics are excluded. Unresolved references must remain
 uncertain. This is intermediate extraction, not final enhanced notes or an unseen
-holdout. State: running; review actual roles, uncertainty, coverage and unsupported
-additions before any composition stage. Full-workflow quality/time remain unmet.
+holdout. Result: both completed in 228.91s including readiness; agency request
+125.34s and kings request 98.16s. All events were incorrectly labeled negated.
+Roles improved in places, but coverage, time, context exclusion and source
+assignment failed. Explicit statements became invented unresolved questions.
+Private review.json rejects this representation; no composition was launched.
+
+## Iteration 10: minimal note schema with longer reasoning
+
+Run: `/srv/lara/ai/data/evaluations/minimal-notes-iteration10-20261021T0111Z`.
+Two identical regression sources, existing 4B model, reasoning allowance 1024,
+2048 total response and 4096 context. One notes string allows normal Markdown
+organization instead of many constrained evidence/event fields. No drafts, gold
+answers or synthetic style examples are supplied. This changes representation
+and reasoning budget together; it is not an isolated causal comparison.
+State: running. Review actor fidelity, temporal/modality preservation, coverage
+and unsupported additions before a genuinely new holdout or full-workflow run.
+All full-workflow quality/time gates remain unmet.
 
 ## Delivery plan
 

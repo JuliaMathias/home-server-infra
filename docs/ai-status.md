@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 21:39 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 22:09 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -297,9 +297,12 @@ Iteration7 critic failed: it falsely accepted critical attribution/time/uncertai
 errors. Private review is saved; no automatic repair or acceptance follows.
 Iteration8 larger-model critic also failed, accepting all nine paragraphs despite
 critical role/time errors; 392.09s request time. Private review/measurements saved.
-Latest running trial: `/srv/lara/ai/data/evaluations/events-iteration9-20261021T0040Z`.
-Source-only explicit event extraction tests actors, time and modality on two
-regressions before prose composition. No bad drafts or gold answers are supplied.
+Iteration9 source-only events also failed: all events were marked negated,
+with omissions and invented uncertainty. Private review is saved.
+Latest running trial: `/srv/lara/ai/data/evaluations/minimal-notes-iteration10-20261021T0111Z`.
+Minimal notes-string format plus longer bounded reasoning tests whether dense
+output structures and short thinking allowances hinder source fidelity.
+No draft, gold answer or synthetic style example is supplied.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional
