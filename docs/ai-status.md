@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 00:11 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 12:38 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -311,11 +311,16 @@ one synthetic pair, not sermon acceptance or a causal sampling-quality claim.
 Iteration13 normalization failed fidelity/traceability after three requests in
 435.28s; dropped IDs/context boundaries and introduced a quotation typo. No
 composition was run from those outputs. Private review saved; no inference active.
-Prepared proposal: `/srv/lara/ai/data/evaluations/qwen35-9b-proposal-20261021T0310Z`.
-Pinned isolated 9B metadata and first-control evaluation plan validated. Download
-requires explicit user authorization, requested but not yet received. No weights,
-coordinator or workload for this candidate have been started. Quality, runtime fit
-and the 30-minute full-workflow goal are unproven; defaults remain unchanged.
+The user authorized the prepared 9B comparison by saying "please continue" after
+the explicit download question. Original proposal and authorization are preserved.
+Current single coordinator:
+`/srv/lara/ai/data/evaluations/qwen35-9b-preparation-20261021T1537Z`.
+Download is progressing; after size/SHA-256 verification it runs only the identical
+noisy synthetic control at `qwen35-9b-control-20261021T1537Z`. Check actual state
+before any further workload; no sermon regressions are queued. Model fit, quality,
+speed and the 30-minute full-workflow goal remain unmeasured for this candidate.
+The isolated pinned recipe is in `ai/generation/candidate-qwen35-9b.json`.
+Default/deployed services and original weights are unchanged.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional

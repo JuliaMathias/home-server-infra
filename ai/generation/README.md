@@ -214,5 +214,18 @@ from the configured cap or the length of returned reasoning text.
 `python3 -m unittest discover -v -p 'test_*.py'` from this directory runs thirteen
 offline behavioral tests, including invalid controls and preservation of off-mode
 behavior. These checks establish tooling contracts, not improved factual quality.
-The 256-token experiment completed but failed fidelity/evidence/style acceptance;
-a separate critic experiment is now in progress. See the iteration log.
+The 256-token experiment and later critic/normalization trials failed semantic
+acceptance. Consult the iteration log for the current candidate and evidence;
+these tooling checks do not validate a note-generation workflow.
+
+
+### Authorized 9B evaluation candidate
+
+`candidate-qwen35-9b.json` pins a separate Qwen3.5-9B Q5_K_M candidate from
+Unsloth: 6,577,841,376 bytes, with immutable revision and SHA-256. Use the same
+explicit downloader/batch candidate arguments as the 4B trial. The user authorized
+this comparison separately; the default 14B recipe is unchanged. Download and
+full hash verification precede one noisy-source synthetic control, which must
+pass semantic review before sermon regressions. Hardware fit, quality and speed
+are measured gates, not consequences of a valid manifest. No production switch
+is implied. See the iteration log for actual preparation/control paths and state.

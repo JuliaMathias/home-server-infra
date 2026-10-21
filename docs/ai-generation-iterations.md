@@ -243,7 +243,7 @@ context/target boundary; synthetic punctuation did not preserve the important
 supervisor/refusal boundary clearly. Uncertainty flags missed hard ambiguities
 and added speculation. Private review.json records details; no composition ran.
 
-## Proposed next model comparison: requires authorization
+## Next model comparison: authorized preparation
 
 Prepared metadata and plan:
 `/srv/lara/ai/data/evaluations/qwen35-9b-proposal-20261021T0310Z`.
@@ -251,8 +251,9 @@ Qwen3.5-9B Q5_K_M, publisher Unsloth, 6,577,841,376 bytes; revision
 `3885219b6810b007914f3a7950a8d1b469d598a5`, SHA-256
 `dc2a39aef291f91a9116ad214058da0d86eb648743a124bd8c333787c4b9c91c`.
 Candidate metadata passes the existing safe-path/pin validator. No weights were
-downloaded and no inference or coordinator is queued. User approval requested
-because further model downloads require separate authorization in this evaluation.
+downloaded at proposal time. The user subsequently said "please continue" after
+the explicit download/evaluation question on 2026-10-21, authorizing this candidate.
+The original proposal is preserved; authorization evidence is recorded privately.
 
 Rationale: repeated role/time failures survived representation, thinking, critic,
 sampling and conservative-cleanup experiments. A distinct model comparison is
@@ -268,11 +269,26 @@ Primary sources checked 2026-10-21:
 - https://huggingface.co/Qwen/Qwen3.5-9B
 - https://huggingface.co/unsloth/Qwen3.5-9B-GGUF/tree/3885219b6810b007914f3a7950a8d1b469d598a5
 
+## Iteration 14: authorized 9B noisy-source control
+
+Preparation: `/srv/lara/ai/data/evaluations/qwen35-9b-preparation-20261021T1537Z`.
+Single control: `/srv/lara/ai/data/evaluations/qwen35-9b-control-20261021T1537Z`.
+One coordinator downloads the exact pinned candidate, verifies full size/hash,
+and then starts only the noisy synthetic control. It does not queue sermon
+regressions. Existing runtime/container locks still prevent duplicate inference.
+The noisy control, seed 42, context 4096, total 2048, reasoning 1024 and recommended
+sampling match iteration12; model selection is the intended difference. Actual
+slot settings and raw responses remain private. Download is progressing; loading,
+fit, quality and time have not yet passed. Review meaning before further tasks.
+The pinned recipe is tracked as `ai/generation/candidate-qwen35-9b.json`;
+weights stay outside Git. Default model, service deployment and network unchanged.
+
 ## Delivery plan
 
-Adjustments: awaiting explicit download authorization before another candidate;
-no active inference. Source normalization did not pass, so do not spend a full-run
-budget on its outputs. Full-recording quality/time gates PR finalization; record each
+Adjustments: explicit 9B authorization now received. Download/verification and a
+single synthetic gate precede more sermon requests. Source normalization did not
+pass, so do not spend a full-run budget on its outputs. Full-recording quality/time
+gates PR finalization; record each
 iteration here, with failures preserved. Smaller-model or resource experiments
 remain options only if current workflow cannot meet both gates. Do not lower
 quality or silently shorten the requested output to claim speed. Keep the issue
