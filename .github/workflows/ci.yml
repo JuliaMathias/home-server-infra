@@ -1,0 +1,98 @@
+# Continuous integration for the shared infrastructure repository.
+#
+# Scope: deterministic checks that need no GPU, model files, secrets or access
+# to Lara. Live smoke tests, GPU behaviour and transcription/generation quality
+# are verified separately on Lara (see ai/transcription/README.md).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  transcription-tests:
+    name: Transcription service tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # Builds the Dockerfile's `test` stage, the same command the README uses
+      # on Lara, so CI exercises the pinned base image and requirements.lock.
+      # A plain `docker build` is deliberate: the CUDA base plus test image is
+      # about 9 GB, and a Buildx layer cache would store a second copy on a
+      # runner with limited disk and exceed the repository cache quota.
+      - name: Build the test image
+        run: docker build --target test -t home-server-transcription:test ai/transcription
+
+      - name: Run the tests
+        run: docker run --rm --tmpfs /tmp:mode=1777 home-server-transcription:test
+
+  generation-tests:
+    name: Generation helper tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # These tests are only on branches that contain ai/generation/test_*.py;
+      # the job is a no-op elsewhere so the workflow works before and after
+      # they reach main.
+      - name: Detect generation tests
+        id: detect
+        run: |
+          if compgen -G 'ai/generation/test_*.py' > /dev/null; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "No ai/generation/test_*.py files on this revision; skipping."
+          fi
+
+      - if: steps.detect.outputs.present == 'true'
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.14'
+
+      - name: Run the tests
+        if: steps.detect.outputs.present == 'true'
+        run: python -m unittest discover -v -s ai/generation -p 'test_*.py'
+
+  config-checks:
+    name: Compose and script checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      # `docker compose config` validates syntax, schema and variable
+      # interpolation without starting containers or needing the external
+      # lara-backend network. Any compose.<name>.yaml next to a compose.yaml is
+      # checked as an overlay on that base file. The dummy image reference
+      # only satisfies the generation file's required GENERATION_IMAGE.
+      - name: Validate Compose files
+        env:
+          GENERATION_IMAGE: registry.invalid/llama.cpp@sha256:0000000000000000000000000000000000000000000000000000000000000000
+        run: |
+          set -euo pipefail
+          while IFS= read -r base; do
+            dir=$(dirname "$base")
+            echo "::group::$base"
+            docker compose -f "$base" config --quiet
+            for overlay in "$dir"/compose.*.yaml; do
+              [ -e "$overlay" ] || continue
+              echo "overlay: $overlay"
+              docker compose -f "$base" -f "$overlay" config --quiet
+            done
+            echo "::endgroup::"
+          done < <(find . -name compose.yaml -not -path './.git/*' | sort)
+
+      - name: Lint shell scripts
+        run: shellcheck scripts/*.sh

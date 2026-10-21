@@ -78,6 +78,25 @@ Notey's application project is `/Users/thejuliamathias/Projects/Personal/notey`.
 See [scope, evaluation handoff and model-review policy](docs/ai-scope-and-model-review.md)
 for the current boundary, monthly review and private test-data pointers.
 
+## Continuous integration
+
+`.github/workflows/ci.yml` runs on every pull request and on pushes to `main`.
+It runs checks that need no GPU, model files, secrets or access to Lara:
+
+- Transcription service tests: builds the Dockerfile `test` stage and runs
+  `pytest` inside it, the same commands as in
+  [`ai/transcription/README.md`](ai/transcription/README.md#tests).
+- Generation helper tests: `unittest` discovery of `ai/generation/test_*.py`.
+  The job does nothing on revisions without those files.
+- Compose and script checks: `docker compose config` on every `compose.yaml`
+  (plus any `compose.*.yaml` overlay on top of it) and `shellcheck` on `scripts/`.
+
+CI does not establish transcription or generation quality, GPU fit, deployment
+health or the live API behaviour. Those checks stay manual on Lara (for example
+`ai/transcription/tests/live_smoke.py`). A green CI run means the code and
+configuration are sound, not that a change is deployed or accepted. The checks
+are not yet required by branch protection.
+
 ## Application routing
 
 See [private application ingress](docs/application-ingress.md) for independent
