@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 13:19 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 13:23 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -319,9 +319,11 @@ Private review and measurements are saved; no sermon regression was run.
 Thinking-off control completed in 108.31s but still failed invented relationships
 and causes. Private review saved; no sermon regression was launched.
 Current single comparison:
-`/srv/lara/ai/data/evaluations/qwen35-9b-no-grammar-20261021T1619Z`.
-Remove only the runtime JSON constraint with identical source/settings; raw
-response and any format failure remain preserved. No new download or deployment.
+`/srv/lara/ai/data/evaluations/qwen35-9b-english-control-20261021T1623Z`.
+The grammar-free control failed format AND factual review in 87.26s, with raw
+response preserved; no automatic repair. The new English rendition of the
+fictional source investigates language sensitivity, not sermon acceptance.
+No new download, deployment or production translation workflow.
 Quality and complete 30-minute workflow acceptance remain unproven.
 See `ai-generation-review.md` for the required private manual review procedure.
 Default/deployed services and original weights remain unchanged.

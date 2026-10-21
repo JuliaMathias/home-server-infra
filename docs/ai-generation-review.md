@@ -14,6 +14,7 @@ This procedure reviews private evaluation evidence; it does not implement Notey.
 - First 9B control: `/srv/lara/ai/data/evaluations/qwen35-9b-control-20261021T1537Z`.
 - Thinking-off comparison: `/srv/lara/ai/data/evaluations/qwen35-9b-off-control-20261021T1615Z`.
 - Unconstrained comparison: `/srv/lara/ai/data/evaluations/qwen35-9b-no-grammar-20261021T1619Z`.
+- English diagnostic: `/srv/lara/ai/data/evaluations/qwen35-9b-english-control-20261021T1623Z`.
 - Each contains `cases.json`, `rubric.json`, `noisy_control.json`, `status.json`,
   `sampling.json`, runtime configuration, logs and telemetry. An active run may
   not yet have its response. Never restart it or create another job for review.
@@ -67,7 +68,9 @@ trial container; never stop Whisper or remove other data as review cleanup.
   `review.json` and `measurements.json` retained in that run directory.
 - Thinking-off comparison: assistant reviewed 2026-10-21, failed unsupported
   relationships and causes; private review.json retained.
-- Unconstrained comparison: running at introduction; inspect actual status.
-  A format failure still preserves raw response for separate semantic review.
+- Unconstrained comparison: assistant reviewed 2026-10-21; failed format and
+  semantic review. Raw code-fenced response and private review.json retained.
+- English diagnostic: running at introduction; inspect actual state. A pass here
+  would not validate Portuguese notes or a translation workflow.
 - Sermon regressions, new holdout and complete-workflow acceptance: not passed.
   See the maintained iteration log for later evidence and current next action.

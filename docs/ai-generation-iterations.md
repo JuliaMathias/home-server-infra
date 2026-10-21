@@ -312,8 +312,23 @@ wrapper records the actual unconstrained request and raw response; it does not
 wrap/repair model output. Invalid JSON remains a failed record for separate
 semantic inspection. Offline assertions verify removed grammar, unchanged seed
 and untouched preflight. This tests a runtime interaction hypothesis, not an
-assertion that the runtime has a bug. State: running; one sample/cache effects
-limit conclusions. No new model or deployment. Full-workflow gates remain unmet.
+assertion that the runtime has a bug. Result: 87.26s; raw response uses code fences
+and a notes array, failing JSON parsing. Source review ALSO fails person identity,
+previous familiarity negation and conjecture. Raw response preserved; no wrapping
+or silent repair. Removing grammar did not eliminate critical errors. One sample
+and cache effects limit conclusions; no upstream-bug claim follows.
+
+## Iteration 17: English source sensitivity control
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-english-control-20261021T1623Z`.
+Same existing 9B/off/profile/seed/context/output/schema as15; instructions/source
+rendered in English with the same intended fictional facts and informal style.
+Expected-fact rubric remains private and excluded from requests. This investigates
+language sensitivity before another Portuguese prompt variant. Human-authored
+translation changes wording/prepositions too: not a token-level minimal pair or
+a definitive language-causality test. State: running. Even a synthetic English
+pass does not accept PT notes or an untested translation workflow. No downloads
+or deployment changes; all full-workflow gates remain unmet.
 
 ## Delivery plan
 
