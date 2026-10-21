@@ -71,3 +71,8 @@ No live routing switch has been performed in this PR. N01 stays open until its
 actual deployment/restart/device checks pass. N20 later verifies the access boundary
 for real private source/result/export routes; N22 owns automatic updates/backups.
 No further shared infrastructure change is required for the empty foundation.
+
+PR workflow update (2026-10-21): the user approved the global structured PR
+template and explicitly requested it in this companion PR. The repository
+template and manual-testing decision are now adopted. No runtime scope or
+deployment/acceptance sequence changes; user merge and live checks remain pending.

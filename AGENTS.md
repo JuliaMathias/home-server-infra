@@ -88,3 +88,7 @@
   commits with complete bodies, prepare a linked PR, and leave merging to the user.
 - Monthly reviews recommend meaningful model comparisons within measured
   hardware limits. They do not authorize downloads, heavy benchmarks or switches.
+
+## Pull request descriptions
+
+Use `.github/PULL_REQUEST_TEMPLATE.md` in the canonical infrastructure repository and keep the Mac staging copy synchronized. It is adapted from the global baseline: include an explicit manual-testing decision and, when needed, runnable instructions with actual execution status. Distinguish configuration checks, live service integration and model-quality evidence. Keep unrun runtime/deployment gates visible and adapt the template if the project workflow changes.
