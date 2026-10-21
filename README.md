@@ -77,3 +77,6 @@ resource management and evaluation. Applications own their domain data and flows
 Notey's application project is `/Users/thejuliamathias/Projects/Personal/notey`.
 See [scope, evaluation handoff and model-review policy](docs/ai-scope-and-model-review.md)
 for the current boundary, monthly review and private test-data pointers.
+
+Generation workflow experiments and their outstanding quality/time gates are
+recorded in [the evaluation log](docs/ai-generation-iterations.md).

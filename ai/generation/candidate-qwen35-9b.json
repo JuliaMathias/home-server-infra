@@ -1,0 +1,14 @@
+{
+  "status": "evaluation_candidate_not_selected",
+  "base_repository": "Qwen/Qwen3.5-9B",
+  "repository": "unsloth/Qwen3.5-9B-GGUF",
+  "revision": "3885219b6810b007914f3a7950a8d1b469d598a5",
+  "filename": "Qwen3.5-9B-Q5_K_M.gguf",
+  "bytes": 6577841376,
+  "sha256": "dc2a39aef291f91a9116ad214058da0d86eb648743a124bd8c333787c4b9c91c",
+  "model_directory": "qwen3.5-9b",
+  "alias": "qwen35-9b-trial",
+  "license": "Apache-2.0",
+  "metadata_checked": "2026-10-21",
+  "note": "Separately authorized evaluation candidate. User continued after the explicit 6.58 GB comparison question on 2026-10-21. No default/deployment switch. Third-party quantization of official base; exact publisher revision, bytes and hash pinned."
+}

@@ -146,3 +146,86 @@ cache/warm-state effects and one sample per condition. This experiment changes
 prompt/output style together and excludes later composition cost; it establishes
 neither an isolated causal speedup nor whole-sermon performance. Keep full
 application orchestration and production prompts in the consuming project.
+
+
+### Reviewed comparison result (2026-10-20, issue #9)
+
+All four requests completed without truncation, but all failed semantic
+acceptance. Compact output took 135/149 seconds versus prose 277/353 seconds
+on the paired fixtures, with fewer output tokens. It omitted required facts;
+prose retained more but introduced unsupported interpretation. Complete JSON and
+recognized source IDs did not establish supporting evidence or coverage.
+
+The schema's maximum of six entries may bias selection toward early facts.
+Before another test, consider required proposition slots, full-source coverage
+and ambiguity checks. Do not automatically rerun, accept either prompt or
+extrapolate to full-sermon speed. One sample per condition, prompt cache/order
+and missing second-stage composition cost limit the comparison. Private
+comparison-review.json and comparison-measurements.json retain the audit.
+
+
+## Explicit alternative candidates
+
+`download-model.py --candidate candidate-qwen35-4b.json` downloads a separately
+pinned Qwen3.5-4B Q5_K_M evaluation candidate into its own model directory. The
+base model is official Qwen; this GGUF is published by Unsloth. The 3,143,656,608
+bytes and SHA-256 are pinned from publisher metadata. Preserve the original
+14B candidate and weights. Nothing changes the default runtime/model selection.
+
+`run-batch.py --candidate candidate-qwen35-4b.json --run-dir PRIVATE_NEW_RUN
+--cases PRIVATE_CASES --context 4096` explicitly selects that candidate. It checks
+identity against the private verified manifest, records candidate.json in the
+run, and supplies the distinct container path/alias to Compose. Existing global
+locking, active-container refusal, resource limits and cleanup still apply.
+Do not start a comparison until the previous generation container has stopped.
+Text-only CPU evaluation uses the existing image and no vision projector/GPU.
+
+`python3 -m unittest -v test_candidates` runs nine offline tests with synthetic
+bytes: original/alternative path isolation, pinned metadata/path validation,
+atomic valid/corrupt downloads, existing mismatch preservation and no duplicate
+network work for valid weights, foreign-manifest preservation and recovery of
+a missing manifest only after checking complete existing bytes. These establish
+tooling behavior, not model fit or fidelity. Compile checks and both default/alternative Compose config checks
+are separate from actual inference.
+
+Sources checked 2026-10-20:
+- https://huggingface.co/Qwen/Qwen3.5-4B
+- https://huggingface.co/unsloth/Qwen3.5-4B-GGUF/tree/e87f176479d0855a907a41277aca2f8ee7a09523
+- https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/src/llama-arch.cpp
+- https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/tools/server/README.md
+
+The pinned runtime recognizes qwen35 and supports explicit reasoning off. These
+are compatibility prerequisites, not proof that the quantization loads or that
+it meets this task. Newer/smaller is not automatically better; use the same
+private regression/holdout sources and review full workflow time and quality.
+
+
+## Bounded reasoning experiments
+
+`run-batch.py --reasoning on --reasoning-budget 256` explicitly enables a bounded
+thinking comparison. Default is off, with zero effective thinking allowance.
+Allowed budgets are 0-2048; negative/unbounded values fail before model work.
+`max_tokens` still caps the entire response, including reasoning plus visible
+output. Record both settings and inspect actual response reasoning metadata.
+Compose stores the effective controls in each run's configuration; status records
+the mode and allowance. Do not infer the exact number of thinking tokens merely
+from the configured cap or the length of returned reasoning text.
+
+`python3 -m unittest discover -v -p 'test_*.py'` from this directory runs thirteen
+offline behavioral tests, including invalid controls and preservation of off-mode
+behavior. These checks establish tooling contracts, not improved factual quality.
+The 256-token experiment and later critic/normalization trials failed semantic
+acceptance. Consult the iteration log for the current candidate and evidence;
+these tooling checks do not validate a note-generation workflow.
+
+
+### Authorized 9B evaluation candidate
+
+`candidate-qwen35-9b.json` pins a separate Qwen3.5-9B Q5_K_M candidate from
+Unsloth: 6,577,841,376 bytes, with immutable revision and SHA-256. Use the same
+explicit downloader/batch candidate arguments as the 4B trial. The user authorized
+this comparison separately; the default 14B recipe is unchanged. Download and
+full hash verification precede one noisy-source synthetic control, which must
+pass semantic review before sermon regressions. Hardware fit, quality and speed
+are measured gates, not consequences of a valid manifest. No production switch
+is implied. See the iteration log for actual preparation/control paths and state.
