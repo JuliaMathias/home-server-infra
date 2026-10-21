@@ -382,16 +382,63 @@ supplied to the model. State: running, one control only. A clean pass would not
 erase failed noisy robustness or accept PT sermon/full-workflow quality; use it
 to select a distinct source-handling or representative-input diagnostic.
 No new model/download/default/deployment; all acceptance gates remain unmet.
+Result: 394.01s request (430 prompt tokens at 38.6 tokens/s, 2120 completion
+tokens at 5.5 tokens/s), valid JSON, normal stop. Visible notes cover only S1;
+S2-S6 are absent, so eight of nine rubric facts are missing. Even a clean,
+already note-like source fails coverage with bounded thinking on. Private
+review.json saved.
+
+## Pivot: workflow redesign (2026-10-21)
+
+The user reviewed iterations 1-20 with a second assistant (Claude) and stopped
+single-sample prompt, sampling and thinking micro-tuning. Twenty iterations varied
+those settings but never changed the three factors that dominate the outcome:
+
+1. Model capability: 4-14B dense models produce actor, tense and negation errors
+   when paraphrasing noisy Portuguese, and fail to catch them as critics.
+2. Request shape: large source blocks in, one polished answer out, with no
+   per-paragraph link back to the exact source sentences it relies on.
+3. Hardware use: `compose.yaml` runs the CPU-only image with zero GPU layers.
+   Prompt reading at roughly 16-39 tokens/s makes a ~15k-token sermon cost about
+   ten minutes per full pass before any writing.
+
+Confirmed requirements (user, 2026-10-21): real enhanced notes in the user's own
+style, integrating handwritten notes when present and fully generated from the
+transcript otherwise; not headings only and not reformatted transcript; local
+generation on Lara only; Notey's review/edit step is the safety net, so the goal
+is few errors that are clearly flagged.
+
+Workflow under evaluation (prototype here; Notey owns the production version):
+
+1. Plan: label non-sermon spans (kept as proposed exclusions, never deleted, edge
+   cases flagged), split the sermon into real sections with sentence IDs, and
+   build a short sermon map of section titles and main points.
+2. Write: enhanced prose one section at a time, in order, with the sermon map,
+   the notes already written for earlier sections (verbatim while they fit,
+   else previous section plus a digest), that section's corrected source
+   sentences, the matching handwritten notes, a short excerpt of the user's own
+   enhanced notes as style reference, and Bible passages from the fixture
+   database. Every paragraph returns its source sentence IDs.
+3. Whole-sermon review: one long-context pass over the draft, the map and the
+   full sermon transcript proposes missing points, cross-section connections and
+   merges, each with source IDs, inserted as visibly marked additions.
+4. Deterministic checks of each paragraph against its cited sentences
+   (negations, names/numbers/dates, Bible references, verbatim quotations,
+   future/past markers); one targeted rewrite, then flag for review.
+
+Runtime/model changes evaluated first: GPU-offloaded llama.cpp with Whisper
+stopped during generation, then a mixture-of-experts candidate (download needs
+separate user approval). Evaluation uses one fixed case set with private
+checklists and changes one factor at a time. See `ai-status.md` for state.
 
 ## Delivery plan
 
-Adjustments: explicit 9B authorization now received. Download/verification and a
-single synthetic gate precede more sermon requests. All completed 9B controls
-remain rejected; establish clean-source capability before more noisy-case tuning.
-Source normalization did not
-pass, so do not spend a full-run budget on its outputs. Full-recording quality/time
-gates PR finalization; record each
-iteration here, with failures preserved. Smaller-model or resource experiments
-remain options only if current workflow cannot meet both gates. Do not lower
-quality or silently shorten the requested output to claim speed. Keep the issue
-as the tracked task; this file records evidence, not a competing app backlog.
+Adjustments (2026-10-21 pivot): micro-tuning stopped; all 9B controls rejected,
+including the clean-source sanity check. Next, in order: GPU runtime and speed
+measurement on existing weights; mixture-of-experts candidate proposal (user
+approval before download); fixed evaluation set with user-skimmed checklists;
+four-stage workflow prototype; full-sermon end-to-end run timed against the
+around-30-minute target and read by the user. Full-recording quality/time still
+gates PR finalization. Do not lower quality or silently shorten output to claim
+speed. Keep the issue as the tracked task; this file records evidence, not a
+competing app backlog.

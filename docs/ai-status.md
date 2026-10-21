@@ -318,7 +318,7 @@ negation despite a normal stop/valid JSON, after 225.75s request plus 11.09s loa
 Private review and measurements are saved; no sermon regression was run.
 Thinking-off control completed in 108.31s but still failed invented relationships
 and causes. Private review saved; no sermon regression was launched.
-Current single comparison:
+Last single comparison (now reviewed):
 `/srv/lara/ai/data/evaluations/qwen35-9b-clean-sanity-20261021T1647Z`.
 The grammar-free control failed format AND factual review in 87.26s, with raw
 response preserved; no automatic repair. English also failed actor/negation
@@ -326,9 +326,15 @@ and unsupported-addition checks in 94.11s. Private reviews are saved.
 Conservative-profile control also failed identities/dates/qualifiers in 113.10s.
 Larger-headroom control also failed the same factual gate after 487.30s. Raw
 reviews/measurements retained, with no budget-exhaustion cause established.
-Current clean-source 9B sanity keeps the larger bounds/settings and uses the
-already-prepared clean version of the fictional story. This is diagnostic only;
-it does not remove failed noisy-input robustness or accept a production workflow.
+Clean-source 9B sanity also failed: 394.01s, notes covered only the first of
+six source blocks. Private review saved.
+
+On 2026-10-21 the user stopped single-sample micro-tuning and approved a
+workflow redesign: GPU-enabled runtime, a mixture-of-experts candidate (download
+pending approval), a fixed evaluation set, and a four-stage plan / write with
+carried context / whole-sermon review / deterministic check workflow. Generation
+stays local on Lara. Details and rationale: `ai-generation-iterations.md`,
+"Pivot: workflow redesign".
 Generic response validation/defaults and 16 offline/compile/Compose checks remain
 as documented; no new executable change in this increment.
 No new download, deployment or production translation workflow.
