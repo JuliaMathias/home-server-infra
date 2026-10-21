@@ -1,0 +1,16 @@
+{
+  "status": "evaluation_candidate_not_selected",
+  "base_repository": "Qwen/Qwen3.6-35B-A3B",
+  "base_revision": "995ad96eacd98c81ed38be0c5b274b04031597b0",
+  "repository": "unsloth/Qwen3.6-35B-A3B-GGUF",
+  "revision": "a483e9e6cbd595906af30beda3187c2663a1118c",
+  "filename": "Qwen3.6-35B-A3B-UD-IQ4_XS.gguf",
+  "bytes": 17730509792,
+  "sha256": "649d7508507b84638732c4f52c24c8b15843c6dca2f3ff793ae07c14a67ebbb3",
+  "model_directory": "qwen3.6-35b-a3b",
+  "alias": "qwen36-35b-a3b-trial",
+  "license": "Apache-2.0",
+  "architecture": "qwen3_5_moe (mixture of experts, about 3B active parameters per token)",
+  "metadata_checked": "2026-10-21",
+  "note": "Mixture-of-experts candidate for the redesigned notes workflow. Text-only use; the vision projector is not downloaded. Run with GPU layers auto so llama.cpp --fit keeps experts in RAM. No default/deployment switch. User approved this exact 17.73 GB download on 2026-10-21 (17:37 BRT) in answer to an explicit download question."
+}
