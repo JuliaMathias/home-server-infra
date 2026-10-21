@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 13:23 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 13:26 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -319,10 +319,12 @@ Private review and measurements are saved; no sermon regression was run.
 Thinking-off control completed in 108.31s but still failed invented relationships
 and causes. Private review saved; no sermon regression was launched.
 Current single comparison:
-`/srv/lara/ai/data/evaluations/qwen35-9b-english-control-20261021T1623Z`.
+`/srv/lara/ai/data/evaluations/qwen35-9b-conservative-control-20261021T1627Z`.
 The grammar-free control failed format AND factual review in 87.26s, with raw
-response preserved; no automatic repair. The new English rendition of the
-fictional source investigates language sensitivity, not sermon acceptance.
+response preserved; no automatic repair. English also failed actor/negation
+and unsupported-addition checks in 94.11s. Private reviews are saved.
+Current conservative profile changes temperature1->0.2 and presence1.5->0 on
+the identical Portuguese control. Review unchanged gates before further tasks.
 No new download, deployment or production translation workflow.
 Quality and complete 30-minute workflow acceptance remain unproven.
 See `ai-generation-review.md` for the required private manual review procedure.

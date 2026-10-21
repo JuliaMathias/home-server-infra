@@ -326,9 +326,22 @@ rendered in English with the same intended fictional facts and informal style.
 Expected-fact rubric remains private and excluded from requests. This investigates
 language sensitivity before another Portuguese prompt variant. Human-authored
 translation changes wording/prepositions too: not a token-level minimal pair or
-a definitive language-causality test. State: running. Even a synthetic English
-pass does not accept PT notes or an untested translation workflow. No downloads
-or deployment changes; all full-workflow gates remain unmet.
+a definitive language-causality test. Result: 94.11s, failed narrator/visitor
+roles, invented sequence, explicit not-yet contact changed to uncertainty and
+unsupported supervisor refusal. Private review.json saved. English did not
+eliminate the failures; no production translation workflow follows.
+
+## Iteration 18: conservative sampling on the identical PT source
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-conservative-control-20261021T1627Z`.
+Same 9B/off/case/messages/schema/context/output/seed as15; temperature1->0.2 and
+presence penalty1.5->0, other sampling unchanged. Hypothesis: reduce variation
+and avoid discouraging reuse of factual names/words. This profile changes two
+parameters together, not an isolated causal test. Repetition/copying and the
+original factual gates remain checked; lower randomness does not guarantee
+accuracy.
+State: running, one synthetic control only. No new weights/default/deployment;
+full-workflow fidelity,new unseen passage and all-stage time remain unmet.
 
 ## Delivery plan
 
