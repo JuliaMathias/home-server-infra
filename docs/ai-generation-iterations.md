@@ -214,13 +214,32 @@ A private wrapper mutates and records actual request settings using the canonica
 harness; it leaves tracked/deployed defaults unchanged. Offline wrapper checks
 passed for payload updates, seed retention and unaffected preflight. Resolved slot
 parameters are saved when the runtime exposes them, with failures recorded.
-State: running. This tests a multi-parameter profile, not the isolated cause of
-errors; one sample/order/cache limitations remain. No new weights downloaded.
-Neither a synthetic pass nor runtime success accepts the sermon/full workflow.
+Result: both completed in 340.65s (clean174.55s, noisy160.78s). Saved slot
+parameters confirm the entire requested profile was applied. Clean passes the
+predeclared factual control rubric, with awkward/misplaced headings still noted;
+noisy fails metaphor/actor, date, delay and refusal meanings. Private review.json
+records both. This supports another source-handling diagnostic, not a claim that
+sampling alone caused improvement or that sermon notes are accepted. Single
+sample/order/cache limitations remain; no weights or deployed defaults changed.
 
 Primary sources checked 2026-10-20:
 - https://huggingface.co/Qwen/Qwen3.5-4B#best-practices
 - https://github.com/ggml-org/llama.cpp/blob/31288c9c66e59377f7788d920678a565bb89dd37/tools/server/README.md
+
+## Iteration 13: conservative transcript normalization
+
+Run: `/srv/lara/ai/data/evaluations/normalization-iteration13-20261021T0241Z`.
+Hypothesis: punctuation and conservative cleanup before note composition may
+improve interpretation of noisy text. Three tasks: synthetic noisy control and
+the same agency/kings regression sources. Existing4B with recommended sampling,
+reasoning512, total2048, context4096. First-person narration, all substantive
+content, numbers, modal qualifiers and source boundaries must be preserved.
+Unclear spans remain verbatim with separate uncertainty flags; no external
+knowledge or expected answers. Original sources remain unchanged outside Git.
+State: running. Compare normalized text against raw line by line before creating
+any notes from it. Do not silently repair model errors or promote a clean-looking
+transcript to evidence of fidelity. This is intermediate AI evaluation only,
+not a production correction workflow. Full-workflow gates remain unmet.
 
 ## Delivery plan
 

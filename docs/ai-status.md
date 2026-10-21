@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 23:10 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 23:40 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -305,10 +305,12 @@ Private review and measurements are saved.
 Iteration11 clean/noisy synthetic controls both failed. Clean preserved most
 facts but added a reversed recipient; noisy had several further meaning errors.
 Source noise alone does not explain all observed failures. Private review saved.
-Latest running trial: `/srv/lara/ai/data/evaluations/sampling-control-iteration12-20261021T0212Z`.
-Same controls with the official general-thinking sampling profile, recorded through
-a private wrapper. Tracked/default settings unchanged; no additional download.
-This is diagnostic, not sermon or full-workflow acceptance.
+Iteration12 recommended-sampling profile was confirmed by actual slot settings.
+Clean factual control passes; noisy control fails several core meanings. This is
+one synthetic pair, not sermon acceptance or a causal sampling-quality claim.
+Latest running trial: `/srv/lara/ai/data/evaluations/normalization-iteration13-20261021T0241Z`.
+Conservative punctuation/cleanup on one synthetic and two sermon regressions;
+review meaning preservation before any note composition. Originals untouched.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional
