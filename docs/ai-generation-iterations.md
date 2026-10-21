@@ -278,10 +278,28 @@ and then starts only the noisy synthetic control. It does not queue sermon
 regressions. Existing runtime/container locks still prevent duplicate inference.
 The noisy control, seed 42, context 4096, total 2048, reasoning 1024 and recommended
 sampling match iteration12; model selection is the intended difference. Actual
-slot settings and raw responses remain private. Download is progressing; loading,
-fit, quality and time have not yet passed. Review meaning before further tasks.
+slot settings and raw responses remain private. Download size/hash verified and
+actual 9B loading succeeded. Readiness 11.09s, request 225.75s, decode 5.72tokens/s.
+The response failed: valid JSON/stop but ends mid-sentence in S2, omits S3-S6 and
+reverses an explicit negation. 1234 completion tokens of 2048, runtime truncated=0;
+this is semantic early completion, not an output-limit failure. Private review.json
+and measurements.json preserve evidence. Package mean/peak75.2/81C, throttle
+delta0 countedonce, DockerCLI peak6.191GiB excludescache, hostavailablemin18.49GiB;
+GPU47-60C is background. A short CPU load is not sustained full-workflow acceptance.
 The pinned recipe is tracked as `ai/generation/candidate-qwen35-9b.json`;
 weights stay outside Git. Default model, service deployment and network unchanged.
+
+## Iteration 15: identical 9B control without thinking
+
+Run: `/srv/lara/ai/data/evaluations/qwen35-9b-off-control-20261021T1615Z`.
+Only reasoning changes from on1024 to off/effective0; case/messages/schema,
+sampling profile, seed42, context4096 and response2048 remain identical. This
+checks whether the bounded thinking mode contributed to early semantic completion.
+One sample/mode, token-allocation and cache effects limit conclusions. No download
+or model/default switch. State: running; review every proposition before sermon
+regressions. No speculative repair or automatic critic acceptance follows.
+Manual review is required; see `ai-generation-review.md` for exact fixtures,
+read-only actions, gates, evidence and cleanup. Full-workflow gates remain unmet.
 
 ## Delivery plan
 

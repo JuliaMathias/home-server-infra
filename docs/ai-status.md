@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-21 12:38 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-21 13:15 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -313,14 +313,15 @@ Iteration13 normalization failed fidelity/traceability after three requests in
 composition was run from those outputs. Private review saved; no inference active.
 The user authorized the prepared 9B comparison by saying "please continue" after
 the explicit download question. Original proposal and authorization are preserved.
-Current single coordinator:
-`/srv/lara/ai/data/evaluations/qwen35-9b-preparation-20261021T1537Z`.
-Download is progressing; after size/SHA-256 verification it runs only the identical
-noisy synthetic control at `qwen35-9b-control-20261021T1537Z`. Check actual state
-before any further workload; no sermon regressions are queued. Model fit, quality,
-speed and the 30-minute full-workflow goal remain unmeasured for this candidate.
-The isolated pinned recipe is in `ai/generation/candidate-qwen35-9b.json`.
-Default/deployed services and original weights are unchanged.
+The 9B download verified and loaded. First control failed semantic coverage and
+negation despite a normal stop/valid JSON, after 225.75s request plus 11.09s load.
+Private review and measurements are saved; no sermon regression was run.
+Current single comparison:
+`/srv/lara/ai/data/evaluations/qwen35-9b-off-control-20261021T1615Z`.
+Same noisy control/settings with thinking disabled; inspect actual state before
+further work. Quality and complete 30-minute workflow acceptance are unproven.
+See `ai-generation-review.md` for the required private manual review procedure.
+Default/deployed services and original weights remain unchanged.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional
