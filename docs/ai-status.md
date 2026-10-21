@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 21:18 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 21:39 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -295,9 +295,11 @@ reasoning256; object coverage did not fix role swaps or unsupported wording.
 
 Iteration7 critic failed: it falsely accepted critical attribution/time/uncertainty
 errors. Private review is saved; no automatic repair or acceptance follows.
-Latest running trial: `/srv/lara/ai/data/evaluations/critic-iteration8-14b-20261021T0017Z`.
-It compares the existing larger model on the identical first critic case, without
-an answer rubric or another download. Review actual verdicts before more requests.
+Iteration8 larger-model critic also failed, accepting all nine paragraphs despite
+critical role/time errors; 392.09s request time. Private review/measurements saved.
+Latest running trial: `/srv/lara/ai/data/evaluations/events-iteration9-20261021T0040Z`.
+Source-only explicit event extraction tests actors, time and modality on two
+regressions before prose composition. No bad drafts or gold answers are supplied.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional

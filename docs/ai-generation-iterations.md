@@ -148,8 +148,24 @@ Run: `/srv/lara/ai/data/evaluations/critic-iteration8-14b-20261021T0017Z`.
 One identical agency critic case from iteration7, existing Qwen3-14B weights,
 512-token reasoning allowance and 1536 total-response ceiling. This isolates
 model selection on that case; no answers supplied or new weights downloaded.
-State: running. Check critical attribution and future/uncertainty errors before
-spending time on additional critic requests. Full-workflow gates remain unmet.
+Result: request completed in 392.09s, plus 10.31s readiness. It accepted all
+nine paragraphs, including reversed actors, invented method and future contacts
+changed to past facts. Private review.json and measurements.json retain evidence.
+Do not use either tested critic as an automatic gate or run more of this critic
+configuration merely to accumulate failures. Sampled CPU package peak 84 C;
+package throttle increment 6 counted once, not summed across logical threads.
+Docker CLI peak 2.101 GiB excludes inactive cache; GPU readings are background.
+
+## Iteration 9: source-first event representation
+
+Run: `/srv/lara/ai/data/evaluations/events-iteration9-20261021T0040Z`.
+Hypothesis: explicit subject/action/object/time/modality fields may retain agency
+and certainty before prose generation. Two source-only regression tasks use
+existing Qwen3.5-4B, reasoning off, 4096 context and 1536 response ceiling.
+Bad drafts and answer rubrics are excluded. Unresolved references must remain
+uncertain. This is intermediate extraction, not final enhanced notes or an unseen
+holdout. State: running; review actual roles, uncertainty, coverage and unsupported
+additions before any composition stage. Full-workflow quality/time remain unmet.
 
 ## Delivery plan
 
