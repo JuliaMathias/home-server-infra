@@ -1,6 +1,6 @@
 # AI project status
 
-Last inspection: 2026-10-20 22:09 BRT (America/Sao_Paulo).
+Last inspection: 2026-10-20 22:40 BRT (America/Sao_Paulo).
 
 ## Verified baseline
 
@@ -299,10 +299,12 @@ Iteration8 larger-model critic also failed, accepting all nine paragraphs despit
 critical role/time errors; 392.09s request time. Private review/measurements saved.
 Iteration9 source-only events also failed: all events were marked negated,
 with omissions and invented uncertainty. Private review is saved.
-Latest running trial: `/srv/lara/ai/data/evaluations/minimal-notes-iteration10-20261021T0111Z`.
-Minimal notes-string format plus longer bounded reasoning tests whether dense
-output structures and short thinking allowances hinder source fidelity.
-No draft, gold answer or synthetic style example is supplied.
+Iteration10 minimal-format notes improved readability but failed attribution,
+future/possibility and unsupported-addition checks; 400.83s for both requests.
+Private review and measurements are saved.
+Latest running trial: `/srv/lara/ai/data/evaluations/source-noise-control-iteration11-20261021T0141Z`.
+Paired fictional clean/noisy accounts test source sensitivity with a private rubric
+excluded from prompts. This is diagnostic, not a sermon acceptance result.
 All full-workflow acceptance gates remain unmet.
 
 Generic tooling now supports explicit pinned candidate selection and optional

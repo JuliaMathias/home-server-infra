@@ -178,9 +178,26 @@ Two identical regression sources, existing 4B model, reasoning allowance 1024,
 organization instead of many constrained evidence/event fields. No drafts, gold
 answers or synthetic style examples are supplied. This changes representation
 and reasoning budget together; it is not an isolated causal comparison.
-State: running. Review actor fidelity, temporal/modality preservation, coverage
-and unsupported additions before a genuinely new holdout or full-workflow run.
-All full-workflow quality/time gates remain unmet.
+Result: both completed in 400.83s including readiness (188.35s agency,
+206.99s kings). More readable headings did not fix meaning: changed speaker
+roles, future plans changed to past, possible location made certain and invented
+model-following remained. Corrupt speech/quotation was copied into finished notes.
+Private review.json records positive and failed points; measurements.json retains
+resource evidence. No full-recording run is justified by this outcome.
+
+## Iteration 11: controlled source-noise diagnostic
+
+Run: `/srv/lara/ai/data/evaluations/source-noise-control-iteration11-20261021T0141Z`.
+Two fictional accounts carry the same intended facts in clean and deliberately
+noisy language. Both contain attribution, chronology, conjecture, future plans,
+negation and voluntary choice. Expected facts are in private rubric.json only,
+not the requests. Existing4B, reasoning1024, total2048, minimal notes schema.
+Hypothesis: distinguish basic instruction/runtime limitations from sensitivity to
+noisy source language before another model comparison. Clean goes first: cache,
+order and single-sample limitations prevent a causal performance claim.
+State: running. This diagnostic is not a sermon holdout or complete-workflow
+acceptance. If clean also fails, inspect model/runtime task suitability before
+more similar sermon prompt iterations. Full-workflow quality/time remain unmet.
 
 ## Delivery plan
 
