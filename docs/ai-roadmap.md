@@ -121,3 +121,13 @@ The monthly research task checks meaningful quality/efficiency improvements on
 actual hardware. A recommendation precedes any separately authorized benchmark
 or deployment change. Keep existing baselines until comparative evidence supports
 a change; model novelty alone is not an acceptance criterion.
+
+## 5. Shared inference router (proposed)
+
+Design only so far: `ai-inference-router.md`, issue #19. Phases, each with its own
+issue, tests and PR, and none started: router core with the local backend; GPU
+lease shared with transcription; Claude Code CLI backend; Codex CLI backend; a
+local-versus-cloud quality and time comparison (sending private content to a
+cloud backend needs the user's explicit OK first); application integration in
+each consumer's own repository. Deployment and CLI login on Lara need separate
+authorization.

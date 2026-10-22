@@ -57,6 +57,16 @@ see its README for upload/status/result contracts and limits. The generation
 container is currently a CPU evaluation runtime that stops after each run, not a
 stable deployed production API or an application-ready asynchronous contract.
 
+## Shared inference router boundary (proposed 2026-10-21)
+
+`ai-inference-router.md` proposes one generic job service with `local`,
+`local-thorough`, `claude` (Claude Code CLI) and `codex` (Codex CLI) backends.
+The router owns job state, backend execution, credentials isolation, usage-limit
+handling, GPU coordination and provenance. Applications own the backend choice
+shown to the user, consent for sending content to a cloud backend, prompts,
+multi-step recipes (which may differ per backend) and checkpointing. The router
+never decides that private content may leave Lara.
+
 ## Monthly model review
 
 Scheduled in this chat: **first day of each month, 09:00 America/Sao_Paulo**.

@@ -512,6 +512,76 @@ Persisting errors: the same multi-person stories, a figurative "another
 [name]", a transcription filler word ("so-and-so") treated as a name, and one
 Bible quotation written from memory.
 
+Run 5, cloud comparison (2026-10-21, user explicitly approved sending this
+sermon's transcript and notes to Anthropic once; issue #19). Recipe for a
+frontier model: one request with the whole sermon (130 blocks after confirmed
+exclusions, speaker labels, the four handwritten notes, the same before/after
+style example and rules, schema-constrained JSON). Run with the unmodified
+Claude Code CLI on the user's Pro plan, safe mode, all tools disabled, no saved
+session, from an empty folder; the prompt streamed from Lara and the result
+streamed back, so no private file was stored on the Mac. Result: 41 s wall time
+(Claude Sonnet 5.5, CLI cost estimate USD 0.18, which a subscription counts
+against usage limits rather than billing). Against the confirmed checklist:
+the two-people ending, the illustration roles, the appeal attribution and every
+agency/negation point were correct; it flagged the garbled two-people passage
+and the confusing opening as uncertain instead of guessing; style matched the
+user's notebook closely; zero hard check flags; 124 of 130 blocks cited. Defects:
+three handwritten notes were reworded or extended (corrected in code by
+inserting them verbatim, as the local recipe already does); four references the
+preacher alluded to without naming the book were kept as citations without
+inserted text. Private outputs: `run5-claude-cli-pro/` in the run directory.
+One sample, one sermon: not yet evidence of reliability across recordings.
+
+Run 6, Codex comparison (2026-10-21, user explicitly approved sending this
+sermon's transcript and notes to OpenAI once; issue #19). Same input, rules and
+schema as run 5, instructions placed at the top of the prompt (the CLI has no
+system-prompt flag). Unmodified Codex CLI 0.148.0 on the user's ChatGPT plan,
+`codex exec` with read-only sandbox, ephemeral session, user config and rules
+ignored, from an empty folder; prompt streamed from Lara and events streamed
+back. Result: 50 s wall time, 37,370 input and 3,098 output tokens (275
+reasoning). Faithful throughout, including the two-people ending and the
+appeal; all four handwritten notes verbatim; zero hard check flags after adding
+confirmed speaker names to the checker vocabulary. Clearly less complete than
+run 5: several whole teachings and illustrations omitted, 16 of 130 blocks
+uncited, no uncertain passages flagged. Private outputs: `run6-codex-cli/`.
+One sample at default settings.
+
+Runs 7, 8 and 8b, slower local profiles (2026-10-22, user-requested; same
+confirmed input, rules and checks as run 4; new prototype features: reasoning
+options and per-section checkpoint/resume, 19 offline tests).
+
+- Run 7, Qwen3.6-35B-A3B with reasoning on (2048 thinking tokens per request):
+  2 h 19 min for planning and writing (each request added about 2,000 thinking
+  tokens). The whole-sermon review then exceeded its response limit and
+  failed; the checkpointed sections were rendered without it (that pass had
+  not changed the notes in any earlier run; its allowance is now larger).
+  Slightly better on one illustration and the Old Testament turning-point
+  story, but the two-people ending was still merged, one exchange was invented,
+  and generic moral statements with no source appeared. Not better overall.
+- Run 8, Qwen3.6-27B dense Q4_K_M (user-approved download, 16.8 GB, pinned and
+  hash-verified): wrote at about 1.9 tokens/s for an hour, then collapsed to
+  about 0.1 tokens/s. sysstat showed about 560 MB/s of continuous page-ins and
+  thousands of major faults per second with swap idle: the memory-mapped
+  weights were evicted and re-read from disk. llama.cpp's host prompt cache
+  (default 8192 MiB) plus about 10 GB of desktop apps left too little RAM; dense
+  models touch all weights per token, unlike mixture-of-experts models. The run
+  failed on a one-hour request timeout. `GENERATION_CACHE_RAM_MIB` now sets
+  that cache (default unchanged; commit 54470c2).
+- Run 8b, the same 27B with the host prompt cache off, 16k context and no
+  review pass (two desktop apps on Lara were closed at the user's request,
+  freeing about 5 GB): completed in 2 h 14 min at about 1.7 tokens/s with no
+  thrashing; one rewrite; zero hard flags. Better on one illustration and the
+  Old Testament story than run 4, but the same merged two-people ending, one
+  section written in the first person as if the reader were the preacher, and
+  references the preacher never named added as citations.
+
+Conclusion for the slow local profile: on this hardware, more thinking time
+(run 7) or a larger dense model (run 8b) roughly doubles or triples the time
+without fixing the story errors that the cloud CLIs got right in under a
+minute. The 35B mixture-of-experts model without reasoning (about 35-55 min)
+remains the best local option; local output still needs review of
+multi-person stories.
+
 Assessment after three runs: the workflow reliably gets boundaries, Bible
 passages, the user's notes and most agency/negation points right in 35-39
 minutes, a large improvement over iterations 1-20. It does not yet meet the

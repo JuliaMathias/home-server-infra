@@ -346,6 +346,13 @@ package temperature reached 100 C with heavy throttle-counter increases during
 combined CPU+GPU load (mean about 80 C). Details: `ai-generation-iterations.md`,
 "Redesigned workflow runs". Transcription was restarted and healthy after every
 run.
+
+2026-10-22: cloud comparisons (user-approved, one sample each) took 41 s
+(Claude CLI) and 50 s (Codex CLI); Claude was complete and correct on the
+stories local runs miss, Codex faithful but thinner. Slower local profiles
+(35B with reasoning; dense Qwen3.6-27B, pinned and verified) took over two hours
+without fixing those errors. The proposed inference router (PR #20) uses cloud
+CLIs with local as the private last resort.
 Generic response validation/defaults and 16 offline/compile/Compose checks remain
 as documented; no new executable change in this increment.
 No new download, deployment or production translation workflow.
