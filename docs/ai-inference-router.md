@@ -47,7 +47,7 @@ Fallback chains (user decision, 2026-10-21):
 | Backend | Where content goes | Typical time per request | Cost | Notes |
 | --- | --- | --- | --- | --- |
 | `local` | Stays on Lara | ~1-2 min per note section (35B MoE, GPU auto) | Electricity, heat | Default. Measured in the notes runs. |
-| `local-thorough` | Stays on Lara | Several times longer | Electricity, heat | Reasoning on and/or a larger dense model; candidate profiles still to be evaluated. |
+| `local-thorough` | Stays on Lara | 2-2.5 h per sermon (measured) | Electricity, heat | Measured 2026-10-22: reasoning on the 35B, or the dense Qwen3.6-27B, took 2 h 14-19 min without fixing the story errors; not recommended on this hardware (see below). |
 | `claude` | Anthropic, under the user's consumer-plan data settings | 41 s for a whole sermon in one request (measured once, Sonnet 5.5 on Pro) | Counts against subscription usage limits | Unmodified `claude` binary, user's own login. |
 | `codex` | OpenAI, under the user's ChatGPT data settings | 50 s for a whole sermon in one request (measured once, Codex CLI 0.148.0 default model and effort) | Counts against plan rate limits | Unmodified `codex` binary, user's own login. |
 
@@ -186,7 +186,9 @@ interruptions, because only the unfinished step is resubmitted.
 
 ## Worker design
 
-**Local worker.** Reuses `ai/generation/runtime_session.py`, changed from
+**Local worker.** Dense models must stay fully resident in RAM: set
+`GENERATION_CACHE_RAM_MIB` low for them (a 27B run thrashed with llama.cpp's
+default 8 GB host prompt cache). Reuses `ai/generation/runtime_session.py`, changed from
 "start, run batch, stop" to a held runtime with idle unload. It takes a
 **GPU lease** before loading: while generation holds the lease, transcription
 jobs wait (queued, not failed), and vice versa. This replaces today's manual
@@ -309,8 +311,10 @@ Each phase gets its own issue, tests and PR.
 - Which applications besides Notey should be first consumers?
 - Is any category of content never allowed on cloud backends, regardless of
   per-job choice?
-- Should `local-thorough` start with reasoning on the current 35B model (no
-  download) before evaluating a larger dense model (download needs approval)?
+- Answered 2026-10-22: both slow profiles were tested (35B with reasoning;
+  dense Qwen3.6-27B). Neither fixed the multi-person story errors and both took
+  over two hours, so `local-thorough` is deferred; `local` (35B without
+  reasoning) stays the private option and last fallback.
 
 ## Sources (checked 2026-10-21)
 
