@@ -49,9 +49,7 @@ Fallback chains (user decision, 2026-10-21):
 | `local` | Stays on Lara | ~1-2 min per note section (35B MoE, GPU auto) | Electricity, heat | Default. Measured in the notes runs. |
 | `local-thorough` | Stays on Lara | Several times longer | Electricity, heat | Reasoning on and/or a larger dense model; candidate profiles still to be evaluated. |
 | `claude` | Anthropic, under the user's consumer-plan data settings | 41 s for a whole sermon in one request (measured once, Sonnet 5.5 on Pro) | Counts against subscription usage limits | Unmodified `claude` binary, user's own login. |
-| `codex` | OpenAI, under the user's ChatGPT data settings | Seconds to minutes (unmeasured here) | Counts against plan rate limits | Unmodified `codex` binary, user's own login. |
-
-The Codex figure is a placeholder until measured.
+| `codex` | OpenAI, under the user's ChatGPT data settings | 50 s for a whole sermon in one request (measured once, Codex CLI 0.148.0 default model and effort) | Counts against plan rate limits | Unmodified `codex` binary, user's own login. |
 
 **First comparison (2026-10-21, user-approved, one sample).** The same private
 sermon input that took the local workflow 35-55 minutes went through the
@@ -63,6 +61,18 @@ closely, with no hard check flags. Its one defect was rewording the user's
 handwritten notes, which the application recipe corrects in code by inserting
 them verbatim. Details: `ai-generation-iterations.md`. One sample does not
 establish reliability across sermons.
+
+**Codex comparison (2026-10-21, user-approved, one sample).** Same input and
+schema through the Codex CLI: 50 seconds. Everything it wrote was faithful,
+including the two-people ending and the appeal, and it kept all four
+handwritten notes verbatim. But it was noticeably thinner: it omitted several
+whole teachings and illustrations (the Old Testament story behind the
+preacher's turning point, one illustration about dating and Scripture, two
+shorter illustrations and the ministry-crisis background), left 16 of 130
+blocks uncited (Claude: 7), and flagged no uncertain passages. With default
+settings, Claude gave more complete notes and Codex more conservative ones;
+higher Codex reasoning effort is untested. This supports keeping both as
+mutual fallbacks rather than treating them as interchangeable.
 
 ## Other CLI backends considered (free tiers only)
 
@@ -284,8 +294,9 @@ This is a reading of public documentation, not legal advice.
 3. **Claude CLI backend.** Dedicated user, official login, isolation flags,
    health check, usage-limit handling; integration check with synthetic text.
 4. **Codex CLI backend.** Same pattern.
-5. **Quality and time comparison.** Claude CLI done once (see above); Codex
-   CLI and a second sermon still to measure. Each cloud send of private
+5. **Quality and time comparison.** Claude CLI and Codex CLI done once each
+   (see above); a second sermon and Codex at higher reasoning effort still to
+   measure. Each cloud send of private
    content needs the user's explicit OK.
 6. **Application integration.** In the Notey repository: backend picker,
    consent, per-backend recipes (a frontier model can take the whole transcript

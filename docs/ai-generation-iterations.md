@@ -532,6 +532,20 @@ preacher alluded to without naming the book were kept as citations without
 inserted text. Private outputs: `run5-claude-cli-pro/` in the run directory.
 One sample, one sermon: not yet evidence of reliability across recordings.
 
+Run 6, Codex comparison (2026-10-21, user explicitly approved sending this
+sermon's transcript and notes to OpenAI once; issue #19). Same input, rules and
+schema as run 5, instructions placed at the top of the prompt (the CLI has no
+system-prompt flag). Unmodified Codex CLI 0.148.0 on the user's ChatGPT plan,
+`codex exec` with read-only sandbox, ephemeral session, user config and rules
+ignored, from an empty folder; prompt streamed from Lara and events streamed
+back. Result: 50 s wall time, 37,370 input and 3,098 output tokens (275
+reasoning). Faithful throughout, including the two-people ending and the
+appeal; all four handwritten notes verbatim; zero hard check flags after adding
+confirmed speaker names to the checker vocabulary. Clearly less complete than
+run 5: several whole teachings and illustrations omitted, 16 of 130 blocks
+uncited, no uncertain passages flagged. Private outputs: `run6-codex-cli/`.
+One sample at default settings.
+
 Assessment after three runs: the workflow reliably gets boundaries, Bible
 passages, the user's notes and most agency/negation points right in 35-39
 minutes, a large improvement over iterations 1-20. It does not yet meet the
