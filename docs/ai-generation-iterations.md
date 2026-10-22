@@ -491,6 +491,27 @@ literally, one tense). All six review-pass items were again rejected as already
 cited, so the long-context review currently adds time (about 4 minutes) without
 changing the notes.
 
+Run 4 (55 min: plan 7.4, write 41, review 6.3), after user style feedback:
+the notes read as a retelling ("the preacher said"), carried transcript IDs and
+times, and did not use the preacher's name. Changes: style example replaced by
+the user's own before/after notebook pages (handwritten session notes, her
+enhanced version of the same session, and a second enhanced session); rules to
+state teachings directly, name the speaker only for testimony, and never write
+IDs or tool vocabulary; the user's handwritten notes always kept verbatim as
+the section's first bullets (her pattern in the first session; the second
+session reworded her bullets, deliberately not followed for fidelity); preacher
+name/title/date from confirmed metadata; a clean reader rendering ("@ speaker -
+title", "→" topics, bullets, NAA blocks) separate from the review rendering.
+Result: the tone moved clearly toward the user's style. The model wrote block
+IDs inside the text in Bible-marker syntax, which the checks read as invalid
+references, forcing rewrites in 14 of 17 sections; those rewrites added
+duplicates and a new merged-people error in the longest section. A mechanical
+cleanup (IDs moved to sources, embedded bullets split, header-only lines dropped)
+now runs before the checks, with a test; run 4 was re-rendered with it offline.
+Persisting errors: the same multi-person stories, a figurative "another
+[name]", a transcription filler word ("so-and-so") treated as a name, and one
+Bible quotation written from memory.
+
 Assessment after three runs: the workflow reliably gets boundaries, Bible
 passages, the user's notes and most agency/negation points right in 35-39
 minutes, a large improvement over iterations 1-20. It does not yet meet the
