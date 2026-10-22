@@ -1,6 +1,6 @@
 # Reusable application delivery and recovery
 
-Status: approved direction for Notey N02; shared implementation and runtime
+Status: version 1 implemented for review; live setup and runtime
 acceptance remain in [issue #17](https://github.com/JuliaMathias/home-server-infra/issues/17).
 Application companion: [Notey #22](https://github.com/JuliaMathias/notey/issues/22).
 This guide defines the adoption contract. It is not evidence of installed timers,
@@ -46,8 +46,8 @@ contract versioned so an infrastructure update cannot silently change every app.
 
 ## Configuration contract
 
-The following is the configuration surface to implement and verify, not a claim
-that these example keys are already accepted by an installed executable.
+The version 1 executable accepts the configuration demonstrated by Notey
+`deploy/delivery.example.json`. Installing or activating it is a separate step.
 
 | Setting | Owner and meaning |
 | --- | --- |
@@ -79,10 +79,10 @@ Credentials, encryption-recipient setup, active timers, the exact installed
 mechanism revision and live restore evidence must be recorded at activation.
 No credentials or keys have been provisioned by this documentation.
 
-Verified setup prerequisite: Notey release immutability is currently disabled.
-The publisher/checker must fail closed until it is enabled and verified. Enabling
-that repository setting locks subsequently published releases and their tags;
-record the change explicitly rather than weakening release identity checks.
+Verified 2026-10-22: Julia authorized Notey immutable releases; the repository
+setting is enabled and `NOTEY_IMMUTABLE_RELEASES_CONFIRMED=true` is set. Future
+published tags/assets are locked. Corrections require a new release. Other apps
+must explicitly enable and verify their own setting.
 
 ## Version 1 retention policy
 
@@ -205,10 +205,13 @@ commands, actual outcomes and service-state comparisons. Instructions are not
 execution evidence. Cleanup removes only named test containers/databases/files;
 never remove runtime volumes, revoke unrelated credentials or prune other apps.
 
-Current execution: the Notey local archive and PostgreSQL recovery checks passed
-on the Mac. Shared runner/timer installation, release eligibility/integrity/
-serialization exercises, encrypted Drive recovery and automatic Lara rollout
-remain not run. Do not close either delivery issue from documentation alone.
+Current execution: 40 deterministic shared tests passed on Lara (41 discovered,
+one opt-in crypto test skipped in the ordinary suite). The opt-in test separately
+passed real GnuPG encryption, public-only Lara keyring and external-key decryption
+of exact synthetic bytes; storage was fake. Notey archive, adapter and real local
+PostgreSQL destructive-schema recovery checks passed separately. These establish
+no live Google authorization, timers, automatic rollout or browser acceptance.
+Keep both issues open until those gates run.
 
 ## Sources
 
@@ -217,3 +220,156 @@ remain not run. Do not close either delivery issue from documentation alone.
 - [Google Drive scopes](https://developers.google.com/workspace/drive/api/guides/api-specific-auth)
 - [PostgreSQL dump](https://www.postgresql.org/docs/17/app-pgdump.html)
 - [PostgreSQL restore](https://www.postgresql.org/docs/17/app-pgrestore.html)
+
+## Implemented command and adapter contract
+
+Requires Python 3.11+ and the existing GnuPG/Docker/Compose tools; no new Python
+packages. On Lara use `/usr/bin/python3`, not the older Conda `python3`.
+`control.py check|backup|status CONFIG` reads an owner-only JSON configuration.
+`check` retrieves the latest immutable release, validates exact completed main
+CI and human merge metadata, hashes every asset, rejects older/diverged commits,
+and passes the candidate to the app adapter. A release published while CI is
+still finishing waits until a later poll. Multiple newer releases may coalesce
+to the latest eligible one. A newer failed release fails closed; it does not
+silently select an older candidate. Cached packages are reverified before reuse.
+
+A per-app process lock rejects overlap between backups and deployments; a busy
+invocation exits unsuccessfully and the next timer invocation retries. There is
+no queue and no global deployment lock across apps. `state/transaction.json`
+records stages durably before side effects. `current.json`, `previous.json` and
+`last-backup.json` preserve exact identities and receipts. `status` reads local
+state; systemd exit status/journals report failures without credentials. No chat,
+email or external notification integration is installed.
+
+The configured adapter is an explicit argv list, invoked without a shell, with
+one phase argument: verify, pause, backup, migrate, activate, health, stop or
+resume. Environment variables LARA_DELIVERY_CONFIG, LARA_DELIVERY_CURRENT and
+LARA_DELIVERY_CANDIDATE convey the config path and public release metadata.
+Only backup prints JSON: verified=true, app, revision and off-host id are required.
+Other child output is captured to prevent accidentally logging secrets.
+The app must validate the candidate recipe/image and define snapshot consistency.
+Notey pauses only its web service for deployment; daily PostgreSQL pg_dump is
+transactionally consistent without pausing it. Actual file/job consistency is a
+later app extension, not implied by this database-only adapter.
+
+Before migration, a failed backup resumes the current image. From the first
+migration attempt onward, any error/timeout stops the candidate and records
+recovery_required. Interrupted running markers also block further operations.
+A subprocess timeout does not prove its Docker migration container stopped:
+inspect app-scoped migration containers before recovery. No automatic image
+rollback, down migration, database replacement or volume deletion occurs.
+Recovery also blocks daily expiry. Add incident backup IDs to
+protected_backup_ids before resolving the incident.
+
+## Backup and credential behavior
+
+`backup.py` encrypts an app-produced snapshot in private scratch space, uploads
+only ciphertext and removes temporary plaintext on normal completion/failure.
+A host crash may leave private scratch remnants: inspect and remove only this
+app's abandoned scratch after ensuring no backup runs. Never use a global tmp
+cleanup. `drive.py` downloads the uploaded ciphertext and checks SHA-256 before
+marking its metadata verified. Failed/incomplete objects never displace valid
+recovery points. Their investigation/cleanup is manual.
+
+Julia approved moving expired backups to Drive Trash on 2026-10-22. Expiry never
+permanently deletes objects or empties Trash. Google controls Trash lifetime;
+trashed objects can continue consuming quota. Expiry defaults off and requires
+an external restore date, matching recipient fingerprint and verified backup ID.
+Deployment also requires that restore receipt; a manual `backup` can run first
+to establish it. Configuration records operator evidence, not a cryptographic
+proof that a human performed a restore. Repeat the actual restore after changing
+the key or backup integration, before updating its receipt. A key change fails
+closed. Policy is explicit per app; no other app inherits Notey's 30/five rule.
+
+## Dedicated Google OAuth setup (operator procedure)
+
+No account authorization has been performed. On the Mac, using Julia's account:
+
+1. In Google Cloud Console select/create a dedicated backup-integration project,
+   enable Google Drive API, and configure Google Auth Platform branding/audience.
+   Do not enable billing or a paid plan. Use a dedicated Desktop app OAuth client,
+   not a web client or a shared service credential. Choose the account/audience
+   appropriate to Julia's Google account; do not request broader Drive scopes.
+2. Configure only `https://www.googleapis.com/auth/drive.file` for this client.
+   For an External app in Testing, refresh tokens normally expire after seven
+   days for this scope. Before unattended operation, complete the appropriate
+   production/personal-use setup shown by Google. Publishing the OAuth consent
+   configuration does not publish backup files. Stop for review if Google asks
+   for broader permissions, organizational approval or costs.
+3. Download the Desktop client JSON into a private Mac directory outside Git and
+   Drive-synced folders; chmod the directory 700 and client JSON 600. Never paste
+   it, token output, browser callback URLs or screenshots of secrets into chat.
+4. Copy the reviewed merged `delivery/v1` helper files from Lara into a NEW private
+   temporary directory on the Mac. This is an installed setup tool, not a Mac
+   infrastructure development checkout. Run with a Python 3.11+ interpreter:
+   `python3 /PRIVATE/TOOL/authorize_drive.py /PRIVATE/client.json /PRIVATE/drive.json 'Notey encrypted backups'`.
+   It opens Google's browser consent with PKCE and a localhost callback, requests
+   offline drive.file access, creates the named private folder, and writes a new
+   owner-only drive.json. It refuses overwrite and never prints credentials.
+5. Confirm the correct account and requested per-file scope in the browser.
+   Keep the folder unshared. The runtime verifies it is private. Transfer the
+   credential file privately to the app delivery directory on Lara; chmod 600.
+   Store a recovery copy securely outside Lara. Do not reuse it for another app.
+6. Run a manual backup and external-key restore below. Test revoked/expired
+   authorization in an isolated profile: it must fail without migration/expiry.
+   Record only scope, private-folder status and outcomes, not credential values.
+
+`drive.file` limits access to integration-created or explicitly selected files;
+it is not upload-only, and a folder name is not an authorization boundary.
+The credential can alter/trash accessible backups. Encryption protects content
+confidentiality; it does not make Drive an immutable vault. Revoke the dedicated
+client's grant through the Google account if compromised, then reauthorize and
+retest recovery. Token expiry/revocation must cause backup and deployment failure,
+not silent operation without backups.
+
+## Installing a reviewed version and opting in
+
+After Julia merges both companion PRs, verify the actual merged SHAs and fetch
+origin/main in the Lara issue worktree without switching the canonical checkout.
+Run `bash delivery/v1/install-mechanism.sh FULL_MERGED_INFRA_SHA` there. It requires
+the exact origin repository and a revision reachable from fetched origin/main,
+exports the reviewed files to a NEW `/srv/lara/app-delivery/SHA`, and starts nothing.
+Pin each app's config mechanism_dir and its `delivery/mechanism` symlink to that
+installed `delivery/v1` directory. Keep the adapter pinned to a reviewed app SHA.
+The Notey repository's `docs/release-operations.md` supplies its bootstrap and
+restore procedures, exact paths, synthetic fixture and acceptance gates.
+
+The four systemd template units are inert until explicitly installed/activated.
+After reviewing rendered paths, copy only lara-app-check@.service/.timer and
+lara-app-backup@.service/.timer from the pinned export into /etc/systemd/system,
+run `systemd-analyze verify` and `systemctl daemon-reload`, then enable/start only
+`lara-app-check@APP.timer` and `lara-app-backup@APP.timer` for the authorized app.
+Check timers use five minutes; daily backup is 04:00 America/Sao_Paulo with up to
+10 minutes jitter. Adjust either using an app-specific drop-in and verify
+`systemctl list-timers`; for OnCalendar overrides reset the inherited value
+with an empty `OnCalendar=` first. Do not edit the common template for one app.
+
+Services run as the existing Docker-capable owner, with umask 077, read-only
+filesystem except that app's delivery directory, bounded CPU/memory, and private
+/tmp. Docker access remains powerful; these settings are not container-daemon
+security isolation. Each app's separate paths/credentials and adapter review are
+required. No Caddy/firewall/AI service change is part of installation.
+
+To pause automatic work: `systemctl stop lara-app-check@APP.timer
+lara-app-backup@APP.timer`. This stops future triggers; inspect any active service
+before interrupting a migration. Keep runtime databases, images, state and backup
+receipts. Do not disable other apps' timers or perform Docker pruning.
+
+## Repeatable verification
+
+```
+/usr/bin/python3 -m unittest discover -s delivery/v1/tests -v
+LARA_CRYPTO_INTEGRATION=1 /usr/bin/python3 -m unittest discover -s delivery/v1/tests -p test_crypto_integration.py -v
+systemd-analyze verify systemd/lara-app-{check,backup}@.{service,timer}
+```
+
+Ordinary tests use fake GitHub/Drive/adapter metadata and an actual competing
+lock process. The optional crypto test uses disposable generated keys, a public
+keyring, fake off-host storage and actual GnuPG decryption; no account or service
+is contacted. Live Drive and Lara acceptance remain separate. Another app's
+onboarding must repeat those gates with its own reviewed policy and adapter.
+
+OAuth sources verified 2026-10-22:
+[Desktop OAuth/PKCE](https://developers.google.com/identity/protocols/oauth2/native-app),
+[refresh token lifetime](https://developers.google.com/identity/protocols/oauth2#expiration),
+[per-file Drive scope](https://developers.google.com/workspace/drive/api/guides/api-specific-auth).
