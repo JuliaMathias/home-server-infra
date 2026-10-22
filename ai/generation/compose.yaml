@@ -32,6 +32,10 @@ services:
       - --no-context-shift
       - --n-predict
       - "${GENERATION_OUTPUT_LIMIT:-768}"
+    environment:
+      # Host-RAM prompt cache (llama.cpp default 8192 MiB). Large dense models need it
+      # lowered or disabled so their weights stay resident; see README.
+      LLAMA_ARG_CACHE_RAM: "${GENERATION_CACHE_RAM_MIB:-8192}"
     volumes:
       - /srv/lara/ai/models:/models:ro
     networks:
