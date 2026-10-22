@@ -1,0 +1,21 @@
+[Unit]
+Description=Lara app backup for %i
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=thejuliamathias
+Group=thejuliamathias
+WorkingDirectory=/srv/lara/apps/%i/delivery
+Environment=PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 /srv/lara/apps/%i/delivery/mechanism/control.py backup /srv/lara/apps/%i/delivery/config.json
+TimeoutStartSec=30min
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=read-only
+ReadWritePaths=/srv/lara/apps/%i/delivery
+MemoryMax=512M
+CPUQuota=50%

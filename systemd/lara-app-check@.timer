@@ -1,0 +1,11 @@
+[Unit]
+Description=Check tested app releases for %i
+
+[Timer]
+OnBootSec=2min
+OnUnitInactiveSec=5min
+Persistent=true
+Unit=lara-app-check@%i.service
+
+[Install]
+WantedBy=timers.target
