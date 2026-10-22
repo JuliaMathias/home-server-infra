@@ -291,3 +291,15 @@ healthy afterwards.
 
 `python3 -m unittest discover -v -p 'test_*.py'` now runs 23 offline tests,
 including device selection and the GPU precondition.
+
+### Host prompt cache and dense models
+
+llama.cpp keeps a host-RAM prompt cache that defaults to 8192 MiB and grows as
+prompts are cached. On 2026-10-21 a Qwen3.6-27B dense run (16.8 GB of weights)
+slowed from about 1.9 to about 0.1 tokens/s after an hour: sysstat showed about
+560 MB/s of continuous page-ins and thousands of major faults per second while
+swap stayed idle, meaning the memory-mapped weights were being evicted and re-read
+from disk. Dense models touch all weights for every token, so they must stay
+resident; mixture-of-experts models tolerate partial residency far better.
+`GENERATION_CACHE_RAM_MIB` (default 8192, `0` disables) sets `LLAMA_ARG_CACHE_RAM`
+inside the container. Slot prompt reuse (`cache_prompt`) does not depend on it.
