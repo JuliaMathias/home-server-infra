@@ -26,6 +26,14 @@
   `/srv/lara/infrastructure`, remote `JuliaMathias/home-server-infra`.
 - Connect using the existing SSH host `lara` as `thejuliamathias`. Respect host
   key checks and existing authentication; do not copy private keys.
+- Develop and change this infrastructure repository on Lara through a descriptive
+  named tmux session Julia can attach to. Report the session name and exact
+  attachment command; use an isolated issue branch/worktree when needed. Do not
+  create a Mac infrastructure development checkout or change unrelated worktrees.
+- For independently hosted applications, consult `docs/app-delivery.md` before
+  creating another release/backup mechanism. Keep the common mechanism versioned
+  and policies, credentials, state and activation isolated per application.
+  Adopting the mechanism for Notey does not authorize updating other applications.
 - The Mac directory `/Users/thejuliamathias/Projects/Personal/ai_server` stages
   the requested instructions and planning files. It is not another infrastructure
   checkout. Keep these files synchronized explicitly; do not clone the whole
