@@ -42,6 +42,7 @@ docs/ai-transcription-follow-ups.md
 docs/ai-scope-and-model-review.md
 docs/ai-generation-iterations.md
 docs/ai-generation-review.md
+docs/ai-inference-router.md
 ```
 
 Before first copy, confirm each destination is absent; on subsequent copies,

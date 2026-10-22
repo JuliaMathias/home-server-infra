@@ -87,7 +87,10 @@ application interfaces; AI APIs are private by default.
   evaluated against actual samples before selection.
 - Future interfaces: Phoenix LiveView in independent application repositories.
 - A simple bounded worker comes first. A common inference gateway or scheduler
-  can follow when multiple runtimes require coordination.
+  can follow when multiple runtimes require coordination. Proposed on
+  2026-10-21 (issue #19): a shared inference router with local, Claude Code CLI
+  and Codex CLI backends chosen per job by each application; see
+  `ai-inference-router.md`. Not implemented or approved for deployment.
 
 Before implementation, verify current upstream installation instructions,
 dependency compatibility, model terms, and CUDA requirements. Record chosen
