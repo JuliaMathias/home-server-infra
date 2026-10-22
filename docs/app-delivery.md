@@ -84,6 +84,21 @@ The publisher/checker must fail closed until it is enabled and verified. Enablin
 that repository setting locks subsequently published releases and their tags;
 record the change explicitly rather than weakening release identity checks.
 
+## Version 1 retention policy
+
+`delivery/v1/retention.py` computes an expiry candidate list using explicit
+app identity, minimum successful count, minimum age and an injected clock.
+It preserves incident-pinned backups and rejects mixed-app or invalid/future
+receipts. It performs no storage operations or deletion. Run:
+
+```sh
+python3 -m unittest discover -s delivery/v1/tests -p test_retention.py -v
+```
+
+Eight deterministic tests cover rapid deployments, sparse old backups, exact
+five-day boundaries, failed uploads, incident pins and different per-app policies.
+They passed on Lara without contacting live services; CI repeats them separately.
+
 ## Required release transaction
 
 1. Confirm a release belongs to the configured repository/branch, a user-merged

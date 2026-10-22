@@ -23,3 +23,6 @@
 *.bak
 *~
 .DS_Store
+
+# Rebuildable Python test bytecode.
+__pycache__/
