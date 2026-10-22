@@ -99,6 +99,22 @@ Eight deterministic tests cover rapid deployments, sparse old backups, exact
 five-day boundaries, failed uploads, incident pins and different per-app policies.
 They passed on Lara without contacting live services; CI repeats them separately.
 
+## Version 1 release eligibility
+
+`delivery/v1/release.py` evaluates supplied metadata for an immutable
+`release-<full SHA>` tag resolving to the same revision as successful completed
+main-branch push CI and a human-merged PR in the configured repository/workflow.
+It rejects missing, failed, pending, cancelled, unrelated and unmerged evidence.
+The adapter must independently fetch authenticated metadata, resolve the tag and
+hash assets; this pure policy does not perform those operations.
+
+```sh
+python3 -m unittest discover -s delivery/v1/tests -p test_release.py -v
+```
+
+Five deterministic tests cover eligibility and rejection paths. They do not
+establish live publication, image integrity, rollout serialization or recovery.
+
 ## Required release transaction
 
 1. Confirm a release belongs to the configured repository/branch, a user-merged
