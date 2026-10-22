@@ -512,6 +512,26 @@ Persisting errors: the same multi-person stories, a figurative "another
 [name]", a transcription filler word ("so-and-so") treated as a name, and one
 Bible quotation written from memory.
 
+Run 5, cloud comparison (2026-10-21, user explicitly approved sending this
+sermon's transcript and notes to Anthropic once; issue #19). Recipe for a
+frontier model: one request with the whole sermon (130 blocks after confirmed
+exclusions, speaker labels, the four handwritten notes, the same before/after
+style example and rules, schema-constrained JSON). Run with the unmodified
+Claude Code CLI on the user's Pro plan, safe mode, all tools disabled, no saved
+session, from an empty folder; the prompt streamed from Lara and the result
+streamed back, so no private file was stored on the Mac. Result: 41 s wall time
+(Claude Sonnet 5.5, CLI cost estimate USD 0.18, which a subscription counts
+against usage limits rather than billing). Against the confirmed checklist:
+the two-people ending, the illustration roles, the appeal attribution and every
+agency/negation point were correct; it flagged the garbled two-people passage
+and the confusing opening as uncertain instead of guessing; style matched the
+user's notebook closely; zero hard check flags; 124 of 130 blocks cited. Defects:
+three handwritten notes were reworded or extended (corrected in code by
+inserting them verbatim, as the local recipe already does); four references the
+preacher alluded to without naming the book were kept as citations without
+inserted text. Private outputs: `run5-claude-cli-pro/` in the run directory.
+One sample, one sermon: not yet evidence of reliability across recordings.
+
 Assessment after three runs: the workflow reliably gets boundaries, Bible
 passages, the user's notes and most agency/negation points right in 35-39
 minutes, a large improvement over iterations 1-20. It does not yet meet the

@@ -25,15 +25,21 @@ AI layer as a generic capability.
 
 Add one private, domain-neutral **inference router** service under
 `ai/router/` on `lara-backend`. Applications submit asynchronous generation jobs
-naming a backend; the router runs them, records provenance, and returns
-structured results. Applications keep their prompts, multi-step recipes,
-privacy consent and review UI.
+naming a backend; the router runs them, falls back along a fixed chain when a
+cloud backend fails, records every attempt, and returns structured results.
+Applications keep their prompts, multi-step recipes, privacy consent and
+review UI.
 
 ```text
-Notey / other apps ──HTTP──> router (job queue, SQLite, provenance)
-                                ├── local worker   → llama.cpp (GPU lease with Whisper)
+Notey / other apps ──HTTP──> router (job queue, SQLite, attempts, provenance)
                                 ├── claude worker  → official `claude -p` CLI (user's subscription)
-                                └── codex worker   → official `codex exec` CLI (user's ChatGPT plan)
+                                ├── codex worker   → official `codex exec` CLI (user's ChatGPT plan)
+                                └── local worker   → llama.cpp (GPU lease with Whisper)
+
+Fallback chains (user decision, 2026-10-21):
+  claude → codex → local
+  codex  → claude → local
+  local  → (none)
 ```
 
 ## Backends
@@ -42,10 +48,40 @@ Notey / other apps ──HTTP──> router (job queue, SQLite, provenance)
 | --- | --- | --- | --- | --- |
 | `local` | Stays on Lara | ~1-2 min per note section (35B MoE, GPU auto) | Electricity, heat | Default. Measured in the notes runs. |
 | `local-thorough` | Stays on Lara | Several times longer | Electricity, heat | Reasoning on and/or a larger dense model; candidate profiles still to be evaluated. |
-| `claude` | Anthropic, under the user's consumer-plan data settings | Seconds to minutes (unmeasured here) | Counts against subscription usage limits | Unmodified `claude` binary, user's own login. |
+| `claude` | Anthropic, under the user's consumer-plan data settings | 41 s for a whole sermon in one request (measured once, Sonnet 5.5 on Pro) | Counts against subscription usage limits | Unmodified `claude` binary, user's own login. |
 | `codex` | OpenAI, under the user's ChatGPT data settings | Seconds to minutes (unmeasured here) | Counts against plan rate limits | Unmodified `codex` binary, user's own login. |
 
-Time figures for cloud backends are placeholders until measured.
+The Codex figure is a placeholder until measured.
+
+**First comparison (2026-10-21, user-approved, one sample).** The same private
+sermon input that took the local workflow 35-55 minutes went through the
+Claude CLI as one request: 41 seconds (Claude Sonnet 5.5 on a Pro plan). Against
+the user-confirmed checklist it got every story right that the local model
+kept failing (including the two-people ending, which it also flagged as
+uncertain), attributed the appeal correctly and matched the user's note style
+closely, with no hard check flags. Its one defect was rewording the user's
+handwritten notes, which the application recipe corrects in code by inserting
+them verbatim. Details: `ai-generation-iterations.md`. One sample does not
+establish reliability across sermons.
+
+## Other CLI backends considered (free tiers only)
+
+The user already pays for Claude and ChatGPT and wants additional CLIs only if
+they have a free tier. Findings on 2026-10-21:
+
+| CLI | Free tier | Headless use | Status |
+| --- | --- | --- | --- |
+| GitHub Copilot CLI | Yes: all plans include it, Copilot Free with a small AI-credit allowance and automatic model selection only | `-p` programmatic mode documented | Candidate. Before adding: confirm tools can be fully disabled, the actual free allowance, and how free-plan prompts are used. |
+| Antigravity CLI (`agy`, Google) | A free "starter" quota exists but is not officially documented; users report it is small | Unclear | Watch. Replaced free Gemini CLI use. |
+| Gemini CLI | No longer free: since 2026-06-18 it serves only paid API keys and enterprise plans | Yes | Excluded (no free tier). |
+| Qwen Code | Free sign-in tier ended in April 2026; needs a paid key or a local model | Yes | Excluded. |
+| DeepSeek | No official CLI; community tools (for example DeepSeek TUI) need DeepSeek's paid API | Varies | Excluded. |
+
+Backends are adapters behind one contract, so a free-tier CLI can be added
+later as an optional link in the cloud chains (before `local`) once verified,
+with its own provider entry in `cloud_providers_allowed`. Free tiers commonly
+have stricter data-use terms; each must be checked before private content is
+sent.
 
 ## Job API (sketch)
 
@@ -58,13 +94,13 @@ Private on `lara-backend`, mirroring the transcription service's job model
 {
   "app": "notey",
   "backend": "local | local-thorough | claude | codex",
-  "fallback": "none | local",
+  "fallback": "default | none",
   "messages": [{"role": "system", "content": "..."}, {"role": "user", "content": "..."}],
   "response_schema": {"type": "object"},
   "max_output_tokens": 2000,
   "reasoning": "off | low | high",
   "deadline": "2026-10-22T09:00:00-03:00",
-  "privacy": {"contains_private_content": true, "user_confirmed_cloud": true}
+  "privacy": {"cloud_providers_allowed": ["anthropic", "openai"]}
 }
 ```
 
@@ -72,14 +108,66 @@ Private on `lara-backend`, mirroring the transcription service's job model
 - Status: `queued`, `waiting_for_resource` (GPU lease or subscription rate
   window), `running`, `completed`, `failed`, `cancelled`.
 - A completed job returns `result` (schema-validated JSON or text) plus
-  provenance: backend, CLI or runtime version, model reported by the backend,
-  timings, token usage when available, and attempts.
-- Errors: `422` invalid request or schema; `409` cloud backend requested
-  without `user_confirmed_cloud`; `429` queue full with `Retry-After`; `503`
-  backend not configured or not logged in. Rate-limit and auth failures inside
-  a job are explicit job states, never a silent backend switch: a fallback runs
-  only when the job asked for it, and the result says it happened.
+  provenance: the backend that produced it, CLI or runtime version, model
+  reported by the backend, timings, token usage when available, and the full
+  `attempts` list described under "Fallbacks".
+- Request errors: `422` invalid request or schema; `409` a cloud backend whose
+  provider is not in `cloud_providers_allowed`; `429` queue full with
+  `Retry-After`. A backend that is not configured or logged in is not a request
+  error: it is a failed attempt that triggers the fallback chain.
 - `DELETE /v1/jobs/{id}` cancels a queued or running job.
+
+## Fallbacks
+
+The user chose fixed chains: `claude → codex → local`, `codex → claude →
+local`, and no fallback for `local`. A job may opt out with `"fallback":
+"none"`. Fallback is never silent: the job result always states which backend
+produced it and why the earlier ones did not.
+
+Triggers (an attempt fails and the next backend in the chain runs):
+
+| Error code | Meaning |
+| --- | --- |
+| `usage_limit` | Subscription or plan limit reached; includes the reset time when the CLI reports it |
+| `auth_unavailable` | CLI not logged in, token expired, or account restricted |
+| `provider_unavailable` | Provider outage, overload or network failure after the CLI's own retries |
+| `timeout` | No result within the backend's time budget |
+| `invalid_output` | Missing or schema-invalid structured output after one same-backend retry |
+| `cli_error` | CLI crashed or returned a non-zero exit without a usable result |
+| `refused` | The model declined the request |
+
+Not triggers: invalid requests (rejected before any attempt), and cancellation.
+A provider not listed in `cloud_providers_allowed` is skipped and recorded as
+`skipped_not_allowed`, because falling back from Claude to Codex sends the same
+content to a second company; the app must have the user's consent for every
+provider it lists. `local` is always allowed and is the last resort for both
+cloud backends, which means a fast job can become a slow one (35+ minutes for a
+sermon): the job status reports `running` on `local` so the app can tell the
+user.
+
+Every result carries the attempts:
+
+```json
+{
+  "status": "completed",
+  "backend_requested": "claude",
+  "backend_used": "local",
+  "fallback_used": true,
+  "attempts": [
+    {"backend": "claude", "outcome": "failed", "error_code": "usage_limit",
+     "error_detail": "limit reached, resets 2026-10-22T03:00:00-03:00",
+     "started_at": "...", "ended_at": "..."},
+    {"backend": "codex", "outcome": "failed", "error_code": "auth_unavailable",
+     "error_detail": "codex login required", "started_at": "...", "ended_at": "..."},
+    {"backend": "local", "outcome": "completed", "started_at": "...", "ended_at": "..."}
+  ],
+  "result": {}
+}
+```
+
+A job that exhausts its chain ends `failed` with the same `attempts` list. A
+router-wide health view (which backends are logged in, usage-limit reset times)
+lets apps warn before submitting.
 
 One request is one model call. Multi-step workflows (Notey's plan, write,
 review and check stages) stay in the application, which checkpoints by
@@ -152,7 +240,8 @@ This is a reading of public documentation, not legal advice.
 ## Privacy
 
 - `local` is the default for every app. Cloud backends are opt-in per app and
-  per job; the API rejects a cloud job without explicit confirmation.
+  per job; the job names every provider the user allowed, and the router never
+  falls back to a provider outside that list.
 - Applications label the choice in their interface (for example "Local -
   private - about 40 min" versus "Claude - sent to Anthropic - about 2 min") and
   record the backend in the document's provenance.
@@ -178,8 +267,11 @@ This is a reading of public documentation, not legal advice.
   provenance; apps get one contract.
 - Subscription use can be restricted by the providers at any time; apps must
   handle `503`/`failed` and the router must allow switching to an API key.
-- Cloud jobs send private content to a provider; consent and labels are
+- Cloud jobs send private content to a provider, and a fallback can send it to
+  a second provider; consent covers each provider by name, and labels are
   mandatory.
+- A cloud job that falls back to `local` can take tens of minutes instead of
+  seconds; apps must show that state rather than appear stuck.
 - The router adds a long-running service and a dedicated CLI user on Lara to
   maintain (CLI updates, re-login when tokens expire).
 
@@ -192,9 +284,9 @@ This is a reading of public documentation, not legal advice.
 3. **Claude CLI backend.** Dedicated user, official login, isolation flags,
    health check, usage-limit handling; integration check with synthetic text.
 4. **Codex CLI backend.** Same pattern.
-5. **Quality and time comparison.** The same notes workflow input on `local`,
-   `claude` and `codex`, scored with the confirmed private checklist. Sending
-   the sermon to a cloud backend requires the user's explicit OK first.
+5. **Quality and time comparison.** Claude CLI done once (see above); Codex
+   CLI and a second sermon still to measure. Each cloud send of private
+   content needs the user's explicit OK.
 6. **Application integration.** In the Notey repository: backend picker,
    consent, per-backend recipes (a frontier model can take the whole transcript
    in one request), checkpointing.
@@ -215,3 +307,9 @@ Each phase gets its own issue, tests and PR.
 - Claude Code CLI reference: https://code.claude.com/docs/en/cli-reference
 - Claude Code legal and compliance: https://code.claude.com/docs/en/legal-and-compliance
 - Codex non-interactive mode: https://learn.chatgpt.com/docs/non-interactive-mode
+- Gemini CLI transition announcement: https://github.com/google-gemini/gemini-cli/discussions/27274
+- GitHub Copilot plans: https://docs.github.com/en/copilot/get-started/plans
+- GitHub Copilot CLI: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/use-copilot-cli
+- Qwen Code free-tier end and DeepSeek community CLIs: secondary reports only
+  (for example https://inventivehq.com/blog/qwen-code-still-free-2026-shutdown,
+  https://github.com/holasoymalva/deepseek-cli); recheck before relying on them.
